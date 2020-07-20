@@ -8,14 +8,12 @@ import shutil
 import re
 import mapmk
 from ttfunction import *
-# 28 -> cadoizzob 
-#
-#NTQzNDI0MDMzNjczNDQ1Mzc4.Xdd_Eg.3PSC_3DVzItUgAeWlQ3phfidf28
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAcQ.ONupbZnOcgNgxQmItIEERPHcJ8w"
+#add your token here
+TOKEN = ""
 bot = discord.Client()
 bot= commands.Bot(command_prefix ="c!")
 
-path = "cadoizzob/tt/"
+path = "tt/"
 shroomPath = "shroom/"
 noShroomPath = "noshroom/"
 

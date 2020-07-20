@@ -3,7 +3,7 @@ import discord
 import ttplayer
 import os 
 
-path = "cadoizzob/tt/"
+path = "tt/"
 
 
 def checkname(ctx):
