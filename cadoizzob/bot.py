@@ -7,8 +7,6 @@ import os
 import shutil
 import re
 import mapmk
-import ttplayer
-import json
 from ttfunction import *
 # 28 -> cadoizzob 
 #
