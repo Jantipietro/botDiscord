@@ -16,7 +16,7 @@ bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix ="c!")
 
-path = "cadoizzob/tt/"
+path = "tt/"
 shroomPath = "shroom/"
 noShroomPath = "noshroom/"
 
