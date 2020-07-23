@@ -7,13 +7,16 @@ import os
 import shutil
 import re
 import mapmk
+import ttplayer
+import json
 from ttfunction import *
-#add your token here
+# Put your Token here 
 TOKEN = ""
 bot = discord.Client()
+# You can change the prefix here 
 bot= commands.Bot(command_prefix ="c!")
 
-path = "tt/"
+path = "cadoizzob/tt/"
 shroomPath = "shroom/"
 noShroomPath = "noshroom/"
 
@@ -27,6 +30,7 @@ async def on_ready():
 # FOrmat of the TT time; example : 
 timesample = re.compile('\d:\d{2}.\d{3}')
 idsample = re.compile('\d{10,30}')
+tagsample = re.compile('<@!\d{10,30}>')
 
 # Dict of string for the war command 
 warText = { 
@@ -51,9 +55,6 @@ warText = {
     "noOption" : "Coucou on a pas ton option **c!war help** est la pour te servir"  
     }
 
-
-
-
 @bot.command()
 async def war(ctx, *args):
     if not args:
@@ -77,18 +78,19 @@ async def war(ctx, *args):
         await ctx.send(warText.get("noOption"))
 
 ttTexts = {
-    "help"      :  "```<map> correspond soit aux raccourcis anglais des maps de mk8dx et à 'week' si vous voulez vous faire un tt de la semaine\n"
+    "help"      :  "```<map> correspond soit aux raccourcis anglais des maps de mk8dx et à 'week' si vous voulez vous faire un tt de la semaine, de plus la commande c!tt maps , renvoie une image avec les raccourcis utilisés.\n"
                     +"<time> doit suivre le modèle suivant : x:xx.xxx ; où les x sont des chiffres\n"
                     +"<id> correspond à l'identifiant discord de quelqu'un sinon celà ne marche pas \n"
                     +"Tous les arguments peuvent être passé en miniscule ou majuscule, le bot les lira en minuscules.\n "
                     +"----------------------------------------------------------\n"
-                    +"Ces commandes ne demandent aucun droit n'importe qui sur le serveur peut les utiliser\n\n"
+                    +"Ces commandes ne demandent aucun droit n'importe qui sur le serveur peut les utiliser\n"
+                    +"Ajouter 'ni' après c!tt , fait réfèrence au run no item , soit shroomless! Toutes les commandes suivantes marche de la même manière avec 'ni'. Exemple : c!tt ni find . \n\n "
                     +"c!tt <map> --> affiche si un fichier existe les temps de la map.\n\n" 
                     +"c!tt <map> <time> --> ajoute ton temps à la <map>\n\n"
                     +"c!tt <map> delete --> Supprime ton temps de la map\n\n"
-                    +"c!tt find <id> --> Trouve toutes les maps ou <id> apparait\n"                   
-                    +"c!tt stats --> Montre un classement des membres par point\n"
-                    +"Il faut 3 membres dans une map pour qu'elle compte et la map 'week' ne compte pas\n\n"
+                    +"c!tt find --> Trouve toutes les maps ou tu apparais\n\n"
+                    +"c!tt find <id> --> Trouve toutes les maps ou <id> apparait\n\n"                   
+                    +"c!tt stats --> Montre un classement des membres par point, la map 'week' ne compte pas\n\n "
                     +"----------------------------------------------------------\n"
                     +"Les commandes ci-dessous demandent d'avoir le droit de gérer les messages sur le serveur\n\n"
                     +"c!tt create --> Creer un dossier pour le serveur et permet d'y stocker les maps\n\n"
@@ -99,7 +101,7 @@ ttTexts = {
                     +"c!tt <map> objective <time> --> Ajoute <time> à la variable objective\n\n"
                     +"c!tt <map> bonus <time> --> Ajoute <time> à la variable ObjectiveBonus\n\n"
                     +"c!tt <map> objective delete --> Supprime le temps objective\n\n"
-                    +"c!tt <map> bonus delete --> Supprime le temps objectiveBonus\n```",
+                    +"c!tt <map> bonus delete --> Supprime le temps objectiveBonus\n\n```",
     "perm"      : "Tu n'as pas les perms pour cette commande",
     "arg"       : "Pas d'arguments à la commande tt ! pour plus d'infos **c!tt help** ",
     "create"    : "Votre Serveur a maintenant un fichier des TT , il vous reste à les remplirs",
@@ -112,6 +114,14 @@ ttTexts = {
     "badFormat" : "Temps au mauvais format, exemple : 1:20.546 \n ou trop d'arguments.",
     "registred" : "Votre temps a bien été enregistré."
 }
+# Supp next MAJ 
+async def move(ctx):
+    if os.path.exists(path+str(ctx.guild)):
+        shutil.move(path+str(ctx.guild), path+str(ctx.guild)+"/"+shroomPath)
+        os.makedirs(path+str(ctx.guild)+"/"+noShroomPath)
+        await ctx.send("fichier moove")
+    else :
+        await ctx.send("Pas de fichier de votre guilde ")
 
 async def findCommand(ctx , args , shroom):
     if len(args) == 1 :
@@ -202,7 +212,12 @@ async def mapmkCommand( ctx , args , shroom):
 def lowerM (args):
     lowerarg=[]
     for arg in args:
-        lowerarg.append(str.lower(arg))
+        # to use tag instead of finding the user id ( made it after writing a lot of file )
+        if tagsample.match(arg):
+            newarg = arg.strip('<!@>')
+            lowerarg.append(str.lower(newarg))
+        else :
+            lowerarg.append(str.lower(arg))
     return lowerarg
 
 @bot.command()
@@ -214,6 +229,8 @@ async def tt(ctx, *args):
         if args[0] == 'help':
             await ctx.send ( ttTexts.get("help"))
         # Draw png with all maps and how to write it
+        elif args[0] == 'move' :
+            await move(ctx)
         elif args[0] == 'maps' :
             await ctx.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
         elif args[0] == 'stats':
