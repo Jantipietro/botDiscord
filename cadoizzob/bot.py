@@ -10,8 +10,8 @@ import mapmk
 import ttplayer
 import json
 from ttfunction import *
-# Put your Token here 
-TOKEN = ""
+#Put your Token bot here 
+TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.Xxl8RQ.QxAGUjYIHoRKc92YtPMqEzaxeDo"
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix ="c!")
@@ -85,12 +85,13 @@ ttTexts = {
                     +"----------------------------------------------------------\n"
                     +"Ces commandes ne demandent aucun droit n'importe qui sur le serveur peut les utiliser\n"
                     +"Ajouter 'ni' après c!tt , fait réfèrence au run no item , soit shroomless! Toutes les commandes suivantes marche de la même manière avec 'ni'. Exemple : c!tt ni find . \n\n "
-                    +"c!tt <map> --> affiche si un fichier existe les temps de la map.\n\n" 
-                    +"c!tt <map> <time> --> ajoute ton temps à la <map>\n\n"
-                    +"c!tt <map> delete --> Supprime ton temps de la map\n\n"
-                    +"c!tt find --> Trouve toutes les maps ou tu apparais\n\n"
-                    +"c!tt find <id> --> Trouve toutes les maps ou <id> apparait\n\n"                   
-                    +"c!tt stats --> Montre un classement des membres par point, la map 'week' ne compte pas\n\n "
+                    +"c!tt <map> --> affiche si un fichier existe les temps de la map.\n" 
+                    +"c!tt <map> <time> --> ajoute ton temps à la <map>\n"
+                    +"c!tt <map> delete --> Supprime ton temps de la map\n"
+                    +"c!tt find --> Trouve toutes les maps ou tu apparais\n"
+                    +"c!tt find <id> --> Trouve toutes les maps ou <id> apparait\n"                   
+                    +"c!tt stats --> Montre un classement des membres par point\n"
+                    +"Il faut 3 membres dans une map pour qu'elle compte et la map 'week' ne compte pas\n\n"
                     +"----------------------------------------------------------\n"
                     +"Les commandes ci-dessous demandent d'avoir le droit de gérer les messages sur le serveur\n\n"
                     +"c!tt create --> Creer un dossier pour le serveur et permet d'y stocker les maps\n\n"
@@ -101,7 +102,7 @@ ttTexts = {
                     +"c!tt <map> objective <time> --> Ajoute <time> à la variable objective\n\n"
                     +"c!tt <map> bonus <time> --> Ajoute <time> à la variable ObjectiveBonus\n\n"
                     +"c!tt <map> objective delete --> Supprime le temps objective\n\n"
-                    +"c!tt <map> bonus delete --> Supprime le temps objectiveBonus\n\n```",
+                    +"c!tt <map> bonus delete --> Supprime le temps objectiveBonus\n```",
     "perm"      : "Tu n'as pas les perms pour cette commande",
     "arg"       : "Pas d'arguments à la commande tt ! pour plus d'infos **c!tt help** ",
     "create"    : "Votre Serveur a maintenant un fichier des TT , il vous reste à les remplirs",
@@ -117,7 +118,7 @@ ttTexts = {
 
 async def findCommand(ctx , args , shroom):
     if len(args) == 1 :
-        await find(ctx, ctx.author.name, shroom)
+        await find(ctx, ctx.author.id, shroom)
     elif len(args) == 2 :
         if idsample.match(args[1]):
             await find(ctx, args[1], shroom)
