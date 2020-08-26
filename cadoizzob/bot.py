@@ -28,7 +28,7 @@ async def on_ready():
     print("-------")
 
 # FOrmat of the TT time; example : 
-timesample = re.compile('\d:\d{2}.\d{3}')
+timesample = re.compile('\d:\d{2}\.\d{3}')
 idsample = re.compile('\d{10,30}')
 tagsample = re.compile('<@!\d{10,30}>')
 
@@ -114,14 +114,6 @@ ttTexts = {
     "badFormat" : "Temps au mauvais format, exemple : 1:20.546 \n ou trop d'arguments.",
     "registred" : "Votre temps a bien été enregistré."
 }
-# Supp next MAJ 
-async def move(ctx):
-    if os.path.exists(path+str(ctx.guild)):
-        shutil.move(path+str(ctx.guild), path+str(ctx.guild)+"/"+shroomPath)
-        os.makedirs(path+str(ctx.guild)+"/"+noShroomPath)
-        await ctx.send("fichier moove")
-    else :
-        await ctx.send("Pas de fichier de votre guilde ")
 
 async def findCommand(ctx , args , shroom):
     if len(args) == 1 :
@@ -229,8 +221,6 @@ async def tt(ctx, *args):
         if args[0] == 'help':
             await ctx.send ( ttTexts.get("help"))
         # Draw png with all maps and how to write it
-        elif args[0] == 'move' :
-            await move(ctx)
         elif args[0] == 'maps' :
             await ctx.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
         elif args[0] == 'stats':
