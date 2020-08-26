@@ -117,7 +117,7 @@ ttTexts = {
 
 async def findCommand(ctx , args , shroom):
     if len(args) == 1 :
-        await find(ctx, ctx.author.id, shroom)
+        await find(ctx, ctx.author.name, shroom)
     elif len(args) == 2 :
         if idsample.match(args[1]):
             await find(ctx, args[1], shroom)
