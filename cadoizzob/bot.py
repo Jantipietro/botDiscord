@@ -268,13 +268,13 @@ async def tt(ctx, *args):
 
 
 @bot.event
-async def on_reaction_add(reaction, user):
-    if reaction.count == 4:
+async def on_reaction_add(ctx,reaction, user):
+    if (ctx.message.author == bot.user and reaction.count == 4):
             await reaction.message.remove_reaction(reaction, bot.user)
 
 @bot.event
-async def on_reaction_remove(reaction, user):
-    if reaction.count == 0:
+async def on_reaction_remove(ctx,reaction, user):
+    if (ctx.message.author == bot.user and reaction.count == 0):
         await reaction.message.add_reaction(reaction)
 
 bot.run(TOKEN)
