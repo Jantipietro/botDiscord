@@ -158,13 +158,19 @@ async def drawMapmk(ctx , mapmk8, shroom):
             description  += "Objectif Bonus: **" + mk._bonusObjective + "**\n"
         description +='\n'
         i = 1
+        placeField =""
+        nameField= ""
+        timeField = ""
         for player in mk._ttplayers:
-            description += "**"+str(i)+". "
-            description += player.string()
-            i+=1
+            placeField +=str(i)
+            nameField += str(player.getPlayerName())
+            timeField += str(player.getPlayerTime())
         title = mapmk.MK8DXmap.get(mapmk8)
         if shroom == 'noshroom/':
             title += ' Shroomless'
         embedMap = discord.Embed(title=title,description=description)
+        embedMap.add_field(name='Place', value = placeField , inline= True)
+        embedMap.add_field(name='Name', value = nameField , inline= True)
+        embedMap.add_field(name='Time', value = timeField , inline= True)
         embedMap.set_thumbnail(url = "https://cdn.discordapp.com/attachments/729655998146674748/731625550858158102/cadoizz-bot-400x400px.png")
         await ctx.send(embed = embedMap)
