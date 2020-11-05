@@ -274,7 +274,7 @@ async def on_reaction_add(reaction, user):
 
 @bot.event
 async def on_reaction_remove(reaction, user):
-    if reaction.count == 1:
+    if reaction.count == 0:
         await reaction.message.add_reaction(reaction)
 
 bot.run(TOKEN)
