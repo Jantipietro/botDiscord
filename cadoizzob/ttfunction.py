@@ -162,9 +162,10 @@ async def drawMapmk(ctx , mapmk8, shroom):
         nameField= ""
         timeField = ""
         for player in mk._ttplayers:
-            placeField +=str(i)
-            nameField += str(player.getPlayerName())
-            timeField += str(player.getPlayerTime())
+            placeField +=str(i)+"\n"
+            nameField += str(player.getPlayerName())+"\n"
+            timeField += str(player.getPlayerTime())+"\n"
+            i=i+1
         title = mapmk.MK8DXmap.get(mapmk8)
         if shroom == 'noshroom/':
             title += ' Shroomless'
