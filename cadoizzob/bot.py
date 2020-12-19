@@ -95,9 +95,8 @@ ttTexts = {
                     +"c!tt find <id> --> Trouve toutes les maps ou <id> apparait\n"
                     +"c!tt copy <idServ> --> Copie tes temps de ce serveur\n"                   
                     +"c!tt stats --> Montre un classement des membres par point\n"
-                    +"la map 'week' ne compte pas dans les stats\n\n"
-                    +"----------------------------------------------------------\n"
-                    +"Les commandes ci-dessous nécessitent le droit de gérer les messages sur le serveur\n\n"
+                    +"la map 'week' ne compte pas dans les stats```",
+    "help2"     : "```Les commandes ci-dessous nécessitent le droit de gérer les messages sur le serveur\n\n"
                     +"c!tt create --> Creer un dossier pour le serveur et permet d'y stocker les maps\n\n"
                     +"WARNING -> c!tt delete --> Supprime le dossier du serveur et ce qu'il y'a dedans \n\n"
                     +"c!tt delete <id> --> Supprime tous les temps de <id> dans les fichiers\n\n"
@@ -296,6 +295,7 @@ async def tt(ctx, *args):
         args= lowerM(args)
         if args[0] == 'help':
             await ctx.send ( ttTexts.get("help"))
+            await ctx.send ( ttTexts.get("help2"))
         # Copy your time from the serv args[1]
         elif args[0] == 'copy':
             await copyCommand(ctx, args[1], shroomPath)
