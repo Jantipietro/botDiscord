@@ -11,7 +11,7 @@ import ttplayer
 import json
 from ttfunction import *
 #Put your Token bot here 
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.1A1zWcGwLKRLPwh3IKZQ9A-Zj4E"
+TOKEN = ""
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix ="c!")
