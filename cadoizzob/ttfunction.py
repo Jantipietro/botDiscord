@@ -70,7 +70,7 @@ def MapStats(ctx, mapmk8, playersStats, shroom):
     
 async def drawStats(ctx, playersStats, shroom):
     # trie par nombre de point 
-    sorted_playersStats = sorted(playersStats.values(), key=lambda value : value[1] , reverse= False)
+    sorted_playersStats = sorted(playersStats.values(), key=lambda value : round((value[1]/value[2]),5) , reverse= True)
     title = "Stats : {0}".format(ctx.guild)
     if shroom == 'noshroom/':
         title += " Shroomless"
