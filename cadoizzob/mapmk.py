@@ -17,20 +17,6 @@ MK8DXmap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "Sweet 
                 'week' :"Map of the Week" 
 }
 
-statsPoints = { 1 : 15 , 
-                2 : 12,
-                3 : 10, 
-                4 : 9 ,
-                5 : 8 ,
-                6 : 7 ,
-                7 : 6 ,
-                8 : 5 ,
-                9 : 4 ,
-                10 : 3 ,
-                11 : 2 ,
-                12 : 1 
-                 }
-
 class mapmk:
 
     def __init__(self , mapmk, objective, bonusObjective):
@@ -102,12 +88,13 @@ class mapmk:
         i = 1 
         for player in self._ttplayers :
             if not player.getPlayerId() in playersStats :
-                playersStats.update({player.getPlayerId() : [ player.getPlayerName() , statsPoints.get(i ,1 ) , 1 ]})
+                playersStats.update({player.getPlayerId() : [ player.getPlayerName() , i , 1 ]})
                 i += 1
             else :
                 listplayer = playersStats.get(player.getPlayerId())
-                listplayer[1] += statsPoints.get(i , 1)
+                listplayer[1] += i
                 listplayer[2] += 1
                 i += 1 
 
         
+

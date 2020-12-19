@@ -11,7 +11,7 @@ import ttplayer
 import json
 from ttfunction import *
 #Put your Token bot here 
-TOKEN = ""
+TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.1A1zWcGwLKRLPwh3IKZQ9A-Zj4E"
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix ="c!")
@@ -77,6 +77,7 @@ async def war(ctx, *args):
     else :
         await ctx.send(warText.get("noOption"))
 
+
 ttTexts = {
     "help"      :  "```<map> correspond soit aux raccourcis anglais des maps de mk8dx et à 'week' si vous voulez vous faire un tt de la semaine, de plus la commande c!tt maps , renvoie une image avec les raccourcis utilisés.\n"
                     +"<time> doit suivre le modèle suivant : x:xx.xxx ; où les x sont des chiffres\n"
@@ -88,8 +89,11 @@ ttTexts = {
                     +"c!tt <map> --> affiche si un fichier existe les temps de la map.\n" 
                     +"c!tt <map> <time> --> ajoute ton temps à la <map> ou le remplace s'il y en a dejà un\n"
                     +"c!tt <map> delete --> Supprime ton temps de la map\n"
+                    +"c!tt addlist help --> Affiche l'help de addlist\n"
+                    +"c!tt addlist <List> --> Ajoute plusieur map, aller voir c!tt addlist help pour voir le format demandé\n"
                     +"c!tt find --> Trouve toutes les maps ou tu apparais\n"
-                    +"c!tt find <id> --> Trouve toutes les maps ou <id> apparait\n"                   
+                    +"c!tt find <id> --> Trouve toutes les maps ou <id> apparait\n"
+                    +"c!tt copy <idServ> --> Copie tes temps de ce serveur\n"                   
                     +"c!tt stats --> Montre un classement des membres par point\n"
                     +"la map 'week' ne compte pas dans les stats\n\n"
                     +"----------------------------------------------------------\n"
@@ -113,45 +117,81 @@ ttTexts = {
                     +" et pouvoir ajoutez vos temps sur les maps.",
     "noFileMap" : "Pas de fichier pour cette map, ajoutes un temps pour le créer." ,
     "badFormat" : "Temps au mauvais format, exemple : 1:20.546 \n ou trop d'arguments.",
-    "registred" : "Votre temps a bien été enregistré."
+    "registred" : "Votre temps a bien été enregistré.",
+    "allMap"    : '```c!tt addList "mks , <time> ; wp , <time> ; ssc , <time> ; tr , <time>;\n'
+                + 'mc , <time> ; th , <time> ;  tm , <time> ;  sgf , <time>;\n'
+                + 'sa , <time> ; ds , <time> ; ed , <time> ;  mw , <time>;\n'
+                + 'cc , <time> ; bdd , <time> ; bc , <time> ; rr , <time>;\n'
+                + 'dyc , <time> ; dea , <time> ; ddd , <time> ; dmc , <time>;\n'
+                + 'dwgm , <time> ; drr , <time> ; diio , <time> ; dhc , <time>;\n'
+                + 'rmmm , <time> ; rmc , <time> ; rccb , <time> ; rtt , <time>;\n'
+                + 'rddd , <time> ; rdp3 , <time> ; rrry , <time> ; rdkj , <time>;\n'
+                + 'rws , <time> ; rsl , <time> ; rmp , <time> ; ryv , <time>;\n'
+                + 'rttc , <time> ; rpps , <time> ; rgv , <time> ; rrrd , <time>;\n'
+                + 'dbp , <time> ;  dcl , <time> ; dww , <time> ; dac , <time>;\n'
+                + 'dnbc , <time> ; drir , <time> ; dsbs , <time> ; dbb , <time>"```',
+    "helpAllMap": 'Copier au dessus pour toutes les maps et remplacer les <time> par votre temps\nExample de Format: c!tt addList "<map> , <time> ; <map> , <time> ; ..."\n'
+                + "La virgule permet séparer la map de son temps\n"
+                + "Le point virgule permet de passer à la prochaine map\n"
+                + 'Ne pas oublier les " sinon ca ne marchera pas\n'
 }
 
+
+def verifGuild(ctx):
+    # now guild file are by guild.id
+    if not os.path.exists(path+str(ctx.guild.id)) :
+        try :
+            # Before that was by name so the change here
+            os.rename(path+str(ctx.guild),path+str(ctx.guild.id))
+        except :
+            return False
+    return True
+
+
+
+
 async def findCommand(ctx , args , shroom):
-    if len(args) == 1 :
-        await find(ctx, ctx.author.id, shroom)
-    elif len(args) == 2 :
-        if idsample.match(args[1]):
-            await find(ctx, args[1], shroom)
+    if verifGuild(ctx):
+        if len(args) == 1 :
+            await find(ctx, ctx.author.id, shroom)
+        elif len(args) == 2 :
+            if idsample.match(args[1]):
+                await find(ctx, args[1], shroom)
+            else :
+                await ctx.send("Ceci ne ressemble pas un id discord.")
         else :
-            await ctx.send("Ceci ne ressemble pas un id discord.")
+            await ctx.send("Faut juste mettre l'id du joueur après find couillon")
     else :
-        await ctx.send("Faut juste mettre l'id du joueur après find couillon")
+        await ctx.send( ttTexts.get("noFile"))
 
 async def deleteCommand(ctx , args , shroom ):
-    if not ctx.message.author.guild_permissions.manage_messages:
-        await ctx.send( ttTexts.get("perm"))
-    #Delete all the file and the server name's file too
-    elif len(args) == 1 :
-        try :
-            shutil.rmtree(path+str(ctx.guild))
-            await ctx.send( ttTexts.get("delete"))
-        except :
-            # normally never happens, don't think rmtree can fail but in case
-            await ctx.send("Vos fichiers n'ont pas été supprimé, ceci ne devrait pas arrivé")
-    # Delete an id from all the file 
-    elif len(args) == 2 :
-        if idsample.match(args[1]):
-            await deleteTtplayerfromAll(ctx, args[1], shroom)
-        # Delete a map file
-        elif mapmk.MK8DXmap.get(args[1]) != None :
-            await deleteFile(ctx , path+str(ctx.guild)+"/"+shroom +args[1] , args[1])
+    if verifGuild(ctx):
+        if not ctx.message.author.guild_permissions.manage_messages:
+            await ctx.send( ttTexts.get("perm"))
+        #Delete all the file and the server name's file too
+        elif len(args) == 1 :
+            try :
+                shutil.rmtree(path+str(ctx.guild.id))
+                await ctx.send( ttTexts.get("delete"))
+            except :
+                # normally never happens, don't think rmtree can fail but in case
+                await ctx.send("Vos fichiers n'ont pas été supprimé, ceci ne devrait pas arrivé")
+        # Delete an id from all the file 
+        elif len(args) == 2 :
+            if idsample.match(args[1]):
+                await deleteTtplayerfromAll(ctx, args[1], shroom)
+            # Delete a map file
+            elif mapmk.MK8DXmap.get(args[1]) != None :
+                await deleteFile(ctx , path+str(ctx.guild.id)+"/"+shroom +args[1] , args[1])
+            else :
+                await ctx.send("Ceci ne ressemble pas a un id discord, ou pas de nom de map")
         else :
-            await ctx.send("Ceci ne ressemble pas a un id discord, ou pas de nom de map")
+            await ctx.send("Trop d'args frerot!")
     else :
-        await ctx.send("Trop d'args frerot!")
+        await ctx.send( ttTexts.get("noFile"))
 
 async def mapmkCommand( ctx , args , shroom):
-    if os.path.exists(path+str(ctx.guild)):
+    if verifGuild(ctx):
         # DRAW TT 
         if len(args)== 1 :
             await drawMapmk(ctx, args[0], shroom)
@@ -202,6 +242,41 @@ async def mapmkCommand( ctx , args , shroom):
         #No server file 
         await ctx.send( ttTexts.get("noFile"))
 
+async def addListCommand(ctx, args, shroom):
+    if verifGuild(ctx):
+        if ( args == 'help'):
+            await ctx.send(ttTexts.get("allMap"))
+            await ctx.send(ttTexts.get("helpAllMap"))
+        else :
+            #Get away with space and \n in the string
+            SeparateCouple = args.replace(" ","").replace("\n","").split(";")
+            Allcouple = []
+            for couple in SeparateCouple :
+                # get the couple map time in the string
+                Allcouple.append(couple.split(","))
+            for args in Allcouple :
+                await mapmkCommand(ctx, args, shroom )
+    else :
+        await ctx.send( ttTexts.get("noFile"))
+
+async def statsCommand(ctx, shroom) :
+    if verifGuild(ctx):
+        await Stats(ctx,shroom)
+    else :
+        await ctx.send( ttTexts.get("noFile"))
+
+async def copyCommand(ctx, fromServ,shroom):
+    if verifGuild(ctx):
+        if not os.path.exists(path+fromServ):
+            await ctx.send("Le serveur ciblé n'existe pas / mauvais id, n'hésitez pas a essayé une commande dans le serveur ciblé, pour voir s'il marche.")
+        await copy(ctx, fromServ,shroom)
+    else :
+        await ctx.send( ttTexts.get("noFile"))
+    
+
+
+
+
 def lowerM (args):
     lowerarg=[]
     for arg in args:
@@ -221,11 +296,17 @@ async def tt(ctx, *args):
         args= lowerM(args)
         if args[0] == 'help':
             await ctx.send ( ttTexts.get("help"))
+        # Copy your time from the serv args[1]
+        elif args[0] == 'copy':
+            await copyCommand(ctx, args[1], shroomPath)
+        # Add a list of maps 
+        elif args[0] == 'addlist':
+            await addListCommand(ctx, args[1], shroomPath)
         # Draw png with all maps and how to write it
         elif args[0] == 'maps' :
             await ctx.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
         elif args[0] == 'stats':
-            await Stats(ctx, shroomPath)
+            await statsCommand(ctx, shroomPath)
         #Chercher le joueur dans les maps 
         elif args[0] == 'find' :
             await findCommand(ctx, args , shroomPath)
@@ -235,8 +316,8 @@ async def tt(ctx, *args):
                 await ctx.send( ttTexts.get("perm"))
             else :
                 try :
-                    os.makedirs(path+str(ctx.guild)+"/"+shroomPath)
-                    os.makedirs(path+str(ctx.guild)+"/"+noShroomPath)
+                    os.makedirs(path+str(ctx.guild.id)+"/"+shroomPath)
+                    os.makedirs(path+str(ctx.guild.id)+"/"+noShroomPath)
                     await ctx.send( ttTexts.get("create"))
                 except :
                     await ctx.send( ttTexts.get("pathExist"))
@@ -250,7 +331,13 @@ async def tt(ctx, *args):
         elif args[0] == 'ni' :
             del args[0] # to call the other function , delete the arg "ni"
             if args[0] == 'stats':
-                await Stats(ctx, noShroomPath)
+                await statsCommand(ctx, noShroomPath)
+            # Copy your time from the serv args[1]
+            elif args[0] == 'copy':
+                await copyCommand(ctx, args[1], shroomPath)
+            # Add many maps
+            elif args[0] == 'addlist':
+                await addListCommand(ctx, args[1], shroomPath)
             #Chercher le joueur dans les maps 
             elif args[0] == 'find' :
                 await findCommand(ctx, args , noShroomPath)
@@ -274,7 +361,7 @@ async def on_reaction_add(reaction, user):
 
 @bot.event
 async def on_reaction_remove(reaction, user):
-    if (reaction.message.author.id == 729648516795990146  and reaction.count == 1):
+    if (reaction.message.author.id == 729648516795990146 and reaction.count == 1):
         await reaction.message.add_reaction(reaction)
 
 bot.run(TOKEN)

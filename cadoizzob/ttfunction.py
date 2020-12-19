@@ -14,7 +14,7 @@ def checkname(ctx):
 # 3 functions to find a player in the ctx . 
 def findInMap(ctx ,idPlayer, mapmk8, maps, shroom):
     mk = mapmk.mapmk(mapmk8, '' ,'')
-    data = mk.getFileR(path+str(ctx.guild)+"/"+ shroom + mapmk8)  
+    data = mk.getFileR(path+str(ctx.guild.id)+"/"+ shroom + mapmk8)  
     if data != 'no file':
         mk.dataToMapmk(data)
         addMap = False
@@ -63,21 +63,21 @@ async def find(ctx, idPlayer, shroom):
 # 3 function to get the Stats of the ctx . 
 def MapStats(ctx, mapmk8, playersStats, shroom):
     mk = mapmk.mapmk(mapmk8, '' ,'')
-    data = mk.getFileR(path+str(ctx.guild)+"/"+shroom+mapmk8)  
+    data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8)  
     if data != 'no file':
         mk.dataToMapmk(data)
         mk.addStats(playersStats)
     
 async def drawStats(ctx, playersStats, shroom):
     # trie par nombre de point 
-    sorted_playersStats = sorted(playersStats.values(), key=lambda value : value[1] , reverse= True)
+    sorted_playersStats = sorted(playersStats.values(), key=lambda value : value[1] , reverse= False)
     title = "Stats : {0}".format(ctx.guild)
     if shroom == 'noshroom/':
         title += " Shroomless"
     description = ""
     i= 1
     for playerlist in sorted_playersStats:
-        description += "**{3}.{0}** : {1} points ( {2}/48 maps )\n".format(playerlist[0], playerlist[1] , playerlist[2], i)
+        description += "**{3}.{0}** : {1} points ( {2}/48 maps )\n".format(playerlist[0], round((playerlist[1]/playerlist[2]),5) , playerlist[2], i)
         i += 1
     if description == "" :
         await ctx.send ("Pas de stats pour ce serveur.")
@@ -96,14 +96,14 @@ async def Stats(ctx, shroom):
 
 async def setMapmkObjective(ctx, mapmk8, time, bonus, shroom) :
     mk = mapmk.mapmk(mapmk8, '' ,'')
-    data = mk.getFileR(path+str(ctx.guild)+"/"+shroom+mapmk8)
+    data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8)
     if data != 'no file':
         mk.dataToMapmk(data)
     if bonus == '':
         mk.setObjective(time)
     else :
         mk.setBonusObjective(time)
-    mk.writeFile(path+str(ctx.guild)+"/"+shroom+mapmk8)
+    mk.writeFile(path+str(ctx.guild.id)+"/"+shroom+mapmk8)
 
 
 async def deleteFile(ctx, file, mapmk8):
@@ -115,15 +115,15 @@ async def deleteFile(ctx, file, mapmk8):
 
 async def deleteTtplayerfromMap(ctx,mapmk8, id, shroom):
     mk = mapmk.mapmk(mapmk8, '' ,'')
-    data = mk.getFileR(path+str(ctx.guild)+"/"+shroom+mapmk8)
+    data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8)
     if data != 'no file':
         mk.dataToMapmk(data)
         mk.deleteTtplayer(id)
         if len(mk._ttplayers) !=0 :
-            mk.writeFile(path+str(ctx.guild)+"/"+shroom+mapmk8)
+            mk.writeFile(path+str(ctx.guild.id)+"/"+shroom+mapmk8)
         else :
             await ctx.send("Plus de joueur dans la map")
-            await deleteFile(ctx, path+str(ctx.guild)+"/"+shroom+mapmk8, mapmk8)
+            await deleteFile(ctx, path+str(ctx.guild.id)+"/"+shroom+mapmk8, mapmk8)
 
 async def deleteTtplayerfromAll(ctx, id, shroom):
     for mapmk8 in mapmk.MK8DXmap.keys() :
@@ -132,21 +132,21 @@ async def deleteTtplayerfromAll(ctx, id, shroom):
 
 async def addTimeInFile(ctx, mapmk8, time ,shroom):
     mk = mapmk.mapmk(mapmk8, '' , '') #create a object mapmk with the name of the map
-    data = mk.getFileR(path+str(ctx.guild)+"/"+shroom+mapmk8) # get the data from file
+    data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8) # get the data from file
     mk.dataToMapmk(data)
     name = checkname(ctx)  # check if someone has a nick name
     newplayer = ttplayer.TtPlayer( ctx.message.author.id, #create new ttplayer
                 name,
                 time)
     mk.addplayer(newplayer)
-    mk.writeFile(path+str(ctx.guild)+"/"+shroom+mapmk8)
-    await ctx.send( "Votre temps a bien été enregistré.")
+    mk.writeFile(path+str(ctx.guild.id)+"/"+shroom+mapmk8)
+    await ctx.send( "Votre temps a bien été enregistré sur " + mapmk8)
 
 
 
 async def drawMapmk(ctx , mapmk8, shroom):
     mk = mapmk.mapmk(mapmk8, '', '') #create a object mapmk with the name of the map
-    data = mk.getFileR(path+str(ctx.guild)+"/"+shroom+mapmk8) # get the data from file
+    data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8) # get the data from file
     if data == 'no file':
         await ctx.send( "Pas de fichier pour cette map, ajoutes un temps pour le créer.")
     else :
@@ -165,7 +165,7 @@ async def drawMapmk(ctx , mapmk8, shroom):
             placeField +=str(i)+"\n"
             nameField += str(player.getPlayerName())+"\n"
             timeField += str(player.getPlayerTime())+"\n"
-            i=i+1
+            i= i+1
         title = mapmk.MK8DXmap.get(mapmk8)
         if shroom == 'noshroom/':
             title += ' Shroomless'
@@ -175,3 +175,27 @@ async def drawMapmk(ctx , mapmk8, shroom):
         embedMap.add_field(name='Time', value = timeField , inline= True)
         embedMap.set_thumbnail(url = "https://cdn.discordapp.com/attachments/729655998146674748/731625550858158102/cadoizz-bot-400x400px.png")
         await ctx.send(embed = embedMap)
+
+def getCopyInMap(ctx , fromServ, mapmk8, maps, shroom):
+    mk = mapmk.mapmk(mapmk8, '' ,'')
+    data = mk.getFileR(path+fromServ+"/"+ shroom + mapmk8)  
+    if data != 'no file':
+        mk.dataToMapmk(data)
+        addMap = False
+        for player in mk._ttplayers :
+            if player.getPlayerId() == ctx.author.id :
+               # playerName = player.getPlayerName()
+                addMap = True
+        if addMap == True :
+            maps.append((mapmk8, player.getPlayerTime() ))
+        return maps
+    return maps
+
+async def copy(ctx,fromServ, shroom):
+    maps = list()
+    for mapmk8 in mapmk.MK8DXmap.keys() :
+        if mapmk8 != 'week' :
+            maps = getCopyInMap(ctx, fromServ, mapmk8, maps, shroom)
+    for (mapeuh, time) in maps :
+        await addTimeInFile(ctx, mapeuh, time ,shroom)
+    await ctx.send("Transfert terminé !")
