@@ -11,7 +11,7 @@ from text import *
 from ttCommand import *
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language, get_prefix
 #Put your Token bot here 
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.xqQTJ71Bv8jQVab_WWZzlLwymCc"
+TOKEN = ""
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None)
