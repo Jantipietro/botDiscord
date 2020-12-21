@@ -1,21 +1,7 @@
 import ttplayer
 import json
 import discord
-
-MK8DXmap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "Sweet Sweet Canyon" , 'tr' :"Thwomp Ruins" ,     # coupe Champignon
-                'mc' : "Mario Circuit" , 'th' : "Toad Harbor" , 'tm' : "Twisted Mansion" , 'sgf' : "Shy Guy Falls",# coupe Fleur
-                'sa' :"Sunshine Airport"  , 'ds' : "Dolphin Shoals"  , 'ed' : "Electrodrome" , 'mw' : "Mount Wario"  ,#coupe Etoile
-                'cc' : "Cloudtop Cruise" , 'bdd' : 'Bone-Dry Dunes' , 'bc' : "Bowser's Castle" , 'rr' :"Rainbow Road"  ,# coupe Spéciale
-                'dyc' :"Yoshi Circuit" , 'dea' :"Excitbike Arena" , 'ddd' :"Dragon Driftway" , 'dmc' :"Mute City" ,# coupe Oeuf
-                'dwgm' :"Wario's Gold Mine", 'drr' :"Rainbow Road SNES" , 'diio' :"Ice Ice OutPost", 'dhc' : "Hyrule Circuit" ,#coupe Hyrule
-                'rmmm' :"Moo Moo Meadows", 'rmc' : "Mario Circuit GBA" , 'rccb' :"Cheep Cheep Beach", 'rtt' :"Toad's Turnpike" ,#coupe Carapace
-                'rddd' : "Dry Dry Desert", 'rdp3' : "Donut Plains 3", 'rrry' :"Royal Raceway", 'rdkj' : 'DK Jungle',# coupe Banane
-                'rws' : "Wario Stadium", 'rsl' : "Sherbet Land" ,'rmp' : 'Music Park'  ,'ryv' :"Yoshi Valley"  ,# Coupe Feuille Morte
-                'rttc': "Tick-Tock Clock", 'rpps' : 'Piranha Plant Slide','rgv' :" Grumble Volcano"  , 'rrrd' :"Rainbow Road N64",#coupe Eclair
-                'dbp' : "Baby Park" , 'dcl' :"Cheese Land" , 'dww' : " Wild Woods", 'dac' :"Animal Crossing" ,#Coupe Feuille
-                'dnbc' :"Neo Bowser City", 'drir' : "Ribbon Road", 'dsbs' :"Super Bell Subway", 'dbb' : "Big Blue", #Coupe Cloche
-                'week' :"Map of the Week" 
-}
+from text import MK8DXmap
 
 class mapmk:
 
@@ -33,6 +19,7 @@ class mapmk:
     
     def  addplayer(self, ttplayer):
         add = True
+        #Look if the player already exists
         for player in self._ttplayers:
             if player.getPlayerId() == ttplayer.getPlayerId() :
                 sameplayer = player
@@ -42,6 +29,7 @@ class mapmk:
         else :
             sameplayer.setPlayerName(ttplayer.getPlayerName())
             sameplayer.setPlayerTime(ttplayer.getPlayerTime())
+        # sorted every time we add a player
         self._ttplayers = sorted(self._ttplayers, key=lambda ttplayer : ttplayer._time )
 
     def addplayers(self,ttplayers):
@@ -59,7 +47,6 @@ class mapmk:
             json.dump(self.asDict(), json_file)
             json_file.close()
 
-
     def getFileR(self, file):
         try :
             with open(file,"r") as jsonfile :
@@ -69,6 +56,8 @@ class mapmk:
         except :
             return "no file"
 
+    # Data from json to a mapmk
+    # no return !
     def dataToMapmk(self, data):
         if data != 'no file' :
             self._objective = data.get("objective")
@@ -84,6 +73,7 @@ class mapmk:
             if int(player.getPlayerId()) == int(idplayer) :
                 self._ttplayers.remove(player)
     
+    # Get place of every player of the mapmk in the dictionary playersStats
     def addStats(self, playersStats):
         i = 1 
         for player in self._ttplayers :
@@ -97,4 +87,3 @@ class mapmk:
                 i += 1 
 
         
-
