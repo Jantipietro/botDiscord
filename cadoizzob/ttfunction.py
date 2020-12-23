@@ -189,12 +189,10 @@ def getCopyInMap(ctx , fromServ, mapmk8, maps, shroom):
     data = mk.getFileR(path+fromServ+"/"+ shroom + mapmk8)  
     if data != 'no file':
         mk.dataToMapmk(data)
-        addMap = False
         for player in mk._ttplayers :
             if player.getPlayerId() == ctx.author.id :
-                addMap = True
-        if addMap == True :
-            maps.append((mapmk8, player.getPlayerTime() ))
+                maps.append((mapmk8, player.getPlayerTime() ))
+                break
         return maps
     return maps
 
