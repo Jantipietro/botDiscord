@@ -77,13 +77,13 @@ async def drawStats(ctx, playersStats, shroom):
     # sort by the average place
     nbPlayer = len(playersStats)
     sorted_playersStats = sorted(playersStats.values(), key=lambda value : fillPoint(value[1],value[2],nbPlayer), reverse= False)
-    title = "Stats : {0}".format(ctx.guild)
+    title = "Stats Average place : {0}".format(ctx.guild)
     if shroom == 'noshroom/':
         title += " Shroomless"
     description = ""
     i= 1
     for playerlist in sorted_playersStats:
-        description += "**{3}.{0}** : {1} points ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], i)
+        description += "**{3}.{0}** : {1} ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], i)
         i += 1
     if description == "" :
         await ctx.send ("Pas de stats pour ce serveur.")
