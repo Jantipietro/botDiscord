@@ -139,7 +139,10 @@ async def addListCommand(ctx, args, shroom):
                 Allcouple.append(couple.split(","))
             # add every couple with the map command 
             for args in Allcouple :
-                await mapmkCommand(ctx, args, shroom )
+                if mapmk.MK8DXmap.get(args[0]) != None:
+                    await mapmkCommand(ctx, args, shroom )
+                else :
+                    await ctx.send(ttTexts.get(get_language(ctx)).get("wrongName").format(get_prefix(ctx)))
     else :
         await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
 
@@ -155,7 +158,7 @@ async def copyCommand(ctx, fromServ,shroom):
     if verifGuild(ctx):
         if not os.path.exists(path+fromServ):
             await ctx.send(ttTexts.get(get_language(ctx)).get("wrongServ").format(get_prefix(ctx)))
-            await copy(ctx, fromServ,shroom)
+        await copy(ctx, fromServ,shroom)
     else :
         await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
     
