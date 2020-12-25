@@ -158,7 +158,9 @@ async def copyCommand(ctx, fromServ,shroom):
     if verifGuild(ctx):
         if not os.path.exists(path+fromServ):
             await ctx.send(ttTexts.get(get_language(ctx)).get("wrongServ").format(get_prefix(ctx)))
-        await copy(ctx, fromServ,shroom)
+        else :
+            await copy(ctx, fromServ,shroom)
+            await ctx.send(ttTexts.get(get_language(ctx)).get("copy"))
     else :
         await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
     

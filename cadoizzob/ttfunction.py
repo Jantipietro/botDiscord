@@ -204,4 +204,3 @@ async def copy(ctx,fromServ, shroom):
             maps = getCopyInMap(ctx, fromServ, mapmk8, maps, shroom)
     for (mapeuh, time) in maps :
         await addTimeInFile(ctx, mapeuh, time ,shroom)
-    await ctx.send(ttTexts.get(get_language(ctx)).get("copy"))
