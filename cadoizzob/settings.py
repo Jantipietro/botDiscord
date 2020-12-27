@@ -13,15 +13,17 @@ def writesettings(settings):
 
 def basicsettings(settings, guild):
     Dict = {
-        str(guild) : { "language" : "EN" , "prefix" : "c!"}
+        str(guild) : { "language" : "en" , "prefix" : "c!", "teams" : []}
     }
     settings.update(Dict)
 
+# on guild join / and after for the older one
 def createguildsets(guild):
     settings = opensettings()
     basicsettings(settings, guild)
     writesettings(settings)
 
+# For the prefix of the bot 
 def get_prefix_cmd(client,message):
     settings = opensettings()
     # To create settings for server where the bot already in 
@@ -30,6 +32,7 @@ def get_prefix_cmd(client,message):
         settings = opensettings() # get new settings 
     return settings.get(str(message.guild.id)).get("prefix")
 
+#for text.py
 def get_prefix(ctx):
     settings = opensettings()
     return settings.get(str(ctx.guild.id)).get("prefix")
@@ -38,12 +41,43 @@ def get_language(ctx):
     settings = opensettings()
     return settings.get(str(ctx.guild.id)).get("language")
 
+def get_teams(guild):
+    settings = opensettings()
+    if not "teams" in settings.get(guild) :
+        settings.get(guild).update({"teams" : []})
+        writesettings(settings)
+        return []
+    return settings.get(guild).get("teams")
+
+def set_team(guild, team):
+    settings = opensettings()
+    if settings.get(guild) != None :
+        if not "teams" in settings.get(guild) :
+            settings.get(guild).update({"teams" : []})
+        settings[guild]["teams"].append(team)
+        writesettings(settings)
+
+def del_team(guild, teamToDel):
+    settings = opensettings()
+    if settings.get(guild) != None :
+        if not "teams" in settings.get(guild) :
+            settings.get(guild).update({"teams" : []})
+            writesettings(settings)
+            return 0 # create the param
+        try :
+            settings.get(guild).get("teams").remove(teamToDel)
+            writesettings(settings)
+            return 1 # delete item well
+        except:
+            return 0 # no
+
 def guildvarchange(var, guild, value):
     settings = opensettings()
     if settings.get(guild) != None :
         settings[guild][var]= value
         writesettings(settings)
-    else :
-        return 0 # loose
+
+
+
 
 

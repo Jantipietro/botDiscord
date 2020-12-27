@@ -86,4 +86,12 @@ class mapmk:
                 listplayer[2] += 1
                 i += 1 
 
+    def addStatsTime(self, playersStats):
+        for player in self._ttplayers :
+            if not player.getPlayerId() in playersStats :
+                playersStats.update({player.getPlayerId() : [ player.getPlayerName() , player.getTime() , 1 ]})
+            else :
+                listplayer = playersStats.get(player.getPlayerId())
+                listplayer[1] = tuple(map(sum,zip(listplayer[1], player.getTime())))
+                listplayer[2] += 1
         

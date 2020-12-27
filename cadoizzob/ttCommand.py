@@ -147,9 +147,13 @@ async def addListCommand(ctx, args, shroom):
         await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
 
 # get the Stats of a guild 
-async def statsCommand(ctx, shroom) :
+async def statsCommand(ctx , args , shroom) :
     if verifGuild(ctx):
-        await Stats(ctx,shroom)
+        if len(args) == 1:
+            await Stats(ctx, "" ,shroom)
+        elif args[1] == "time":
+            await Stats(ctx, "time" ,shroom)
+
     else :
         await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
 

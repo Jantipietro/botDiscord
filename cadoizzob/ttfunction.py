@@ -2,8 +2,20 @@ import mapmk
 import discord
 import ttplayer
 import os 
-from text import path, ttTexts
+from text import path, ttTexts, tagsample
 from settings import get_language
+
+# put arg in the good format to get rid of 
+def lowerArg (args):
+    lowerarg=[]
+    for arg in args:
+        # to use tag instead of finding the user id 
+        if tagsample.match(arg):
+            newarg = arg.strip('<!@>')
+            lowerarg.append(str.lower(newarg))
+        else :
+            lowerarg.append(str.lower(arg))
+    return lowerarg
 
 # Bad fonction to get author nickname or name
 def checkname(ctx):
@@ -61,30 +73,55 @@ async def find(ctx, idPlayer, shroom):
 
 # 3 function to get the Stats of the ctx . 
 # get stats of one maps
-def MapStats(ctx, mapmk8, playersStats, shroom):
+def MapStats(ctx, option, mapmk8, playersStats, shroom):
     mk = mapmk.mapmk(mapmk8, '' ,'')
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8)  
     if data != 'no file':
         mk.dataToMapmk(data)
-        mk.addStats(playersStats)
+        if ( option == ""):
+            mk.addStats(playersStats)
+        else :
+            mk.addStatsTime(playersStats)
 
 # Return total stats points at 10^-5 
 # add nbplayer to the total for every map missing 
 def fillPoint(total, mapPlayed, nbplayer):
     return round((total + (nbplayer*(48-mapPlayed)))/48, 5)
 
-async def drawStats(ctx, playersStats, shroom):
+def addTime(playertime):
+        (h , m ,s , ms) = playertime
+        addtos = ms//1000
+        newms = ms%1000
+        rs = ((s+addtos)//60)
+        news = (s+addtos)%60
+        newh = ((m+rs)//60)
+        newm = (h+m+rs)%60
+        return ( newh, newm , news, newms)
+
+
+async def drawStats(ctx,option, playersStats, shroom):
     # sort by the average place
     nbPlayer = len(playersStats)
-    sorted_playersStats = sorted(playersStats.values(), key=lambda value : fillPoint(value[1],value[2],nbPlayer), reverse= False)
-    title = "Stats Average place : {0}".format(ctx.guild)
+    if (option == ""):
+        sorted_playersStats = sorted(playersStats.values(), key=lambda value : fillPoint(value[1],value[2],nbPlayer), reverse= False)
+        title = "Stats Average place : {0}".format(ctx.guild)
+    else :
+        newplayersStats = { k:v for k,v in playersStats.items() if v[2] == 48}
+        sorted_playersStats = sorted(newplayersStats.values(), key=lambda value : addTime(value[1]) , reverse = False)
+        title = "Stats Total Time : {0}".format(ctx.guild)
+    
     if shroom == 'noshroom/':
         title += " Shroomless"
     description = ""
     i= 1
     for playerlist in sorted_playersStats:
-        description += "**{3}.{0}** : {1} ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], i)
-        i += 1
+        if ( option == ""):
+            description += "**{3}.{0}** : {1} ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], i)
+            i += 1
+        else :
+            (h , m , s, ms ) = addTime(playerlist[1])
+            description += "**{}.{}** : {}:{:02d}:{:02d}.{:03d}\n".format(i,playerlist[0],h, m , s, ms, )
+            i+= 1
     if description == "" :
         await ctx.send ("Pas de stats pour ce serveur.")
     else :
@@ -92,12 +129,12 @@ async def drawStats(ctx, playersStats, shroom):
         embedMap.set_thumbnail(url = "https://cdn.discordapp.com/attachments/729655998146674748/731625550858158102/cadoizz-bot-400x400px.png")
         await ctx.send(embed = embedMap)
     
-async def Stats(ctx, shroom):
+async def Stats(ctx, option, shroom):
     playersStats = dict()
     for mapmk8 in mapmk.MK8DXmap.keys() :
         if mapmk8 != 'week' :
-            MapStats(ctx, mapmk8, playersStats, shroom)
-    await drawStats(ctx, playersStats, shroom)
+            MapStats(ctx, option, mapmk8, playersStats, shroom)
+    await drawStats(ctx,option, playersStats, shroom)
 
 #Set on mapmk8 the objective time. 
 # Two type of objective.

@@ -6,9 +6,10 @@ shroomPath = "shroom/"
 noShroomPath = "noshroom/"
 
 # FOrmat of the TT time; example : 
-timesample = re.compile('\d:\d{2}\.\d{3}')
-idsample = re.compile('\d{10,35}')
-tagsample = re.compile('<@!\d{10,30}>')
+timesample = re.compile('^\d:\d{2}\.\d{3}$')
+idsample = re.compile('^\d{10,35}$')
+tagsample = re.compile('^<@!\d{10,30}>$')
+rolesample = re.compile('^<@&\d{10,30}>$')
 
 # Dict of all map and the key by cup.
 MK8DXmap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "Sweet Sweet Canyon" , 'tr' :"Thwomp Ruins" ,     # coupe Champignon
@@ -43,14 +44,14 @@ helpTextEn = {
 }
 
 helpTexts = {
-    "FR"    : helpTextFr,
-    "EN"    : helpTextEn
+    "fr"    : helpTextFr,
+    "en"    : helpTextEn
 }
 
 # Dict of string for war command 
 warTextFr = { 
     "help": "```"
-            + "{0}war vacances  --> Propose des wars de 14h à 01h du matin\n"
+            + "{0}war vacances  --> Propose des wars de 14h à 00h du matin\n"
             + "{0}war XX XX...  --> Propose des wars à XXh. Exemple : {0}war 18 21 23\n\n"
             + "Principes importants du bot :\n"
             + "• Le bot ajoute un 'h' à chaque mot écrit après {0}war (sauf '{0}war vacances')\n"
@@ -62,7 +63,7 @@ warTextFr = {
     }
 
 warTextEn = { 
-    "help": "```{0}war vacances  --> Propose wars from 14h to 01h of the morning\n"
+    "help": "```{0}war vacances  --> Propose wars from 2PM to 12PM \n"
             + "{0}war XX XX...  --> Propose wars at XXh. Example: {0}war 18 21 23\n\n"
             + "Important principles of the bot:\n"
             + "• The bot adds an 'h' to every word written after {0}war (except '{0}war vacances')\n"
@@ -75,8 +76,8 @@ warTextEn = {
     }
 
 warTexts = {
-    "FR"    : warTextFr,
-    "EN"    : warTextEn
+    "fr"    : warTextFr,
+    "en"    : warTextEn
 }
 
 # Dict of string for tt command
@@ -96,7 +97,9 @@ ttTextsFr = {
                     +"{0}tt find --> Trouve toutes les maps ou tu apparais\n"
                     +"{0}tt find <id> --> Trouve toutes les maps ou <id> apparait\n"
                     +"{0}tt copy <idServ> --> Copie tes temps de ce serveur\n"                   
-                    +"{0}tt stats --> Montre un classement des membres par point\n"
+                    +"{0}tt stats --> Montre un classement des membres par moyenne des places\n"
+                    +"{0}tt stats time--> Montre un classement des membres par temps de toutes les maps ajoutées\n"
+                    +"Vous devez avoir ajouté les 48 maps pour y apparaître."
                     +"la map 'week' ne compte pas dans les stats```",
     "help2"     : "```Les commandes ci-dessous nécessitent le droit de gérer les messages sur le serveur\n\n"
                     +"{0}tt create --> Creer un dossier pour le serveur et permet d'y stocker les maps\n\n"
@@ -171,6 +174,8 @@ ttTextsEn = {
                     +"{0}tt find <id> --> Find all maps where <id> appears\n"
                     +"{0}tt copy <idServ> --> Copy your times from this server\n"                   
                     +"{0}tt stats --> Show a classement of the server with the average position in all the maps.\n"
+                    +"{0}tt stats time --> Show a classement of the server with the total time in all the maps.\n"
+                    +"you have to have the 48 maps fill or you won't appear."
                     +"the 'week' map does not count in the stats, and you got points for every map which you are not in.```",
     "help2"     : "```The commands below require the right to manage messages on the server\n\n"
                     +"{0}tt create --> Create a folder for the server and store the maps there\n\n"
@@ -230,8 +235,8 @@ ttTextsEn = {
 }
 
 ttTexts = {
-    "FR"    : ttTextsFr,
-    "EN"    : ttTextsEn
+    "fr"    : ttTextsFr,
+    "en"    : ttTextsEn
 }
 
 settingsTextsEn = {
@@ -239,7 +244,7 @@ settingsTextsEn = {
     "help"      : "```Settings help : You can for now change your language and your prefix ( the way you call the bot )\n"
             + "{0}settings prefix <arg> -> This will change the prefix to <arg> and you will know use the bot with <arg>\n"
             + "{0}settings language <L> -> Will change the language to <L> : for now FR and EN are available.\n```",
-    "tooManyArg": "Too many Arg for the command, **{0}settings help** to help you",
+    "tooManyArg": "Too many Arg for the command, **{0}settings help** to help you ",
     "wrongLanguage": "Language doesn't exist, for now only FR and EN works, **{0}settings help** to help you",
     "noCmd"     : "No Command with this name, **{0}settings help** to help you ",
     "prefix"    : "Your prefix has change to {0}",
@@ -259,9 +264,9 @@ settingsTextsFr = {
     "prefix"    : "Le prefix du bot a été changé en {0}",
     "language"  : "La langue a été changé en {0}",
     "check"     : "La langue du bot est {0} et le prefix du bot est {1}"
-    
 }
+
 settingsTexts = {
-    "FR"    : settingsTextsFr,
-    "EN"    : settingsTextsEn
+    "fr"    : settingsTextsFr,
+    "en"    : settingsTextsEn
 }

@@ -6,6 +6,7 @@ class TtPlayer:
         self._id = id
         self._name = name
         self._time= time
+        self._team = "LU1"
     
     def getPlayerId(self):
         return self._id
@@ -21,6 +22,13 @@ class TtPlayer:
     
     def setPlayerTime(self, time):
         self._time= time
+
+    def getTime(self):
+        t = self._time.split(":")
+        minutes = t[0]
+        sms = t[1].split(".")
+        hour = 0
+        return (hour ,int(minutes), int(sms[0]), int(sms[1]))
 
     def asDict(self):
         return {'id' : self._id ,'name': self._name , 'time' : self._time}
