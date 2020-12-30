@@ -12,7 +12,7 @@ from ttCommand import *
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.gsBEa4Lu7_8SJmqnkNqru8fu7pQ"
+TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.aOyaeD89aULtnQq0lOFnJVQw4ac"
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None)

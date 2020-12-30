@@ -274,7 +274,7 @@ async def drawPlayerCommand(ctx,ListOfplayer, mapmk8, shroom):
                     playerField ="" + place + "\n"
                     playerField += player.getPlayerTime() +"\n"
                    # playerField += "allez hola holé"
-                    embedMap.add_field(name='You', value = playerField , inline= True)
+                    embedMap.add_field(name=player.getPlayerName(), value = playerField , inline= True)
             if k == "nextPlayer" :
                 if v == None :
                     nextPlayerName= "None"

@@ -153,7 +153,8 @@ async def statsCommand(ctx , args , shroom) :
             await Stats(ctx, "" ,shroom)
         elif args[1] == "time":
             await Stats(ctx, "time" ,shroom)
-
+        else :
+            await ctx.send(ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
     else :
         await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
 
