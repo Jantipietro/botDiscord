@@ -4,6 +4,7 @@ import ttplayer
 import os 
 from text import path, ttTexts, tagsample
 from settings import get_language
+from datetime import datetime
 
 # put arg in the good format to get rid of 
 def lowerArg (args):
@@ -37,13 +38,14 @@ def findInMap(ctx ,idPlayer, namePlayer, mapmk8, maps, shroom):
         for player in mk._ttplayers :
             if player.getPlayerId() == int(idPlayer) :
                 namePlayer = player.getPlayerName()
+                timePlayer = player.getPlayerTime()
                 addMap = True
                 place = i # Classement of the player
                 break
             else :
                 i += 1
         if addMap == True :
-            maps.append((mapmk8, place , len(mk._ttplayers) ))
+            maps.append((mapmk8, place , timePlayer, len(mk._ttplayers) ))
         return namePlayer
     return namePlayer
     
@@ -52,8 +54,10 @@ async def drawFind(ctx , maps, playerName, shroom):
     if shroom == 'noshroom/':
         title += " Shroomless"
     description = ""
-    for (mapmk8, place , i) in maps:
-        description += "{0}  {1}/{2} , ".format(mapmk8, place , i)
+    j = 0
+    for (mapmk8, place ,time, i) in maps:
+        j += 1
+        description += "{0} : **{1}/{2}** -> {3}\n".format(mapmk8, place , i, time)
     if description == "" :
         await ctx.send ("Pas de temps pour {0}".format(playerName))
     else :
@@ -202,21 +206,13 @@ async def drawMapmk(ctx , mapmk8, shroom):
             description  += "Objectif Bonus: **" + mk._bonusObjective + "**\n"
         description +='\n'
         i = 1
-        placeField =""
-        nameField= ""
-        timeField = ""
         for player in mk._ttplayers:
-            placeField +=str(i)+"\n"
-            nameField += str(player.getPlayerName())+"\n"
-            timeField += str(player.getPlayerTime())+"\n"
+            description += "**{}. {}** : {}\n".format(i , player.getPlayerName() , player.getPlayerTime())
             i= i+1
         title = mapmk.MK8DXmap.get(mapmk8)
         if shroom == 'noshroom/':
             title += ' Shroomless'
         embedMap = discord.Embed(title=title,description=description)
-        embedMap.add_field(name='Place', value = placeField , inline= True)
-        embedMap.add_field(name='Name', value = nameField , inline= True)
-        embedMap.add_field(name='Time', value = timeField , inline= True)
         embedMap.set_thumbnail(url = "https://cdn.discordapp.com/attachments/729655998146674748/731625550858158102/cadoizz-bot-400x400px.png")
         await ctx.send(embed = embedMap)
 
@@ -241,3 +237,88 @@ async def copy(ctx,fromServ, shroom):
             maps = getCopyInMap(ctx, fromServ, mapmk8, maps, shroom)
     for (mapeuh, time) in maps :
         await addTimeInFile(ctx, mapeuh, time ,shroom)
+
+######## THE FOLLOW IS DISGUSTING #######
+async def drawPlayerCommand(ctx,ListOfplayer, mapmk8, shroom):
+    mk = mapmk.mapmk(mapmk8, '', '') #create a object mapmk with the name of the map
+    data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8) # get the data from file
+    if data == 'no file':
+        await ctx.send(ttTexts.get(get_language(ctx)).get("noFileMap"))
+    else :
+        mk.dataToMapmk(data)
+        title = ListOfplayer.get("player")[0].getPlayerName() + " : " + mapmk.MK8DXmap.get(mapmk8)
+        if shroom == 'noshroom/':
+            title += ' Shroomless'
+        embedMap = discord.Embed(title=title)
+        for (k,v) in ListOfplayer.items() :
+            if k == "oldPlayer" :
+                if v == None :
+                    oldPlayerName = "None"
+                    oldPlayerField = ""
+                else :
+                    player , place = v
+                    oldPlayerName= player.getPlayerName()
+                    oldPlayerField ="" + place + "\n"
+                    oldPlayerField += player.getPlayerTime() +"\n"
+                    (mins,second, milli) = ListOfplayer.get("player")[0].getDifSecond(player)
+                    if mins != 0 :
+                        oldPlayerField +=  "**-{:02}:{:02}.{:03}**\n".format(mins, second , milli)
+                    else :
+                        oldPlayerField +=  "**-{:02}.{:03}**\n".format( second , milli)
+                    embedMap.add_field(name=oldPlayerName, value = oldPlayerField , inline= True)
+            if k == "player" :
+                if v == None :
+                    playerField = ""
+                else :
+                    player , place = v
+                    playerField ="" + place + "\n"
+                    playerField += player.getPlayerTime() +"\n"
+                   # playerField += "allez hola holé"
+                    embedMap.add_field(name='You BIATCH', value = playerField , inline= True)
+            if k == "nextPlayer" :
+                if v == None :
+                    nextPlayerName= "None"
+                    nextPlayerField = ""
+                else :
+                    player , place = v
+                    nextPlayerName = player.getPlayerName()
+                    nextPlayerField ="" + place + "\n"
+                    nextPlayerField += player.getPlayerTime() +"\n"
+                    (mins,second, milli) = player.getDifSecond(ListOfplayer.get("player")[0])
+                    if mins != 0 :
+                        nextPlayerField +=  "**+{:02}:{:02}.{:03}**\n".format(mins, second , milli)
+                    else :
+                        nextPlayerField +=  "**+{:02}.{:03}**\n".format( second , milli)
+                    embedMap.add_field(name=nextPlayerName, value = nextPlayerField , inline= True)
+        embedMap.set_thumbnail(url = "https://cdn.discordapp.com/attachments/729655998146674748/731625550858158102/cadoizz-bot-400x400px.png")
+        await ctx.send(embed = embedMap)
+
+# get the two around the player 
+def findInMapBIS(ctx ,idPlayer, mapmk8, shroom):
+    mk = mapmk.mapmk(mapmk8, '' ,'')
+    data = mk.getFileR(path+str(ctx.guild.id)+"/"+ shroom + mapmk8)  
+    if data != 'no file':
+        mk.dataToMapmk(data)
+        ListOfplayer = {"oldPlayer" : None , "player" : None, "nextPlayer": None}
+        i = 1 # will count how many players in the map
+        playerfound = False
+        for player in mk._ttplayers :
+            if playerfound == True :
+                ListOfplayer.update({"nextPlayer"  : (player, str(i))} )
+                break
+            if player.getPlayerId() == int(idPlayer) :
+                playerfound = True
+                ListOfplayer.update({"player" : (player, str(i))} )
+                i += 1
+            else :
+                oldplayer = player
+                i += 1
+            if playerfound == True :
+                if ( i != 2 ):
+                    ListOfplayer.update({"oldPlayer" : (oldplayer, str(i-2))} )
+        return ListOfplayer
+    else :
+        return []
+
+            
+

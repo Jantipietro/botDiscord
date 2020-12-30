@@ -30,6 +30,25 @@ class TtPlayer:
         hour = 0
         return (hour ,int(minutes), int(sms[0]), int(sms[1]))
 
+    def getDifSecond(self, ttplayer):
+        (h , m , s , ms) = self.getTime()
+        (h1, m1 , s1 , ms1 ) = ttplayer.getTime()
+        msf = ms - ms1 
+        if msf < 0 :
+            s1 +=1 
+        msf = msf%1000 # milliseconds
+        #transform all in seconds
+        secondsFinal = s - s1 +  (m - m1) *60 + (h - h1) * 3600 
+        minFinal = 0
+        while ( secondsFinal > 60 ) :
+            minFinal += 1
+            secondsFinal -= 60
+        return ( minFinal, secondsFinal, msf)
+        
+
+
+
+
     def asDict(self):
         return {'id' : self._id ,'name': self._name , 'time' : self._time}
 

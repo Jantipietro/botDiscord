@@ -167,5 +167,22 @@ async def copyCommand(ctx, fromServ,shroom):
             await ctx.send(ttTexts.get(get_language(ctx)).get("copy"))
     else :
         await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
+
+# Command with player ID 
+async def playerCommand(ctx, args, shroom):
+    if verifGuild(ctx):
+        if len(args) == 2 :
+            if MK8DXmap.get(args[1]) != None :
+                ListOfPlayer = findInMapBIS(ctx, args[0], args[1], shroom)
+                if ListOfPlayer.get("player") != None :
+                    await drawPlayerCommand(ctx, ListOfPlayer, args[1], shroom)
+                else :
+                    await ctx.send(ttTexts.get(get_language(ctx)).get("notFind"))
+            else :
+                await ctx.send(ttTexts.get(get_language(ctx)).get("noFileMap"))#wrong map
+        else :
+            await ctx.send(ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx))) #too much arg
+    else :
+        await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
     
 

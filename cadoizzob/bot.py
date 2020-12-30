@@ -12,7 +12,7 @@ from ttCommand import *
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.k9UCx_d3WZ3aYTwFe688YdgNc-4"
+TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.gsBEa4Lu7_8SJmqnkNqru8fu7pQ"
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None)
@@ -126,8 +126,10 @@ async def tt(ctx, *args):
         elif args[0] == 'delete':
             await deleteCommand(ctx, args , shroomPath)
         # Check if the first arg is a map name
-        elif mapmk.MK8DXmap.get(args[0]) != None :
+        elif MK8DXmap.get(args[0]) != None :
             await mapmkCommand(ctx, args , shroomPath)
+        elif idsample.match(args[0]) :
+            await playerCommand(ctx, args , shroomPath)
         # Noshroom way ^^
         elif args[0] == 'ni' :
             del args[0] # to call the other function , delete the arg "ni"
@@ -146,8 +148,10 @@ async def tt(ctx, *args):
             elif args[0] == 'delete':
                 await deleteCommand(ctx, args , noShroomPath)
             # Check if the first arg is a map name
-            elif mapmk.MK8DXmap.get(args[0]) != None :
+            elif MK8DXmap.get(args[0]) != None :
                 await mapmkCommand(ctx, args , noShroomPath)
+            elif idsample.match(args[0]) :
+                await playerCommand(ctx, args , noShroomPath)
             else :
                 await ctx.send(ttTexts.get(get_language(ctx)).get("unknowCmd").format(get_prefix(ctx)))
         else :

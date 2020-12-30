@@ -154,7 +154,8 @@ ttTextsFr = {
     "noMorePlayer": "Plus de joueur dans la map {0}",
     "supPlayer" :"Le joueur avec l'id {0} a été supprimé de tous les fichiers",
     "addTimeMap": "Votre temps a bien été enregistré sur {0}",
-    "copy"      : "Transfert terminé !"
+    "copy"      : "Transfert terminé !",
+    "notFind"   : "Le joueur n'a pas été trouvé."
 }
 
 ttTextsEn = {
@@ -231,7 +232,8 @@ ttTextsEn = {
     "noMorePlayer": "No more player in map {0}",
     "supPlayer" :"Player with id {0} has been deleted from all files",
     "addTimeMap": "Your time is registred in {0}",
-    "copy"      : "Copy done!"
+    "copy"      : "Copy done!",
+    "notFind"   : "The player was not find in the map"
 }
 
 ttTexts = {
