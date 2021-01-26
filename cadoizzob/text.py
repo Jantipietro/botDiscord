@@ -4,6 +4,7 @@ import re
 path = "tt/"
 shroomPath = "shroom/"
 noShroomPath = "noshroom/"
+speedPath = "200cc/"
 
 # FOrmat of the TT time; example : 
 timesample = re.compile('^\d:\d{2}\.\d{3}$')
@@ -103,14 +104,15 @@ ttTextsFr = {
                     +"la map 'week' ne compte pas dans les stats```",
     "help2"     : "```Les commandes ci-dessous nécessitent le droit de gérer les messages sur le serveur\n\n"
                     +"{0}tt create --> Creer un dossier pour le serveur et permet d'y stocker les maps\n\n"
-                    +"WARNING -> {0}tt delete --> Supprime le dossier du serveur et ce qu'il y'a dedans \n\n"
                     +"{0}tt delete <id> --> Supprime tous les temps de <id> dans les fichiers\n\n"
                     +"{0}tt delete <map> --> Supprime le fichier d'une map \n\n"
                     +"{0}tt <map> delete <id> --> Supprime le joueur <id> dans le fichier <map>\n\n"
                     +"{0}tt <map> objective <time> --> Ajoute <time> à la variable objective\n\n"
                     +"{0}tt <map> bonus <time> --> Ajoute <time> à la variable ObjectiveBonus\n\n"
                     +"{0}tt <map> objective delete --> Supprime le temps objective\n\n"
-                    +"{0}tt <map> bonus delete --> Supprime le temps objectiveBonus\n```",
+                    +"{0}tt <map> bonus delete --> Supprime le temps objectiveBonus\n\n"
+                    +"Les commandes ci-dessous nécissitent le droit Administrateur sur le serveur\n\n"
+                    +"WARNING -> {0}tt deleteAll --> Supprime le dossier du serveur et ce qu'il y'a dedans \n```",
     "perm"      : "Tu n'as pas les perms pour cette commande",
     "noArg"       : "Pas d'arguments à la commande tt ! pour plus d'infos **{0}tt help** ",
     "create"    : "Votre Serveur a maintenant un fichier pour vos TT.Vous pouvez les remplirs",
@@ -180,14 +182,15 @@ ttTextsEn = {
                     +"the 'week' map does not count in the stats, and you got points for every map which you are not in.```",
     "help2"     : "```The commands below require the right to manage messages on the server\n\n"
                     +"{0}tt create --> Create a folder for the server and store the maps there\n\n"
-                    +"WARNING -> {0}tt delete --> Delete the server folder and what's in it, there is no verification\n\n"
                     +"{0}tt delete <id> --> Remove all times from <id> in files\n\n"
                     +"{0}tt delete <map> --> Delete the file from a map \n\n"
                     +"{0}tt <map> delete <id> --> Remove player <id> from file <map>\n\n"
                     +"{0}tt <map> objective <time> --> add <time> to the objective\n\n"
                     +"{0}tt <map> bonus <time> --> add <time> to the objective bonus\n\n"
                     +"{0}tt <map> objective delete --> Removes objective time\n\n"
-                    +"{0}tt <map> bonus delete --> Removes bonus objective time\n```",
+                    +"{0}tt <map> bonus delete --> Removes bonus objective time\n\n"
+                    +"The commands below require the right Administrator on the server\n\n"
+                    +"WARNING -> {0}tt delete --> Delete the server folder and what's in it, there is no verification\n```",
     "perm"      : "You don't have the perms for this order",
     "noArg"       : "No arguments to the tt command! for more info ** {0}tt help **",
     "create"    : "Your Server now has a file for your TTs, you can fill them in",

@@ -8,14 +8,39 @@ import shutil
 import mapmk
 import ttplayer
 from text import *
-from ttCommand import *
+from ttCommand import ttCommandGestion, deleteGuildFile 
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.aOyaeD89aULtnQq0lOFnJVQw4ac"
+TOKEN = ""
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None)
+
+# Update : delete this function
+async def maj200cc(ctx):
+    fichier = os.listdir(path)
+    i= 1
+    for f in fichier :
+        try :
+            os.makedirs(path+f+"/"+speedPath+shroomPath) # 200cc 
+            os.makedirs(path+f+"/"+speedPath+noShroomPath) 
+            await ctx.send("fichier 200cc créer sur le serveur {}".format(i))
+            i += 1
+        except:
+            await ctx.send("Fichier non crée sur le server {}".format(i))
+
+# put arg in the good format to get rid of 
+def lowerArg (args):
+    lowerarg=[]
+    for arg in args:
+        # to use tag instead of finding the user id 
+        if tagsample.match(arg):
+            newarg = arg.strip('<!@>')
+            lowerarg.append(str.lower(newarg))
+        else :
+            lowerarg.append(str.lower(arg))
+    return lowerarg
 
 @bot.event
 async def on_ready():
@@ -103,60 +128,16 @@ async def tt(ctx, *args):
         if args[0] == 'help':
             await ctx.send ( ttTexts.get(get_language(ctx)).get("help").format(get_prefix(ctx)))
             await ctx.send ( ttTexts.get(get_language(ctx)).get("help2").format(get_prefix(ctx)))
-        # Shroom section 
-        # Copy your time from the serv args[1]
-        elif args[0] == 'copy':
-            await copyCommand(ctx, args[1], shroomPath)
-        # Add a list of maps 
-        elif args[0] == 'addlist':
-            await addListCommand(ctx, args[1], shroomPath)
-        # Draw png with all maps nickname that it use
-        elif args[0] == 'maps' :
-            await ctx.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
-        # Stats section with all player in the section
-        elif args[0] == 'stats':
-            await statsCommand(ctx,args, shroomPath)
-        # Find command -> 
-        elif args[0] == 'find' :
-            await findCommand(ctx, args , shroomPath)
-        #Create files with the server name
-        elif args[0] == 'create':
-            await createCommand(ctx)
-        # Delete all file from the server that call this.
-        elif args[0] == 'delete':
-            await deleteCommand(ctx, args , shroomPath)
-        # Check if the first arg is a map name
-        elif MK8DXmap.get(args[0]) != None :
-            await mapmkCommand(ctx, args , shroomPath)
-        elif idsample.match(args[0]) :
-            await playerCommand(ctx, args , shroomPath)
-        # Noshroom way ^^
-        elif args[0] == 'ni' :
-            del args[0] # to call the other function , delete the arg "ni"
-            if args[0] == 'stats':
-                await statsCommand(ctx,args, noShroomPath)
-            # Copy your time from the serv args[1]
-            elif args[0] == 'copy':
-                await copyCommand(ctx, args[1], noShroomPath)
-            # Add many maps
-            elif args[0] == 'addlist':
-                await addListCommand(ctx, args[1], noShroomPath)
-            #Seek player
-            elif args[0] == 'find' :
-                await findCommand(ctx, args , noShroomPath)
-            # Delete all file from the server that call this.
-            elif args[0] == 'delete':
-                await deleteCommand(ctx, args , noShroomPath)
-            # Check if the first arg is a map name
-            elif MK8DXmap.get(args[0]) != None :
-                await mapmkCommand(ctx, args , noShroomPath)
-            elif idsample.match(args[0]) :
-                await playerCommand(ctx, args , noShroomPath)
-            else :
-                await ctx.send(ttTexts.get(get_language(ctx)).get("unknowCmd").format(get_prefix(ctx)))
+        #Update : delete next time 
+        elif args[0] == 'maj200cc' :
+            await maj200cc(ctx)
+        elif args[0] == 'deleteAll':
+            await deleteGuildFile(ctx)
+        elif args[0] == '200':
+            del args[0]
+            await ttCommandGestion(ctx,args , speedPath)
         else :
-        # wrong map name or command doesn't exist
-            await ctx.send(ttTexts.get(get_language(ctx)).get("wrongName").format(get_prefix(ctx)))
+            await ttCommandGestion(ctx,args , '') # 150 cc
 
 
 @bot.event

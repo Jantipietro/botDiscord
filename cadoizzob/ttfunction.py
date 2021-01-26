@@ -5,18 +5,7 @@ import os
 from text import path, ttTexts, tagsample
 from settings import get_language
 from datetime import datetime
-
-# put arg in the good format to get rid of 
-def lowerArg (args):
-    lowerarg=[]
-    for arg in args:
-        # to use tag instead of finding the user id 
-        if tagsample.match(arg):
-            newarg = arg.strip('<!@>')
-            lowerarg.append(str.lower(newarg))
-        else :
-            lowerarg.append(str.lower(arg))
-    return lowerarg
+from text import speedPath
 
 # Bad fonction to get author nickname or name
 def checkname(ctx):
@@ -24,6 +13,17 @@ def checkname(ctx):
         return ctx.message.author.name
     else :
         return ctx.message.author.nick
+
+#Update : Make it cleaner
+def titleType(shroom):
+    if shroom.startswith(speedPath,0,len(speedPath)): 
+        if shroom == speedPath+'noshroom/':
+                return ' Shroomless 200cc'
+        else :
+            return ' 200cc'
+    if shroom == 'noshroom/':
+        return " Shroomless"
+    return ''
 
 # 3 functions to find a player in the ctx . 
 # Find idPLayer in mapmk8 and idPLayer and his place in maps
@@ -51,8 +51,7 @@ def findInMap(ctx ,idPlayer, namePlayer, mapmk8, maps, shroom):
     
 async def drawFind(ctx , maps, playerName, shroom):
     title = "Player : {0}".format(playerName)
-    if shroom == 'noshroom/':
-        title += " Shroomless"
+    title += titleType(shroom)
     description = ""
     j = 0
     for (mapmk8, place ,time, i) in maps:
@@ -113,12 +112,12 @@ async def drawStats(ctx,option, playersStats, shroom):
         newplayersStats = { k:v for k,v in playersStats.items() if v[2] == 48}
         sorted_playersStats = sorted(newplayersStats.values(), key=lambda value : addTime(value[1]) , reverse = False)
         title = "Stats Total Time : {0}".format(ctx.guild)
-    
-    if shroom == 'noshroom/':
-        title += " Shroomless"
+    title += titleType(shroom)
     description = ""
     i= 1
     for playerlist in sorted_playersStats:
+        if  ( i == 41): # draw 40 players
+            break
         if ( option == ""):
             description += "**{3}.{0}** : {1} ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], i)
             i += 1
@@ -207,11 +206,12 @@ async def drawMapmk(ctx , mapmk8, shroom):
         description +='\n'
         i = 1
         for player in mk._ttplayers:
+            if (i == 51) : # draw 50 players
+                break
             description += "**{}. {}** : {}\n".format(i , player.getPlayerName() , player.getPlayerTime())
             i= i+1
         title = mapmk.MK8DXmap.get(mapmk8)
-        if shroom == 'noshroom/':
-            title += ' Shroomless'
+        title += titleType(shroom)
         embedMap = discord.Embed(title=title,description=description)
         embedMap.set_thumbnail(url = "https://cdn.discordapp.com/attachments/729655998146674748/731625550858158102/cadoizz-bot-400x400px.png")
         await ctx.send(embed = embedMap)
@@ -247,8 +247,7 @@ async def drawPlayerCommand(ctx,ListOfplayer, mapmk8, shroom):
     else :
         mk.dataToMapmk(data)
         title = ListOfplayer.get("player")[0].getPlayerName() + " : " + mapmk.MK8DXmap.get(mapmk8)
-        if shroom == 'noshroom/':
-            title += ' Shroomless'
+        title += titleType(shroom)
         embedMap = discord.Embed(title=title)
         for (k,v) in ListOfplayer.items() :
             if k == "oldPlayer" :
