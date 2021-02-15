@@ -30,7 +30,8 @@ def get_prefix_cmd(client,message):
     if settings.get(str(message.guild.id)) == None:
         createguildsets(str(message.guild.id))
         settings = opensettings() # get new settings 
-    return settings.get(str(message.guild.id)).get("prefix")
+    prefix = settings.get(str(message.guild.id)).get("prefix")
+    return (prefix, str.upper(prefix))
 
 #for text.py
 def get_prefix(ctx):

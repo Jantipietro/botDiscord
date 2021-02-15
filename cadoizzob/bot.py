@@ -15,20 +15,7 @@ from settingsCommand import *
 TOKEN = ""
 bot = discord.Client()
 # You can change the prefix here 
-bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None)
-
-# Update : delete this function
-async def maj200cc(ctx):
-    fichier = os.listdir(path)
-    i= 1
-    for f in fichier :
-        try :
-            os.makedirs(path+f+"/"+speedPath+shroomPath) # 200cc 
-            os.makedirs(path+f+"/"+speedPath+noShroomPath) 
-            await ctx.send("fichier 200cc créer sur le serveur {}".format(i))
-            i += 1
-        except:
-            await ctx.send("Fichier non crée sur le server {}".format(i))
+bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None, case_insensitive=True)
 
 # put arg in the good format to get rid of 
 def lowerArg (args):
@@ -128,10 +115,7 @@ async def tt(ctx, *args):
         if args[0] == 'help':
             await ctx.send ( ttTexts.get(get_language(ctx)).get("help").format(get_prefix(ctx)))
             await ctx.send ( ttTexts.get(get_language(ctx)).get("help2").format(get_prefix(ctx)))
-        #Update : delete next time 
-        elif args[0] == 'maj200cc' :
-            await maj200cc(ctx)
-        elif args[0] == 'deleteAll':
+        elif args[0] == 'deleteall':
             await deleteGuildFile(ctx)
         elif args[0] == '200':
             del args[0]

@@ -29,7 +29,7 @@ async def deleteGuildFile(ctx):
             await ctx.send(ttTexts.get(get_language(ctx)).get("shutilFail"))
 
 # Create the guild file
-async def createCommand(ctx,option):
+async def createCommand(ctx):
     if not ctx.message.author.guild_permissions.manage_messages :
         await ctx.send( ttTexts.get(get_language(ctx)).get("perm"))
     else :
@@ -212,7 +212,7 @@ async def ttCommandGestion(ctx,args, speedPath):
         await findCommand(ctx, args , speedPath+shroomPath)
     #Create files with the server name
     elif args[0] == 'create':
-        await createCommand(ctx,args[1])
+        await createCommand(ctx)
     # Delete all file from the server that call this.
     elif args[0] == 'delete':
         await deleteCommand(ctx, args , speedPath+shroomPath)
