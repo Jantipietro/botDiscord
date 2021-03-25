@@ -5,7 +5,10 @@ import os
 from text import path, ttTexts, tagsample
 from settings import get_language
 from datetime import datetime
-from text import speedPath
+from text import speedPath, urlImgCadoizzob, nofile
+
+nbPlayerDisplayedStats = 50
+nbPlayerDisplayedMap = 20
 
 # Bad fonction to get author nickname or name
 def checkname(ctx):
@@ -25,13 +28,18 @@ def titleType(shroom):
         return " Shroomless"
     return ''
 
+async def setEmoji(message,page , length, option = ""):        #add row left or right
+        if ( page != 1) :
+            await message.add_reaction("⬅️") # row left
+        if ( nbPlayerDisplayedMap*page < length):        
+            await message.add_reaction("➡️") # row right
 # 3 functions to find a player in the ctx . 
 # Find idPLayer in mapmk8 and idPLayer and his place in maps
 # return namePlayer to get the name if your are looking for someone
 def findInMap(ctx ,idPlayer, namePlayer, mapmk8, maps, shroom):
     mk = mapmk.mapmk(mapmk8, '' ,'')
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+ shroom + mapmk8)  
-    if data != 'no file':
+    if data != nofile:
         mk.dataToMapmk(data)
         addMap = False
         i = 1 # will count how many players in the map
@@ -61,7 +69,7 @@ async def drawFind(ctx , maps, playerName, shroom):
         await ctx.send ("Pas de temps pour {0}".format(playerName))
     else :
         embedMap = discord.Embed(title=title,description=description)
-        embedMap.set_thumbnail(url = "https://cdn.discordapp.com/attachments/729655998146674748/731625550858158102/cadoizz-bot-400x400px.png")
+        embedMap.set_thumbnail(url = urlImgCadoizzob)
         await ctx.send(embed = embedMap)
 
 async def find(ctx, idPlayer, shroom):
@@ -79,7 +87,7 @@ async def find(ctx, idPlayer, shroom):
 def MapStats(ctx, option, mapmk8, playersStats, shroom):
     mk = mapmk.mapmk(mapmk8, '' ,'')
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8)  
-    if data != 'no file':
+    if data != nofile:
         mk.dataToMapmk(data)
         if ( option == ""):
             mk.addStats(playersStats)
@@ -102,7 +110,7 @@ def addTime(playertime):
         return ( newh, newm , news, newms)
 
 
-async def drawStats(ctx,option, playersStats, shroom):
+async def drawStats(ctx,option, playersStats, shroom , page):
     # sort by the average place
     nbPlayer = len(playersStats)
     if (option == ""):
@@ -116,35 +124,38 @@ async def drawStats(ctx,option, playersStats, shroom):
     description = ""
     i= 1
     for playerlist in sorted_playersStats:
-        if  ( i == 41): # draw 40 players
+        if (i == (page)*(nbPlayerDisplayedStats)+1): # draw nbPlayerDisplayedStats
             break
-        if ( option == ""):
-            description += "**{3}.{0}** : {1} ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], i)
-            i += 1
-        else :
-            (h , m , s, ms ) = addTime(playerlist[1])
-            description += "**{}.{}** : {}:{:02d}:{:02d}.{:03d}\n".format(i,playerlist[0],h, m , s, ms, )
-            i+= 1
+        if(i > (page-1)*nbPlayerDisplayedMap):
+            if ( option == ""):
+                description += "**{3}.{0}** : {1} ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], i)
+                i += 1
+            else :
+                (h , m , s, ms ) = addTime(playerlist[1])
+                description += "**{}.{}** : {}:{:02d}:{:02d}.{:03d}\n".format(i,playerlist[0],h, m , s, ms, )
+                i+= 1
     if description == "" :
         await ctx.send ("Pas de stats pour ce serveur.")
     else :
         embedMap = discord.Embed(title=title,description=description)
-        embedMap.set_thumbnail(url = "https://cdn.discordapp.com/attachments/729655998146674748/731625550858158102/cadoizz-bot-400x400px.png")
-        await ctx.send(embed = embedMap)
+        embedMap.set_thumbnail(url = urlImgCadoizzob)
+        embedMap.set_footer(text = str(page))
+        message = await ctx.send(embed = embedMap)
+        await setEmoji(message,page , len(sorted_playersStats) )
     
 async def Stats(ctx, option, shroom):
     playersStats = dict()
     for mapmk8 in mapmk.MK8DXmap.keys() :
         if mapmk8 != 'week' :
             MapStats(ctx, option, mapmk8, playersStats, shroom)
-    await drawStats(ctx,option, playersStats, shroom)
+    await drawStats(ctx,option, playersStats, shroom, 1)
 
 #Set on mapmk8 the objective time. 
 # Two type of objective.
 async def setMapmkObjective(ctx, mapmk8, time, bonus, shroom) :
     mk = mapmk.mapmk(mapmk8, '' ,'')
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8)
-    if data != 'no file':
+    if data != nofile:
         mk.dataToMapmk(data)
     if bonus == '':
         mk.setObjective(time)
@@ -163,7 +174,7 @@ async def deleteFile(ctx, file, mapmk8):
 async def deleteTtplayerfromMap(ctx,mapmk8, id, shroom):
     mk = mapmk.mapmk(mapmk8, '' ,'')
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8)
-    if data != 'no file':
+    if data != nofile:
         mk.dataToMapmk(data)
         mk.deleteTtplayer(id)
         if len(mk._ttplayers) !=0 :
@@ -191,10 +202,10 @@ async def addTimeInFile(ctx, mapmk8, time ,shroom):
     mk.writeFile(path+str(ctx.guild.id)+"/"+shroom+mapmk8)
     await ctx.send( ttTexts.get(get_language(ctx)).get("addTimeMap").format(mapmk8))
 
-async def drawMapmk(ctx , mapmk8, shroom):
+async def drawMapmk(ctx , mapmk8, shroom, page):
     mk = mapmk.mapmk(mapmk8, '', '') #create a object mapmk with the name of the map
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8) # get the data from file
-    if data == 'no file':
+    if data == nofile:
         await ctx.send(ttTexts.get(get_language(ctx)).get("noFileMap"))
     else :
         mk.dataToMapmk(data)
@@ -206,21 +217,24 @@ async def drawMapmk(ctx , mapmk8, shroom):
         description +='\n'
         i = 1
         for player in mk._ttplayers:
-            if (i == 51) : # draw 50 players
+            if (i == (page)*(nbPlayerDisplayedMap+1)) : # draw nbPlayerDisplayedMap players
                 break
-            description += "**{}. {}** : {}\n".format(i , player.getPlayerName() , player.getPlayerTime())
+            if(i >= (page-1)*nbPlayerDisplayedMap):
+                description += "**{}. {}** : {}\n".format(i , player.getPlayerName() , player.getPlayerTime())
             i= i+1
         title = mapmk.MK8DXmap.get(mapmk8)
         title += titleType(shroom)
         embedMap = discord.Embed(title=title,description=description)
-        embedMap.set_thumbnail(url = "https://cdn.discordapp.com/attachments/729655998146674748/731625550858158102/cadoizz-bot-400x400px.png")
-        await ctx.send(embed = embedMap)
+        embedMap.set_thumbnail(url = urlImgCadoizzob)
+        embedMap.set_footer(text = str(page))
+        message = await ctx.send(embed = embedMap)
+        await setEmoji(message,page , len(mk._ttplayers))
 
 #Look for ctx.author.id in mapmk8 in the guild fromServ
 def getCopyInMap(ctx , fromServ, mapmk8, maps, shroom):
     mk = mapmk.mapmk(mapmk8, '' ,'')
     data = mk.getFileR(path+fromServ+"/"+ shroom + mapmk8)  
-    if data != 'no file':
+    if data != nofile:
         mk.dataToMapmk(data)
         for player in mk._ttplayers :
             if player.getPlayerId() == ctx.author.id :
@@ -238,11 +252,12 @@ async def copy(ctx,fromServ, shroom):
     for (mapeuh, time) in maps :
         await addTimeInFile(ctx, mapeuh, time ,shroom)
 
+
 ######## THE FOLLOW IS DISGUSTING #######
 async def drawPlayerCommand(ctx,ListOfplayer, mapmk8, shroom):
     mk = mapmk.mapmk(mapmk8, '', '') #create a object mapmk with the name of the map
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8) # get the data from file
-    if data == 'no file':
+    if data == nofile:
         await ctx.send(ttTexts.get(get_language(ctx)).get("noFileMap"))
     else :
         mk.dataToMapmk(data)
@@ -293,31 +308,31 @@ async def drawPlayerCommand(ctx,ListOfplayer, mapmk8, shroom):
         await ctx.send(embed = embedMap)
 
 # get the two around the player 
-def findInMapBIS(ctx ,idPlayer, mapmk8, shroom):
+def findInMapBis(ctx ,idPlayer, mapmk8, shroom):
     mk = mapmk.mapmk(mapmk8, '' ,'')
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+ shroom + mapmk8)  
-    if data != 'no file':
+    if data != nofile:
         mk.dataToMapmk(data)
-        ListOfplayer = {"oldPlayer" : None , "player" : None, "nextPlayer": None}
+        ListOfPlayer = {"oldPlayer" : None , "player" : None, "nextPlayer": None}
         i = 1 # will count how many players in the map
         playerfound = False
         for player in mk._ttplayers :
             if playerfound == True :
-                ListOfplayer.update({"nextPlayer"  : (player, str(i))} )
+                ListOfPlayer.update({"nextPlayer"  : (player, str(i))} )
                 break
             if player.getPlayerId() == int(idPlayer) :
                 playerfound = True
-                ListOfplayer.update({"player" : (player, str(i))} )
+                ListOfPlayer.update({"player" : (player, str(i))} )
                 i += 1
             else :
                 oldplayer = player
                 i += 1
-            if playerfound == True :
-                if ( i != 2 ):
-                    ListOfplayer.update({"oldPlayer" : (oldplayer, str(i-2))} )
-        return ListOfplayer
+            if playerfound == True and i != 2:
+                ListOfPlayer.update({"oldPlayer" : (oldplayer, str(i-2))} )
+        return ListOfPlayer
     else :
         return []
+
 
             
 

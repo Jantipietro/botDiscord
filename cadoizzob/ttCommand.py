@@ -81,7 +81,7 @@ async def mapmkCommand( ctx , args , shroom):
     if verifGuild(ctx):
         # draw a file mapMK
         if len(args)== 1 :
-            await drawMapmk(ctx, args[0], shroom)
+            await drawMapmk(ctx, args[0], shroom, 1)
         # Add objectif 
         elif args[1] == 'objective' or args[1] == 'bonus' :
             if not ctx.message.author.guild_permissions.manage_messages:
@@ -181,7 +181,7 @@ async def playerCommand(ctx, args, shroom):
     if verifGuild(ctx):
         if len(args) == 2 :
             if MK8DXmap.get(args[1]) != None :
-                ListOfPlayer = findInMapBIS(ctx, args[0], args[1], shroom)
+                ListOfPlayer = findInMapBis(ctx, args[0], args[1], shroom)
                 if ListOfPlayer.get("player") != None :
                     await drawPlayerCommand(ctx, ListOfPlayer, args[1], shroom)
                 else :
@@ -247,3 +247,5 @@ async def ttCommandGestion(ctx,args, speedPath):
             await ctx.send(ttTexts.get(get_language(ctx)).get("unknowCmd").format(get_prefix(ctx)))
     else :
         await ctx.send(ttTexts.get(get_language(ctx)).get("noArg").format(get_prefix(ctx)))
+
+    

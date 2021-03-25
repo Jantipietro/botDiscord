@@ -1,5 +1,10 @@
 import re
 
+# 
+
+urlImgCadoizzob = "https://cdn.discordapp.com/attachments/729655998146674748/731625550858158102/cadoizz-bot-400x400px.png"
+nofile= 'no file' # help return statement
+
 # File path
 path = "tt/"
 shroomPath = "shroom/"

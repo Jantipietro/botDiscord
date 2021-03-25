@@ -8,7 +8,8 @@ import shutil
 import mapmk
 import ttplayer
 from text import *
-from ttCommand import ttCommandGestion, deleteGuildFile 
+from ttCommand import ttCommandGestion, deleteGuildFile
+from ttEdit import editDrawMapmk, editStats, ModifyEmbed
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
@@ -126,8 +127,14 @@ async def tt(ctx, *args):
 
 @bot.event
 async def on_reaction_add(reaction, user):
-    if (reaction.message.author.id == 729648516795990146 and reaction.count == 4):
+    if (reaction.message.author.id == 729648516795990146):
+        if reaction.message.embeds and user.id != 729648516795990146 :
+            #await reaction.message.edit(content = "Yo l'emote",embed = None)
+            if reaction.emoji == "⬅️" or  reaction.emoji == "➡️": # row right
+                await ModifyEmbed(reaction)
+        if (reaction.count == 4):
             await reaction.message.remove_reaction(reaction, bot.user)
+        
 
 @bot.event
 async def on_reaction_remove(reaction, user):
