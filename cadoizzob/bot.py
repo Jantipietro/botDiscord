@@ -13,7 +13,7 @@ from ttEdit import editDrawMapmk, editStats, ModifyEmbed
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
-TOKEN = ""
+TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.o0YA-0S2JGjfJzMUWxSkacHKpUc"
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None, case_insensitive=True)
@@ -127,8 +127,8 @@ async def tt(ctx, *args):
 
 @bot.event
 async def on_reaction_add(reaction, user):
-    if (reaction.message.author.id == 729648516795990146):
-        if reaction.message.embeds and user.id != 729648516795990146 :
+    if (reaction.message.author.id == bot.user.id):
+        if reaction.message.embeds and user.id != bot.user.id :
             #await reaction.message.edit(content = "Yo l'emote",embed = None)
             if reaction.emoji == "⬅️" or  reaction.emoji == "➡️": # row right
                 await ModifyEmbed(reaction)

@@ -8,7 +8,7 @@ from datetime import datetime
 from text import speedPath, urlImgCadoizzob, nofile
 
 nbPlayerDisplayedStats = 50
-nbPlayerDisplayedMap = 20
+nbPlayerDisplayedMap =  20
 
 # Bad fonction to get author nickname or name
 def checkname(ctx):
