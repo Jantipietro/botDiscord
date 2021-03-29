@@ -120,9 +120,17 @@ async def mapmkCommand( ctx , args , shroom):
                     await ctx.send(ttTexts.get(get_language(ctx)).get("hisTimeSup").format(args[2]))
                 else :
                     await ctx.send(ttTexts.get(get_language(ctx)).get("wrongID").format(args[1]))
-        # add a player in file
+        # add a player in file with a link or not.
         elif timesample.match(args[1]) :
-            await addTimeInFile(ctx, args[0], args[1], shroom)
+            if ( len(args) == 2): # url empty
+                await addTimeInFile(ctx, args[0], args[1],"", shroom)
+            elif (len(args) == 3) :
+                if ( urlsample.match(args[2])):
+                    await addTimeInFile(ctx, args[0], args[1],args[2], shroom)
+                else :
+                    await ctx.send (ttTexts.get(get_language(ctx)).get("badUrl").format(get_prefix(ctx)))
+            else :
+                await ctx.send (ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
         else : 
             # Bad timing format
             await ctx.send( ttTexts.get(get_language(ctx)).get("badFormat"))

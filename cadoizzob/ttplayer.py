@@ -2,11 +2,11 @@ import json
 
 class TtPlayer:
 
-    def __init__(self,id, name,time):
+    def __init__(self,id, name,time,url):
         self._id = id
         self._name = name
         self._time= time
-        self._team = "LU1"
+        self._url = url
     
     def getPlayerId(self):
         return self._id
@@ -22,6 +22,12 @@ class TtPlayer:
     
     def setPlayerTime(self, time):
         self._time= time
+
+    def getPlayerUrl(self):
+        return self._url
+
+    def setPlayerUrl(self,url):
+        self._url = url
 
     def getTime(self):
         t = self._time.split(":")
@@ -44,16 +50,16 @@ class TtPlayer:
             minFinal += 1
             secondsFinal -= 60
         return ( minFinal, secondsFinal, msf)
+    
+    def stringMapmk(self, i ):
+        s= "**{}. {}** : {}".format(i , self._name , self._time)
+        if ( self._url):
+            s+=" [link]({})".format(self._url)
+        return s+"\n"
         
-
-
-
-
+        
     def asDict(self):
-        return {'id' : self._id ,'name': self._name , 'time' : self._time}
-
-    def string(self):
-        return "{0} ** \n Temps : {1}\n\n".format(self._name , self._time)
+        return {'id' : self._id ,'name': self._name , 'time' : self._time, 'url' : self._url}
 
     def __str__(self):
         return "<Ttplayer name {0}>".format(self._name)

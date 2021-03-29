@@ -16,6 +16,7 @@ timesample = re.compile('^\d:\d{2}\.\d{3}$')
 idsample = re.compile('^\d{10,35}$')
 tagsample = re.compile('^<@!\d{10,30}>$')
 rolesample = re.compile('^<@&\d{10,30}>$')
+urlsample = re.compile('^https:\/\/(www.youtube|twitter).com\/.{1,45}$')
 
 # Dict of all map and the key by cup.
 MK8DXmap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "Sweet Sweet Canyon" , 'tr' :"Thwomp Ruins" ,     # coupe Champignon
@@ -162,7 +163,9 @@ ttTextsFr = {
     "supPlayer" :"Le joueur avec l'id {0} a été supprimé de tous les fichiers",
     "addTimeMap": "Votre temps a bien été enregistré sur {0}",
     "copy"      : "Transfert terminé !",
-    "notFind"   : "Le joueur n'a pas été trouvé."
+    "notFind"   : "Le joueur n'a pas été trouvé.",
+    "badUrl"    : "Les urls acceptés doivent venir de www.youtube.com/ ou de twitter.com/ avec le format https:// et avec un maximum de 45 charactères après le nom de domaine."
+                    + " Merci de le garder le plus court possible"
 }
 
 ttTextsEn = {
@@ -241,7 +244,9 @@ ttTextsEn = {
     "supPlayer" :"Player with id {0} has been deleted from all files",
     "addTimeMap": "Your time is registred in {0}",
     "copy"      : "Copy done!",
-    "notFind"   : "The player was not find in the map"
+    "notFind"   : "The player was not find in the map",
+    "badUrl"    : "Accepted urls must come from www.youtube.com/ or from twitter.com/ with the format https:// and with a maximum of 45 characters after the domain name."
+                + " Thanks for getting the url as short as possible"
 }
 
 ttTexts = {

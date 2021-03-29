@@ -29,6 +29,7 @@ class mapmk:
         else :
             sameplayer.setPlayerName(ttplayer.getPlayerName())
             sameplayer.setPlayerTime(ttplayer.getPlayerTime())
+            sameplayer.setPlayerUrl(ttplayer.getPlayerUrl())
         # sorted every time we add a player
         self._ttplayers = sorted(self._ttplayers, key=lambda ttplayer : ttplayer._time )
 
@@ -64,7 +65,7 @@ class mapmk:
             self._bonusObjective = data.get("bonusObjective")
             ttplayers = data.get("ttplayers")
             for player in ttplayers :
-                newplayer =ttplayer.TtPlayer(player.get("id"),player.get("name"), player.get("time"))
+                newplayer =ttplayer.TtPlayer(player.get("id"),player.get("name"), player.get("time"),player.get("url"))
                 self._ttplayers.append(newplayer)
         
 

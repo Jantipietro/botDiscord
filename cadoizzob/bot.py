@@ -13,7 +13,7 @@ from ttEdit import editDrawMapmk, editStats, ModifyEmbed
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.o0YA-0S2JGjfJzMUWxSkacHKpUc"
+TOKEN = ""
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None, case_insensitive=True)
@@ -26,6 +26,8 @@ def lowerArg (args):
         if tagsample.match(arg):
             newarg = arg.strip('<!@>')
             lowerarg.append(str.lower(newarg))
+        elif urlsample.match(arg):
+            lowerarg.append(arg)
         else :
             lowerarg.append(str.lower(arg))
     return lowerarg

@@ -190,14 +190,15 @@ async def deleteTtplayerfromAll(ctx, id, shroom):
     await ctx.send(ttTexts.get(get_language(ctx)).get("supPlayer").format(id))
 
 #Add ctx.author time in mapmk8
-async def addTimeInFile(ctx, mapmk8, time ,shroom):
+async def addTimeInFile(ctx, mapmk8, time ,url,shroom):
     mk = mapmk.mapmk(mapmk8, '' , '') #create a object mapmk with the name of the map
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8) # get the data from file
     mk.dataToMapmk(data)
     name = checkname(ctx)  # check if someone has a nick name
     newplayer = ttplayer.TtPlayer( ctx.message.author.id, #create new ttplayer
                 name,
-                time)
+                time,
+                url)
     mk.addplayer(newplayer)
     mk.writeFile(path+str(ctx.guild.id)+"/"+shroom+mapmk8)
     await ctx.send( ttTexts.get(get_language(ctx)).get("addTimeMap").format(mapmk8))
@@ -220,7 +221,7 @@ async def drawMapmk(ctx , mapmk8, shroom, page):
             if (i == (page)*(nbPlayerDisplayedMap+1)) : # draw nbPlayerDisplayedMap players
                 break
             if(i >= (page-1)*nbPlayerDisplayedMap):
-                description += "**{}. {}** : {}\n".format(i , player.getPlayerName() , player.getPlayerTime())
+                description += player.stringMapmk(i)
             i= i+1
         title = mapmk.MK8DXmap.get(mapmk8)
         title += titleType(shroom)

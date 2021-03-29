@@ -19,7 +19,7 @@ async def editDrawMapmk(guildID ,message, mapmk8, shroom, page):
         if (i == (page)*(nbPlayerDisplayedMap)+1) : # draw nbPlayerDisplayedMap players
             break
         if(i > (page-1)*nbPlayerDisplayedMap):
-            description += "**{}. {}** : {}\n".format(i , player.getPlayerName() , player.getPlayerTime())
+            description += player.stringMapmk(i)
         i= i+1
     title = message.embeds[0].title
     embedMap = discord.Embed(title=title,description=description)
@@ -68,7 +68,7 @@ async def drawStats(guildName, guildID, message,option, playersStats, shroom , p
     embedMap.set_thumbnail(url = urlImgCadoizzob)
     embedMap.set_footer(text = str(page))
     await message.edit(embed = embedMap)
-    await setEmoji(message,page , len(sorted_playersStats) )
+    await setEmoji(message,page , len(sorted_playersStats))
     
 async def editStats(guildName, guildID, message, option, shroom,page):
     playersStats = dict()
