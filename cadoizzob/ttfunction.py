@@ -194,7 +194,7 @@ async def addTimeInFile(ctx, mapmk8, time ,url,shroom):
     mk = mapmk.mapmk(mapmk8, '' , '') #create a object mapmk with the name of the map
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8) # get the data from file
     mk.dataToMapmk(data)
-    name = checkname(ctx)  # check if someone has a nick name
+    name = checkname(ctx)  # check if the person who does the command has a nick name
     newplayer = ttplayer.TtPlayer( ctx.message.author.id, #create new ttplayer
                 name,
                 time,
@@ -239,7 +239,7 @@ def getCopyInMap(ctx , fromServ, mapmk8, maps, shroom):
         mk.dataToMapmk(data)
         for player in mk._ttplayers :
             if player.getPlayerId() == ctx.author.id :
-                maps.append((mapmk8, player.getPlayerTime() ))
+                maps.append((mapmk8, player.getPlayerTime(), player.getPlayerUrl() ))
                 break
         return maps
     return maps
@@ -249,9 +249,9 @@ async def copy(ctx,fromServ, shroom):
     maps = list()
     for mapmk8 in mapmk.MK8DXmap.keys() :
         if mapmk8 != 'week' :
-            maps = getCopyInMap(ctx, fromServ, mapmk8, maps, shroom)
-    for (mapeuh, time) in maps :
-        await addTimeInFile(ctx, mapeuh, time ,shroom)
+            getCopyInMap(ctx, fromServ, mapmk8, maps, shroom)
+    for (mapeuh, time, url) in maps :
+        await addTimeInFile(ctx, mapeuh, time ,url ,shroom)
 
 
 ######## THE FOLLOW IS DISGUSTING #######

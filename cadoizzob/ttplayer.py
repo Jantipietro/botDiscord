@@ -57,9 +57,8 @@ class TtPlayer:
             s+=" [link]({})".format(self._url)
         return s+"\n"
         
-        
     def asDict(self):
-        return {'id' : self._id ,'name': self._name , 'time' : self._time, 'url' : self._url}
+        return {'id' : self._id ,'name': self._name , 'time' : self._time , 'url' : self._url}
 
     def __str__(self):
         return "<Ttplayer name {0}>".format(self._name)
