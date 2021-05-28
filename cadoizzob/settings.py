@@ -1,13 +1,13 @@
 import json
 
 def opensettings():
-    with open("settings.json", "r") as f :
+    with open("cadoizzob/settings.json", "r") as f :
         settings = json.load(f)
         f.close()
     return settings
 
 def writesettings(settings):
-    with open("settings.json", "w") as f :
+    with open("cadoizzob/settings.json", "w") as f :
         json.dump(settings,f)
         f.close()
 

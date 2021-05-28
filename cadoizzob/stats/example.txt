@@ -1,0 +1,1 @@
+{"War": 0, "Tt": 0, "Settings": 0, "Help": 1, "Wrong": 0}
