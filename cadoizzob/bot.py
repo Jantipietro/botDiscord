@@ -13,7 +13,7 @@ from ttEdit import editDrawMapmk, editStats, ModifyEmbed
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.9cpcMnWFsjNJaWBAmbI_v7HYeac"
+TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.xN63Gx_AicskKZ-kehtzXZ7k3HM"
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None, case_insensitive=True)
@@ -142,5 +142,9 @@ async def on_reaction_add(reaction, user):
 async def on_reaction_remove(reaction, user):
     if (reaction.message.author.id == 729648516795990146 and reaction.count == 1):
         await reaction.message.add_reaction(reaction)
+
+@bot.event
+async def on_command_error(ctx,error):
+    await ctx.send(helpTexts.get(get_language(ctx)).get("help").format(get_prefix(ctx)))
 
 bot.run(TOKEN)
