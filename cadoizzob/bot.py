@@ -2,7 +2,7 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-from datetime import datetime
+from datetime import date
 import json
 import asyncio
 import os
@@ -15,7 +15,7 @@ from ttEdit import editDrawMapmk, editStats, ModifyEmbed
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
-TOKEN = ""
+TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.bKOpg_rSoLqj9rZ_fL1uPZ5qXSA"
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None, case_insensitive=True)
@@ -172,7 +172,7 @@ async def stats(ctx, *args):
 @commands.cooldown(100,24*3600)
 async def save(ctx, *args):
     if ( ctx.message.author.id == 302536904824586241):
-        now = datetime.now()
+        now = date.today()
         currentTime = now.strftime("%x")
         path = currentTime.replace("/","_")
         outputPath="stats/"+ path+".txt"
@@ -191,4 +191,32 @@ async def save(ctx, *args):
             await ctx.send("Didn't work!")
     else :
         await ctx.send("Tu n'as pas le droit")
+
+@bot.command()
+@commands.cooldown(100,24*3600)
+async def total(ctx, *args):
+    if ( ctx.message.author.id == 302536904824586241):
+        listfiles = os.listdir("stats/")
+        nbWar, nbTt , nbSettings , nbHelp , nbWrong = 0,0,0,0,0
+        for statsFile in listfiles :
+            with open("stats/"+statsFile,'r') as w:
+                stats = json.load(w)
+                print(stats)
+                for key in stats.keys():
+                    if key == "War":
+                        nbWar += stats.get(key)
+                    if key == "Tt":
+                        nbTt += stats.get(key)
+                    if key == "Settings":
+                        nbSettings += stats.get(key)
+                    if key == "Help":
+                        nbHelp += stats.get(key)
+                    if key == "Wrong":
+                        nbWrong += stats.get(key)
+        DateDiff = date.today() - date(2021,5,28)# nb days since the start of stats
+        days = DateDiff.days
+        message = "```Nombre de commande utilisé en moyenne depuis le 28 mai 2021 :\nWar : {:.2f} \nTt : {:.2f} \nSettings : {:.2f}\nHelp : {:.2f}\nCmd Raté: {:.2f}```".format(nbWar/days,nbTt/days,nbSettings/days,nbHelp/days,nbWrong/days)
+        await ctx.send(message)
+
+
 bot.run(TOKEN)
