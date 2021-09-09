@@ -74,16 +74,26 @@ class mapmk:
             if int(player.getPlayerId()) == int(idplayer) :
                 self._ttplayers.remove(player)
     
+    def checkPlayer(self,nbDraw, newPlayer , oldPlayer):
+        if (oldPlayer == None):
+            return nbDraw,newPlayer
+        if ( newPlayer.getPlayerTime() == oldPlayer.getPlayerTime()):
+            return nbDraw+1 , newPlayer
+        else : 
+            return nbDraw, newPlayer
     # Get place of every player of the mapmk in the dictionary playersStats
     def addStats(self, playersStats):
         i = 1 
+        nbDraw = 0
+        oldPlayer = None
         for player in self._ttplayers :
+            nbDraw, oldPlayer = self.checkPlayer( nbDraw, player , oldPlayer)
             if not player.getPlayerId() in playersStats :
-                playersStats.update({player.getPlayerId() : [ player.getPlayerName() , i , 1 ]})
+                playersStats.update({player.getPlayerId() : [ player.getPlayerName() , (i-nbDraw) , 1 ]})
                 i += 1
             else :
                 listplayer = playersStats.get(player.getPlayerId())
-                listplayer[1] += i
+                listplayer[1] += (i-nbDraw)
                 listplayer[2] += 1
                 i += 1 
 

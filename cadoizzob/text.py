@@ -16,7 +16,7 @@ timesample = re.compile('^\d:\d{2}\.\d{3}$')
 idsample = re.compile('^\d{10,35}$')
 tagsample = re.compile('^<@!\d{10,30}>$')
 rolesample = re.compile('^<@&\d{10,30}>$')
-urlsample = re.compile('^https:\/\/(www.youtube|twitter).com\/.{1,45}$')
+urlsample = re.compile('^https:\/\/(www.youtube|twitter|gyazo).com\/.{1,45}$')
 
 # Dict of all map and the key by cup.
 MK8DXmap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "Sweet Sweet Canyon" , 'tr' :"Thwomp Ruins" ,     # coupe Champignon
@@ -97,7 +97,7 @@ ttTextsFr = {
                     +"Ces commandes ne demandent aucun droit n'importe qui sur le serveur peut les utiliser\n"
                     +"Ajouter 'ni' après {0}tt , fait réfèrence au run no item , soit shroomless! Toutes les commandes suivantes marche de la même manière avec 'ni'. Exemple : {0}tt ni find . \n\n "
                     +"{0}tt <map> --> affiche si un fichier existe les temps de la map.\n" 
-                    +"{0}tt <map> <time> --> ajoute ton temps à la <map> ou le remplace s'il y en a dejà un\n"
+                    +"{0}tt <map> <time> <lien>--> ajoute ton temps à la <map> ou le remplace s'il y en a dejà un, le lien est optionelle\n"
                     +"{0}tt <map> delete --> Supprime ton temps de la map\n"
                     +"{0}tt addlist help --> Affiche l'help de addlist\n"
                     +"{0}tt addlist <List> --> Ajoute plusieur map, aller voir {0}tt addlist help pour voir le format demandé\n"
@@ -164,7 +164,7 @@ ttTextsFr = {
     "addTimeMap": "Votre temps a bien été enregistré sur {0}",
     "copy"      : "Transfert terminé !",
     "notFind"   : "Le joueur n'a pas été trouvé.",
-    "badUrl"    : "Les urls acceptés doivent venir de www.youtube.com/ ou de twitter.com/ avec le format https:// et avec un maximum de 45 charactères après le nom de domaine."
+    "badUrl"    : "Les urls acceptés doivent venir de www.youtube.com/ ou de twitter.com/ ou gyazo.com/ avec le format https:// et avec un maximum de 45 charactères après le nom de domaine."
                     + " Merci de le garder le plus court possible"
 }
 
@@ -177,7 +177,7 @@ ttTextsEn = {
                     +"These commands do not require any rights anyone on the server can use them\n"
                     +"Ajouter 'ni' après {0}tt , fait réfèrence au run no item , soit shroomless! Toutes les commandes suivantes marche de la même manière avec 'ni'. Exemple : {0}tt ni find . \n\n "
                     +"{0}tt <map> --> displays if a file exists the times of the map.\n" 
-                    +"{0}tt <map> <time> --> add your time to the <map> or replace it if there is already one\n"
+                    +"{0}tt <map> <time> <link> --> add your time to the <map> or replace it if there is already one, link is optionnal\n"
                     +"{0}tt <map> delete --> Remove your time from the map\n"
                     +"{0}tt addlist help --> Show addlist help\n"
                     +"{0}tt addlist <List> --> Add several map, go to {0}tt addlist help to see the requested format\n"
@@ -245,7 +245,7 @@ ttTextsEn = {
     "addTimeMap": "Your time is registred in {0}",
     "copy"      : "Copy done!",
     "notFind"   : "The player was not find in the map",
-    "badUrl"    : "Accepted urls must come from www.youtube.com/ or from twitter.com/ with the format https:// and with a maximum of 45 characters after the domain name."
+    "badUrl"    : "Accepted urls must come from www.youtube.com/ or from twitter.com/ ou gyazo.com/ with the format https:// and with a maximum of 45 characters after the domain name."
                 + " Thanks for getting the url as short as possible"
 }
 

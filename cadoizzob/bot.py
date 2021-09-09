@@ -15,7 +15,7 @@ from ttEdit import editDrawMapmk, editStats, ModifyEmbed
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.bKOpg_rSoLqj9rZ_fL1uPZ5qXSA"
+TOKEN = ""
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None, case_insensitive=True)
@@ -201,7 +201,6 @@ async def total(ctx, *args):
         for statsFile in listfiles :
             with open("stats/"+statsFile,'r') as w:
                 stats = json.load(w)
-                print(stats)
                 for key in stats.keys():
                     if key == "War":
                         nbWar += stats.get(key)

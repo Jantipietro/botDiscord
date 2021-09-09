@@ -61,9 +61,7 @@ async def drawFind(ctx , maps, playerName, shroom):
     title = "Player : {0}".format(playerName)
     title += titleType(shroom)
     description = ""
-    j = 0
     for (mapmk8, place ,time, i) in maps:
-        j += 1
         description += "{0} : **{1}/{2}** -> {3}\n".format(mapmk8, place , i, time)
     if description == "" :
         await ctx.send ("Pas de temps pour {0}".format(playerName))
@@ -109,7 +107,22 @@ def addTime(playertime):
         newm = (h+m+rs)%60
         return ( newh, newm , news, newms)
 
-
+def checkDrawStats(nbDraw, newPlayer, oldPlayer, nbPlayer, option):
+    if( oldPlayer == None):
+        return nbDraw, newPlayer
+    if ( option == ""):
+        if (fillPoint(newPlayer[1],newPlayer[2],nbPlayer) == fillPoint(oldPlayer[1],oldPlayer[2],nbPlayer)):
+            return nbDraw +1, newPlayer
+        else :
+            return nbDraw, newPlayer
+    else:
+        (newh , newm , news, newms ) = addTime(newPlayer[1])
+        (oldh , oldm , olds, oldms ) = addTime(oldPlayer[1])
+        if ( newh == oldh and newm == oldm and news == olds and newms == oldms):
+            return nbDraw +1, newPlayer
+        else :
+            return nbDraw, newPlayer
+        
 async def drawStats(ctx,option, playersStats, shroom , page):
     # sort by the average place
     nbPlayer = len(playersStats)
@@ -122,17 +135,21 @@ async def drawStats(ctx,option, playersStats, shroom , page):
         title = "Stats Total Time : {0}".format(ctx.guild)
     title += titleType(shroom)
     description = ""
-    i= 1
+    i= 1 # cpt for number of player draw
+    nbDraw = 0 # cpt number of draw to have real placement
+    oldPlayer = None
     for playerlist in sorted_playersStats:
         if (i == (page)*(nbPlayerDisplayedStats)+1): # draw nbPlayerDisplayedStats
             break
         if(i > (page-1)*nbPlayerDisplayedMap):
             if ( option == ""):
-                description += "**{3}.{0}** : {1} ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], i)
+                nbDraw,oldPlayer = checkDrawStats(nbDraw, playerlist, oldPlayer, nbPlayer,option)
+                description += "**{3}.{0}** : {1} ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], (i - nbDraw) )
                 i += 1
             else :
+                nbDraw, oldPlayer = checkDrawStats(nbDraw, playerlist, oldPlayer, nbPlayer, option)
                 (h , m , s, ms ) = addTime(playerlist[1])
-                description += "**{}.{}** : {}:{:02d}:{:02d}.{:03d}\n".format(i,playerlist[0],h, m , s, ms, )
+                description += "**{}.{}** : {}:{:02d}:{:02d}.{:03d}\n".format((i-nbDraw),playerlist[0],h, m , s, ms, )
                 i+= 1
     if description == "" :
         await ctx.send ("Pas de stats pour ce serveur.")
@@ -203,6 +220,14 @@ async def addTimeInFile(ctx, mapmk8, time ,url,shroom):
     mk.writeFile(path+str(ctx.guild.id)+"/"+shroom+mapmk8)
     await ctx.send( ttTexts.get(get_language(ctx)).get("addTimeMap").format(mapmk8))
 
+def checkDrawMapmk(nbDraw, newPlayer, oldPlayer):
+    if( oldPlayer == None): # first turn on this so no draw possible
+        return nbDraw, newPlayer
+    if ( newPlayer.getPlayerTime() == oldPlayer.getPlayerTime()) :
+        return nbDraw+1 , newPlayer
+    else : 
+        return nbDraw, newPlayer
+
 async def drawMapmk(ctx , mapmk8, shroom, page):
     mk = mapmk.mapmk(mapmk8, '', '') #create a object mapmk with the name of the map
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8) # get the data from file
@@ -217,11 +242,14 @@ async def drawMapmk(ctx , mapmk8, shroom, page):
             description  += "Objectif Bonus: **" + mk._bonusObjective + "**\n"
         description +='\n'
         i = 1
+        nbDraw = 0
+        oldPlayer = None
         for player in mk._ttplayers:
             if (i == (page)*(nbPlayerDisplayedMap+1)) : # draw nbPlayerDisplayedMap players
                 break
             if(i >= (page-1)*nbPlayerDisplayedMap):
-                description += player.stringMapmk(i)
+                nbDraw, oldPlayer = checkDrawMapmk(nbDraw,player, oldPlayer)
+                description += player.stringMapmk(i-nbDraw)
             i= i+1
         title = mapmk.MK8DXmap.get(mapmk8)
         title += titleType(shroom)
