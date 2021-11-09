@@ -11,7 +11,7 @@ import mapmk
 import ttplayer
 from text import *
 from ttCommand import ttCommandGestion, deleteGuildFile
-from ttEdit import editDrawMapmk, editStats, ModifyEmbed
+from ttEdit import ModifyEmbed
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 

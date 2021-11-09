@@ -89,7 +89,7 @@ def createShroomPath(pathList):
         path += shroomPath
     return path
 # Find a map in MKD8DX map.
-def find(mapmk):
+def findMap(mapmk):
     for key,map in MK8DXmap.items():
         if map == mapmk :
             return key
@@ -112,9 +112,9 @@ async def ModifyEmbed(reaction):
     else :
         # Change mapMK
         if (not pathList): # is empty
-            await editDrawMapmk(reaction.message.guild.id ,reaction.message, find(s), createShroomPath(pathList), page)
+            await editDrawMapmk(reaction.message.guild.id ,reaction.message, findMap(s), createShroomPath(pathList), page)
         else :
             for x in pathList : # parse to get only the map name
                 s = s.replace(x,"")
             s = s.rstrip()
-            await editDrawMapmk(reaction.message.guild.id ,reaction.message, find(s), createShroomPath(pathList), page)
+            await editDrawMapmk(reaction.message.guild.id ,reaction.message, findMap(s), createShroomPath(pathList), page)

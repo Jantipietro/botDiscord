@@ -23,13 +23,13 @@ MK8DXmap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "Sweet 
                 'mc' : "Mario Circuit" , 'th' : "Toad Harbor" , 'tm' : "Twisted Mansion" , 'sgf' : "Shy Guy Falls",# coupe Fleur
                 'sa' :"Sunshine Airport"  , 'ds' : "Dolphin Shoals"  , 'ed' : "Electrodrome" , 'mw' : "Mount Wario"  ,#coupe Etoile
                 'cc' : "Cloudtop Cruise" , 'bdd' : 'Bone-Dry Dunes' , 'bc' : "Bowser's Castle" , 'rr' :"Rainbow Road"  ,# coupe Spéciale
-                'dyc' :"Yoshi Circuit" , 'dea' :"Excitbike Arena" , 'ddd' :"Dragon Driftway" , 'dmc' :"Mute City" ,# coupe Oeuf
-                'dwgm' :"Wario's Gold Mine", 'drr' :"Rainbow Road SNES" , 'diio' :"Ice Ice OutPost", 'dhc' : "Hyrule Circuit" ,#coupe Hyrule
+                'dyc' :"Yoshi Circuit" , 'dea' :"Excitebike Arena" , 'ddd' :"Dragon Driftway" , 'dmc' :"Mute City" ,# coupe Oeuf
+                'dbp' : "Baby Park" , 'dcl' :"Cheese Land" , 'dww' : " Wild Woods", 'dac' :"Animal Crossing" ,#Coupe Feuille
                 'rmmm' :"Moo Moo Meadows", 'rmc' : "Mario Circuit GBA" , 'rccb' :"Cheep Cheep Beach", 'rtt' :"Toad's Turnpike" ,#coupe Carapace
                 'rddd' : "Dry Dry Desert", 'rdp3' : "Donut Plains 3", 'rrry' :"Royal Raceway", 'rdkj' : 'DK Jungle',# coupe Banane
                 'rws' : "Wario Stadium", 'rsl' : "Sherbet Land" ,'rmp' : 'Music Park'  ,'ryv' :"Yoshi Valley"  ,# Coupe Feuille Morte
-                'rttc': "Tick-Tock Clock", 'rpps' : 'Piranha Plant Slide','rgv' :" Grumble Volcano"  , 'rrrd' :"Rainbow Road N64",#coupe Eclair
-                'dbp' : "Baby Park" , 'dcl' :"Cheese Land" , 'dww' : " Wild Woods", 'dac' :"Animal Crossing" ,#Coupe Feuille
+                'rttc': "Tick-Tock Clock", 'rpps' : 'Piranha Plant Slide','rgv' :"Grumble Volcano"  , 'rrrd' :"Rainbow Road N64",#coupe Eclair
+                'dwgm' :"Wario's Gold Mine", 'drr' :"Rainbow Road SNES" , 'diio' :"Ice Ice OutPost", 'dhc' : "Hyrule Circuit" ,#coupe Hyrule
                 'dnbc' :"Neo Bowser City", 'drir' : "Ribbon Road", 'dsbs' :"Super Bell Subway", 'dbb' : "Big Blue", #Coupe Cloche
                 'week' :"Map of the Week" 
 }
@@ -95,15 +95,16 @@ ttTextsFr = {
                     +"Tous les arguments peuvent être passé en miniscule ou majuscule, le bot les lira en minuscules.\n "
                     +"----------------------------------------------------------\n"
                     +"Ces commandes ne demandent aucun droit n'importe qui sur le serveur peut les utiliser\n"
-                    +"Ajouter 'ni' après {0}tt , fait réfèrence au run no item , soit shroomless! Toutes les commandes suivantes marche de la même manière avec 'ni'. Exemple : {0}tt ni find . \n\n "
+                    +"Ajouter 'ni' ou '200' après {0}tt , fait réfèrence au run no item , soit shroomless ou le 200cc! Toutes les commandes suivantes marche de la même manière avec 'ni'. Exemple : {0}tt ni find . \n\n "
                     +"{0}tt <map> --> affiche si un fichier existe les temps de la map.\n" 
                     +"{0}tt <map> <time> <lien>--> ajoute ton temps à la <map> ou le remplace s'il y en a dejà un, le lien est optionelle\n"
                     +"{0}tt <map> delete --> Supprime ton temps de la map\n"
                     +"{0}tt addlist help --> Affiche l'help de addlist\n"
                     +"{0}tt addlist <List> --> Ajoute plusieur map, aller voir {0}tt addlist help pour voir le format demandé\n"
+                    +"{0}tt <id> <map> --> Affiche le temps du joueur <id> sur la map <map> avec les temps des joueurs devant et derrière lui.\n"
                     +"{0}tt find --> Trouve toutes les maps ou tu apparais\n"
                     +"{0}tt find <id> --> Trouve toutes les maps ou <id> apparait\n"
-                    +"{0}tt copy <idServ> --> Copie tes temps de ce serveur\n"                   
+                    +"{0}tt copy <idServ> --> Copie tes temps du serveur <idServ> dans la catégorie donné , '{0}tt ni copy <idServ> pour copier les temps shroomless\n"                   
                     +"{0}tt stats --> Montre un classement des membres par moyenne des places\n"
                     +"{0}tt stats time--> Montre un classement des membres par temps de toutes les maps ajoutées\n"
                     +"Vous devez avoir ajouté les 48 maps pour y apparaître."
@@ -175,15 +176,16 @@ ttTextsEn = {
                     +"All arguments can be passed in lowercase or uppercase, the bot will read them in lowercase.\n "
                     +"----------------------------------------------------------\n"
                     +"These commands do not require any rights anyone on the server can use them\n"
-                    +"Ajouter 'ni' après {0}tt , fait réfèrence au run no item , soit shroomless! Toutes les commandes suivantes marche de la même manière avec 'ni'. Exemple : {0}tt ni find . \n\n "
+                    +"Add 'ni' or '200' to acces other category, Every command will work the same in the category you ask. Exemple : {0}tt ni find for shroomless parts \n\n"
                     +"{0}tt <map> --> displays if a file exists the times of the map.\n" 
                     +"{0}tt <map> <time> <link> --> add your time to the <map> or replace it if there is already one, link is optionnal\n"
                     +"{0}tt <map> delete --> Remove your time from the map\n"
                     +"{0}tt addlist help --> Show addlist help\n"
                     +"{0}tt addlist <List> --> Add several map, go to {0}tt addlist help to see the requested format\n"
+                    +"{0}tt <id> <map> --> draw difference around the player <id> on the map <map> \n"
                     +"{0}tt find --> Find all the maps where you appear\n"
                     +"{0}tt find <id> --> Find all maps where <id> appears\n"
-                    +"{0}tt copy <idServ> --> Copy your times from this server\n"                   
+                    +"{0}tt copy <idServ> --> Copy your times from server <idServ>, for only for the category you are in. Exemple : {0}tt ni copy <idServ> to copy your shroomless time\n"                   
                     +"{0}tt stats --> Show a classement of the server with the average position in all the maps.\n"
                     +"{0}tt stats time --> Show a classement of the server with the total time in all the maps.\n"
                     +"you have to have the 48 maps fill or you won't appear."
