@@ -24,7 +24,7 @@ MK8DXmap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "Sweet 
                 'sa' :"Sunshine Airport"  , 'ds' : "Dolphin Shoals"  , 'ed' : "Electrodrome" , 'mw' : "Mount Wario"  ,#coupe Etoile
                 'cc' : "Cloudtop Cruise" , 'bdd' : 'Bone-Dry Dunes' , 'bc' : "Bowser's Castle" , 'rr' :"Rainbow Road"  ,# coupe Spéciale
                 'dyc' :"Yoshi Circuit" , 'dea' :"Excitebike Arena" , 'ddd' :"Dragon Driftway" , 'dmc' :"Mute City" ,# coupe Oeuf
-                'dbp' : "Baby Park" , 'dcl' :"Cheese Land" , 'dww' : " Wild Woods", 'dac' :"Animal Crossing" ,#Coupe Feuille
+                'dbp' : "Baby Park" , 'dcl' :"Cheese Land" , 'dww' : "Wild Woods", 'dac' :"Animal Crossing" ,#Coupe Feuille
                 'rmmm' :"Moo Moo Meadows", 'rmc' : "Mario Circuit GBA" , 'rccb' :"Cheep Cheep Beach", 'rtt' :"Toad's Turnpike" ,#coupe Carapace
                 'rddd' : "Dry Dry Desert", 'rdp3' : "Donut Plains 3", 'rrry' :"Royal Raceway", 'rdkj' : 'DK Jungle',# coupe Banane
                 'rws' : "Wario Stadium", 'rsl' : "Sherbet Land" ,'rmp' : 'Music Park'  ,'ryv' :"Yoshi Valley"  ,# Coupe Feuille Morte
