@@ -34,6 +34,14 @@ MK8DXmap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "Sweet 
                 'week' :"Map of the Week" 
 }
 
+nbMK8DXmap = 48
+
+MK8DXbooster = { "bpp" : "Tour Paris Promenade" , "btc" : "3DS Toad Circuit" , "bcm64" : "N64 Choco Mountain" , "bcmw" : "Wii Coconut Mall" ,# nouvelle première coupe
+                "btb" : "Tour Tokyo Blur" , "bsr" : "DS Shroom Ridge", "bsg" : "GBA Sky Garden" , "bnh" : "Tour Ninja Hydeaway" # seconde coupe
+}
+
+nbMK8DXbooster = 8
+
 helpTextFr = {
     "help" : "```Il y'a trois commandes pour l'instant :\n"
             + "{0}settings -> Pour changer les settings du serveur\n"
@@ -143,6 +151,8 @@ ttTextsFr = {
                 + 'rttc , <time> ; rpps , <time> ; rgv , <time> ; rrrd , <time>;\n'
                 + 'dbp , <time> ;  dcl , <time> ; dww , <time> ; dac , <time>;\n'
                 + 'dnbc , <time> ; drir , <time> ; dsbs , <time> ; dbb , <time>"```',
+    "boosterMap" : '```{}tt addList "bpp , <time> ; btc , <time> ; bcm64 , <time> ; bcmw , <time> ;\n'
+                + 'btb , <time> ; bsr , <time> ; bsg , <time> ; bnh , <time>"```',
     "helpAllMap": 'Copier au dessus pour toutes les maps et remplacer les <time> par votre temps\nExample de Format: {0}tt addList "<map> , <time> ; <map> , <time> ; ..."\n'
                 + "La virgule permet séparer la map de son temps\n"
                 + "Le point virgule permet de passer à la prochaine map\n"
@@ -224,6 +234,8 @@ ttTextsEn = {
                 + 'rttc , <time> ; rpps , <time> ; rgv , <time> ; rrrd , <time>;\n'
                 + 'dbp , <time> ;  dcl , <time> ; dww , <time> ; dac , <time>;\n'
                 + 'dnbc , <time> ; drir , <time> ; dsbs , <time> ; dbb , <time>"```',
+    "boosterMap" : '```{}tt addList "bpp , <time> ; btc , <time> ; bcm64 , <time> ; bcmw , <time> ;\n'
+                + 'btb , <time> ; bsr , <time> ; bsg , <time> ; bnh , <time>"```',
     "helpAllMap": 'COpy everything and change <time> by your time in the map wich is on the left of **,**\n'
                 + 'Example of command line to add many maps: {0}tt addList "<map> , <time> ; <map> , <time> ; ..."\n'
                 + "**,** is to separate args in the command line\n"
@@ -286,4 +298,22 @@ settingsTextsFr = {
 settingsTexts = {
     "fr"    : settingsTextsFr,
     "en"    : settingsTextsEn
+}
+
+
+MK8DXTotalMap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "Sweet Sweet Canyon" , 'tr' :"Thwomp Ruins" ,     # coupe Champignon
+                'mc' : "Mario Circuit" , 'th' : "Toad Harbor" , 'tm' : "Twisted Mansion" , 'sgf' : "Shy Guy Falls",# coupe Fleur
+                'sa' :"Sunshine Airport"  , 'ds' : "Dolphin Shoals"  , 'ed' : "Electrodrome" , 'mw' : "Mount Wario"  ,#coupe Etoile
+                'cc' : "Cloudtop Cruise" , 'bdd' : 'Bone-Dry Dunes' , 'bc' : "Bowser's Castle" , 'rr' :"Rainbow Road"  ,# coupe Spéciale
+                'dyc' :"Yoshi Circuit" , 'dea' :"Excitebike Arena" , 'ddd' :"Dragon Driftway" , 'dmc' :"Mute City" ,# coupe Oeuf
+                'dbp' : "Baby Park" , 'dcl' :"Cheese Land" , 'dww' : "Wild Woods", 'dac' :"Animal Crossing" ,#Coupe Feuille
+                'rmmm' :"Moo Moo Meadows", 'rmc' : "Mario Circuit GBA" , 'rccb' :"Cheep Cheep Beach", 'rtt' :"Toad's Turnpike" ,#coupe Carapace
+                'rddd' : "Dry Dry Desert", 'rdp3' : "Donut Plains 3", 'rrry' :"Royal Raceway", 'rdkj' : 'DK Jungle',# coupe Banane
+                'rws' : "Wario Stadium", 'rsl' : "Sherbet Land" ,'rmp' : 'Music Park'  ,'ryv' :"Yoshi Valley"  ,# Coupe Feuille Morte
+                'rttc': "Tick-Tock Clock", 'rpps' : 'Piranha Plant Slide','rgv' :"Grumble Volcano"  , 'rrrd' :"Rainbow Road N64",#coupe Eclair
+                'dwgm' :"Wario's Gold Mine", 'drr' :"Rainbow Road SNES" , 'diio' :"Ice Ice OutPost", 'dhc' : "Hyrule Circuit" ,#coupe Hyrule
+                'dnbc' :"Neo Bowser City", 'drir' : "Ribbon Road", 'dsbs' :"Super Bell Subway", 'dbb' : "Big Blue", #Coupe Cloche
+                "bpp" : "Tour Paris Promenade" , "btc" : "3DS Toad Circuit" , "bcm64" : "N64 Choco Mountain" , "bcmw" : "Wii Coconut Mall" ,# nouvelle première coupe
+                "btb" : "Tour Tokyo Blur" , "bsr" : "DS Shroom Ridge", "bsg" : "GBA Sky Garden" , "bnh" : "Tour Ninja Hydeaway", # seconde coupe
+                'week' :"Map of the Week" 
 }

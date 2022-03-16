@@ -2,10 +2,10 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-from datetime import date
+from datetime import date, datetime
 import json
 import asyncio
-import os
+import os, time
 import shutil
 import mapmk
 import ttplayer
@@ -15,7 +15,7 @@ from ttEdit import ModifyEmbed
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
-TOKEN = ""
+TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.1wGKc3ta6mcFD0e1rzv73GPlUwA"
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None, case_insensitive=True)
@@ -145,7 +145,6 @@ async def tt(ctx, *args):
 async def on_reaction_add(reaction, user):
     if (reaction.message.author.id == bot.user.id):
         if reaction.message.embeds and user.id != bot.user.id :
-            #await reaction.message.edit(content = "Yo l'emote",embed = None)
             if reaction.emoji == "⬅️" or  reaction.emoji == "➡️": # row right
                 await ModifyEmbed(reaction)
         if (reaction.count == 4):
@@ -164,7 +163,19 @@ async def on_command_error(ctx,error):
 
 @bot.command()
 async def stats(ctx, *args):
-    message = "```Nombre de commande utilisé :\nWar : {} \nTt : {} \nSettings : {}\nHelp : {}\nCmd Raté: {}```".format(bot.cptWar,bot.cptTt,bot.cptSettings,bot.cptHelp, bot.cptWrongCommand)
+    listFile = None
+    nbfile = 0
+    if ( os.path.exists(path)):
+        listFile = os.listdir(path)
+        nbfile =len( listFile)
+    cptFileUseToday = 0
+    now = datetime.today()
+    for f in listFile :
+        modifyDate = datetime.fromtimestamp(os.path.getmtime(path+f))
+        duration = now - modifyDate
+        if ( duration.total_seconds()/(86400) < 1):
+            cptFileUseToday +=1
+    message = "```Nombre de serveur qui ont modifié le bot aujourd'hui : {} sur {} serveurs\nNombre de commande utilisé :\nWar : {} \nTt : {} \nSettings : {}\nHelp : {}\nCmd Raté: {}```".format(cptFileUseToday, nbfile, bot.cptWar,bot.cptTt,bot.cptSettings,bot.cptHelp, bot.cptWrongCommand)
     await ctx.send(message)
 
 

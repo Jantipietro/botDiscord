@@ -2,13 +2,13 @@ import mapmk
 import discord
 import ttplayer
 import os 
-from text import path, ttTexts, tagsample
+from text import path, ttTexts, tagsample, nbMK8DXmap, MK8DXTotalMap, MK8DXbooster, nbMK8DXbooster, MK8DXmap , nbMK8DXmap
 from settings import get_language
 from datetime import datetime
 from text import speedPath, urlImgCadoizzob, nofile
 
-nbPlayerDisplayedStats = 50
-nbPlayerDisplayedMap =  20
+nbPlayerDisplayedStats = 1
+nbPlayerDisplayedMap =  1
 
 # Bad fonction to get author nickname or name
 def checkname(ctx):
@@ -33,6 +33,25 @@ async def setEmoji(message,page , length, option = ""):        #add row left or 
             await message.add_reaction("⬅️") # row left
         if ( nbPlayerDisplayedMap*page < length):        
             await message.add_reaction("➡️") # row right
+
+def statsOption(option, nbmapPoolorNot) :
+    mapPoolLength = 0
+    mapPool = None
+    if (option == "b" or option == "timeb") :
+        mapPoolLength = nbMK8DXbooster
+        mapPool = MK8DXbooster
+    elif option == "total" or option == "totalTime":
+        mapPoolLength = nbMK8DXmap + nbMK8DXbooster 
+        mapPool = MK8DXTotalMap
+    else :
+        mapPoolLength = nbMK8DXmap
+        mapPool = MK8DXmap
+    
+    if ( nbmapPoolorNot):
+        return mapPoolLength
+    else :
+        return mapPool
+
 # 3 functions to find a player in the ctx . 
 # Find idPLayer in mapmk8 and idPLayer and his place in maps
 # return namePlayer to get the name if your are looking for someone
@@ -73,7 +92,7 @@ async def drawFind(ctx , maps, playerName, shroom):
 async def find(ctx, idPlayer, shroom):
     maps = list()
     playerName = ""
-    for mapmk8 in mapmk.MK8DXmap.keys() :
+    for mapmk8 in MK8DXTotalMap.keys() :
         if mapmk8 != 'week' :
             playerName = findInMap(ctx,idPlayer,playerName,mapmk8, maps, shroom)
     if playerName == "" :
@@ -87,15 +106,15 @@ def MapStats(ctx, option, mapmk8, playersStats, shroom):
     data = mk.getFileR(path+str(ctx.guild.id)+"/"+shroom+mapmk8)  
     if data != nofile:
         mk.dataToMapmk(data)
-        if ( option == ""):
+        if ( option == "" or option == "b" or option == "total"):
             mk.addStats(playersStats)
         else :
             mk.addStatsTime(playersStats)
 
 # Return total stats points at 10^-5 
 # add nbplayer to the total for every map missing 
-def fillPoint(total, mapPlayed, nbplayer):
-    return round((total + (nbplayer*(48-mapPlayed)))/48, 5)
+def fillPoint(total, mapPlayed, nbplayer, mapPoolLength):
+    return round((total + (nbplayer*(mapPoolLength-mapPlayed)))/mapPoolLength, 5)
 
 def addTime(playertime):
         (h , m ,s , ms) = playertime
@@ -107,11 +126,11 @@ def addTime(playertime):
         newm = (h+m+rs)%60
         return ( newh, newm , news, newms)
 
-def checkDrawStats(nbDraw, newPlayer, oldPlayer, nbPlayer, option):
+def checkDrawStats(nbDraw, newPlayer, oldPlayer, nbPlayer, option, mapPoolLength):
     if( oldPlayer == None):
         return nbDraw, newPlayer
-    if ( option == ""):
-        if (fillPoint(newPlayer[1],newPlayer[2],nbPlayer) == fillPoint(oldPlayer[1],oldPlayer[2],nbPlayer)):
+    if ( option == "" or option == "b" or option == "total"):
+        if (fillPoint(newPlayer[1],newPlayer[2],nbPlayer, mapPoolLength) == fillPoint(oldPlayer[1],oldPlayer[2],nbPlayer, mapPoolLength)):
             return nbDraw +1, newPlayer
         else :
             return nbDraw, newPlayer
@@ -122,17 +141,26 @@ def checkDrawStats(nbDraw, newPlayer, oldPlayer, nbPlayer, option):
             return nbDraw +1, newPlayer
         else :
             return nbDraw, newPlayer
+
+def optionTile(option):
+    if ( option == "b" or option == "timeb"): 
+        return "Booster "
+    elif (option == "total" or option == "totalTime"):
+        return "All Maps "
+    else : 
+        return ""
         
 async def drawStats(ctx,option, playersStats, shroom , page):
     # sort by the average place
     nbPlayer = len(playersStats)
-    if (option == ""):
-        sorted_playersStats = sorted(playersStats.values(), key=lambda value : fillPoint(value[1],value[2],nbPlayer), reverse= False)
-        title = "Stats Average place : {0}".format(ctx.guild)
+    mapPoolLength = statsOption(option, True)
+    if (option == "" or option == "b" or option == "total"):
+        sorted_playersStats = sorted(playersStats.values(), key=lambda value : fillPoint(value[1],value[2],nbPlayer, mapPoolLength), reverse= False)
+        title = "Stats Average place {1}: {0}".format(ctx.guild, optionTile(option))
     else :
-        newplayersStats = { k:v for k,v in playersStats.items() if v[2] == 48}
+        newplayersStats = { k:v for k,v in playersStats.items() if v[2] == mapPoolLength }
         sorted_playersStats = sorted(newplayersStats.values(), key=lambda value : addTime(value[1]) , reverse = False)
-        title = "Stats Total Time : {0}".format(ctx.guild)
+        title = "Stats Total Time {1}: {0}".format(ctx.guild, optionTile(option))
     title += titleType(shroom)
     description = ""
     i= 1 # cpt for number of player draw
@@ -142,14 +170,14 @@ async def drawStats(ctx,option, playersStats, shroom , page):
         if (i == (page)*(nbPlayerDisplayedStats)+1): # draw nbPlayerDisplayedStats
             break
         if(i > (page-1)*nbPlayerDisplayedMap):
-            if ( option == ""):
-                nbDraw,oldPlayer = checkDrawStats(nbDraw, playerlist, oldPlayer, nbPlayer,option)
-                description += "**{3}.{0}** : {1} ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], (i - nbDraw) )
+            if ( option == "" or option == "b" or option == "total"):
+                nbDraw,oldPlayer = checkDrawStats(nbDraw, playerlist, oldPlayer, nbPlayer,option, mapPoolLength)
+                description += "**{3}.{0}** : {1} ( {2}/{4} maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer, mapPoolLength) , playerlist[2], (i - nbDraw), mapPoolLength )
                 i += 1
             else :
-                nbDraw, oldPlayer = checkDrawStats(nbDraw, playerlist, oldPlayer, nbPlayer, option)
+                nbDraw, oldPlayer = checkDrawStats(nbDraw, playerlist, oldPlayer, nbPlayer, option, mapPoolLength)
                 (h , m , s, ms ) = addTime(playerlist[1])
-                description += "**{}.{}** : {}:{:02d}:{:02d}.{:03d}\n".format((i-nbDraw),playerlist[0],h, m , s, ms, )
+                description += "**{}.{}** : {}:{:02d}:{:02d}.{:03d}\n".format((i-nbDraw),playerlist[0],h, m , s, ms)
                 i+= 1
     if description == "" :
         await ctx.send ("Pas de stats pour ce serveur.")
@@ -162,7 +190,8 @@ async def drawStats(ctx,option, playersStats, shroom , page):
     
 async def Stats(ctx, option, shroom):
     playersStats = dict()
-    for mapmk8 in mapmk.MK8DXmap.keys() :
+    mapPool = statsOption(option, False)
+    for mapmk8 in mapPool :
         if mapmk8 != 'week' :
             MapStats(ctx, option, mapmk8, playersStats, shroom)
     await drawStats(ctx,option, playersStats, shroom, 1)
@@ -202,7 +231,7 @@ async def deleteTtplayerfromMap(ctx,mapmk8, id, shroom):
 
 #Delete if from all maps
 async def deleteTtplayerfromAll(ctx, id, shroom):
-    for mapmk8 in mapmk.MK8DXmap.keys() :
+    for mapmk8 in MK8DXTotalMap.keys() :
         await deleteTtplayerfromMap(ctx, mapmk8, id, shroom)
     await ctx.send(ttTexts.get(get_language(ctx)).get("supPlayer").format(id))
 
@@ -251,7 +280,7 @@ async def drawMapmk(ctx , mapmk8, shroom, page):
                 nbDraw, oldPlayer = checkDrawMapmk(nbDraw,player, oldPlayer)
                 description += player.stringMapmk(i-nbDraw)
             i= i+1
-        title = mapmk.MK8DXmap.get(mapmk8)
+        title = MK8DXTotalMap.get(mapmk8)
         title += titleType(shroom)
         embedMap = discord.Embed(title=title,description=description)
         embedMap.set_thumbnail(url = urlImgCadoizzob)
@@ -275,7 +304,7 @@ def getCopyInMap(ctx , fromServ, mapmk8, maps, shroom):
 #Copy ctx.author.id's time from fromServ
 async def copy(ctx,fromServ, shroom):
     maps = list()
-    for mapmk8 in mapmk.MK8DXmap.keys() :
+    for mapmk8 in MK8DXTotalMap.keys() :
         if mapmk8 != 'week' :
             getCopyInMap(ctx, fromServ, mapmk8, maps, shroom)
     for (mapeuh, time, url) in maps :
@@ -290,7 +319,7 @@ async def drawPlayerCommand(ctx,ListOfplayer, mapmk8, shroom):
         await ctx.send(ttTexts.get(get_language(ctx)).get("noFileMap"))
     else :
         mk.dataToMapmk(data)
-        title = ListOfplayer.get("player")[0].getPlayerName() + " : " + mapmk.MK8DXmap.get(mapmk8)
+        title = ListOfplayer.get("player")[0].getPlayerName() + " : " + MK8DXTotalMap.get(mapmk8)
         title += titleType(shroom)
         embedMap = discord.Embed(title=title)
         for (k,v) in ListOfplayer.items() :

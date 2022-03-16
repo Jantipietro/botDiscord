@@ -68,7 +68,7 @@ async def deleteCommand(ctx , args , shroom ):
             if idsample.match(args[1]):
                 await deleteTtplayerfromAll(ctx, args[1], shroom)
             # Delete a map file
-            elif mapmk.MK8DXmap.get(args[1]) != None :
+            elif MK8DXTotalMap.get(args[0]) != None :
                 await deleteFile(ctx , path+str(ctx.guild.id)+"/"+shroom +args[1] , args[1])
             else :
                 await ctx.send(ttTexts.get(get_language(ctx)).get("wrongID").format(args[1]))
@@ -144,6 +144,7 @@ async def addListCommand(ctx, args, shroom):
         # Help command inside 
         if ( args == 'help'):
             await ctx.send(ttTexts.get(get_language(ctx)).get("allMap").format(get_prefix(ctx)))
+            await ctx.send(ttTexts.get(get_language(ctx)).get("boosterMap").format(get_prefix(ctx)))
             await ctx.send(ttTexts.get(get_language(ctx)).get("helpAllMap").format(get_prefix(ctx)))
         else :
             #Get away with space and \n in the string
@@ -154,7 +155,7 @@ async def addListCommand(ctx, args, shroom):
                 Allcouple.append(couple.split(","))
             # add every couple with the map command 
             for args in Allcouple :
-                if mapmk.MK8DXmap.get(args[0]) != None:
+                if MK8DXTotalMap.get(args[0]) != None:
                     await mapmkCommand(ctx, args, shroom )
                 else :
                     await ctx.send(ttTexts.get(get_language(ctx)).get("wrongName").format(get_prefix(ctx)))
@@ -166,8 +167,20 @@ async def statsCommand(ctx , args , shroom) :
     if verifGuild(ctx):
         if len(args) == 1:
             await Stats(ctx, "" ,shroom)
+        # Total time stats
         elif args[1] == "time":
-            await Stats(ctx, "time" ,shroom)
+            if len(args) == 2 :
+                await Stats(ctx, "time" ,shroom)
+            elif args[2] == "booster" or args[2] == "b":
+                await Stats(ctx, "timeb", shroom)
+            elif args[2] == "total" :
+                await Stats(ctx, "totalTime", shroom)
+            else :
+                await ctx.send(ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
+        elif args[1] == "booster" or args[1] == "b":
+            await Stats(ctx, "b" , shroom)
+        elif args[1] == "total" :
+            await Stats(ctx, "total" , shroom)
         else :
             await ctx.send(ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
     else :
@@ -188,7 +201,7 @@ async def copyCommand(ctx, fromServ,shroom):
 async def playerCommand(ctx, args, shroom):
     if verifGuild(ctx):
         if len(args) == 2 :
-            if MK8DXmap.get(args[1]) != None :
+            if MK8DXTotalMap.get(args[0])!= None:
                 ListOfPlayer = findInMapBis(ctx, args[0], args[1], shroom)
                 if ListOfPlayer.get("player") != None :
                     await drawPlayerCommand(ctx, ListOfPlayer, args[1], shroom)
@@ -225,7 +238,7 @@ async def ttCommandGestion(ctx,args, speedPath):
     elif args[0] == 'delete':
         await deleteCommand(ctx, args , speedPath+shroomPath)
     # Check if the first arg is a map name
-    elif MK8DXmap.get(args[0]) != None :
+    elif MK8DXTotalMap.get(args[0])!= None:
         await mapmkCommand(ctx, args , speedPath+shroomPath)
     elif idsample.match(args[0]) :
         await playerCommand(ctx, args , speedPath+shroomPath)
@@ -247,7 +260,7 @@ async def ttCommandGestion(ctx,args, speedPath):
         elif args[0] == 'delete':
             await deleteCommand(ctx, args , speedPath+noShroomPath)
         # Check if the first arg is a map name
-        elif MK8DXmap.get(args[0]) != None :
+        elif MK8DXTotalMap.get(args[0])!= None:
             await mapmkCommand(ctx, args , speedPath+noShroomPath)
         elif idsample.match(args[0]) :
             await playerCommand(ctx, args , speedPath+noShroomPath)

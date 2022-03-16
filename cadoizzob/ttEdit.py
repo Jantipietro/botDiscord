@@ -1,8 +1,8 @@
 import re
 import mapmk
 import discord
-from text import path,urlImgCadoizzob, nofile, MK8DXmap, shroomPath, speedPath, noShroomPath
-from ttfunction import nbPlayerDisplayedMap, nbPlayerDisplayedStats, setEmoji, titleType, fillPoint
+from text import path,urlImgCadoizzob, nofile, MK8DXmap, shroomPath, speedPath, noShroomPath, MK8DXTotalMap
+from ttfunction import nbPlayerDisplayedMap, nbPlayerDisplayedStats, setEmoji, titleType, fillPoint, addTime, optionTile , statsOption
 
 async def editDrawMapmk(guildID ,message, mapmk8, shroom, page):
     mk = mapmk.mapmk(mapmk8, '', '') #create a object mapmk with the name of the map
@@ -36,7 +36,7 @@ def MapStats(guildName, guildID, message, option, mapmk8, playersStats, shroom):
     data = mk.getFileR(path+str(guildID)+"/"+shroom+mapmk8)  
     if data != nofile:
         mk.dataToMapmk(data)
-        if ( option == ""):
+        if ( option == ""  or option == "b" or option == "total"):
             mk.addStats(playersStats)
         else :
             mk.addStatsTime(playersStats)
@@ -44,13 +44,14 @@ def MapStats(guildName, guildID, message, option, mapmk8, playersStats, shroom):
 async def drawStats(guildName, guildID, message,option, playersStats, shroom , page):
     # sort by the average place
     nbPlayer = len(playersStats)
-    if (option == ""):
-        sorted_playersStats = sorted(playersStats.values(), key=lambda value : fillPoint(value[1],value[2],nbPlayer), reverse= False)
-        title = "Stats Average place : {0}".format(guildName)
+    mapPoolLength = statsOption(option, True)
+    if (option == ""  or option == "b" or option == "total"):
+        sorted_playersStats = sorted(playersStats.values(), key=lambda value : fillPoint(value[1],value[2],nbPlayer, mapPoolLength), reverse= False)
+        title = "Stats Average place {1}: {0}".format(guildName, optionTile(option))
     else :
-        newplayersStats = { k:v for k,v in playersStats.items() if v[2] == 48}
+        newplayersStats = { k:v for k,v in playersStats.items() if v[2] == mapPoolLength } 
         sorted_playersStats = sorted(newplayersStats.values(), key=lambda value : addTime(value[1]) , reverse = False)
-        title = "Stats Total Time : {0}".format(guildName)
+        title = "Stats Total Time {1}: {0}".format(guildName, optionTile(option))
     title += titleType(shroom)
     description = ""
     i= 1
@@ -58,8 +59,8 @@ async def drawStats(guildName, guildID, message,option, playersStats, shroom , p
         if (i == (page)*(nbPlayerDisplayedStats)+1) :  # draw nbPlayerDisplayedStats players
             break
         if(i > (page-1)*nbPlayerDisplayedStats):
-            if ( option == ""):
-                description += "**{3}.{0}** : {1} ( {2}/48 maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer) , playerlist[2], i)
+            if ( option == "" or option == "b" or option == "total"):
+                description += "**{3}.{0}** : {1} ( {2}/{4} maps )\n".format(playerlist[0], fillPoint(playerlist[1],playerlist[2],nbPlayer, mapPoolLength) , playerlist[2], i, mapPoolLength)
             else :
                 (h , m , s, ms ) = addTime(playerlist[1])
                 description += "**{}.{}** : {}:{:02d}:{:02d}.{:03d}\n".format(i,playerlist[0],h, m , s, ms, )
@@ -72,7 +73,8 @@ async def drawStats(guildName, guildID, message,option, playersStats, shroom , p
     
 async def editStats(guildName, guildID, message, option, shroom,page):
     playersStats = dict()
-    for mapmk8 in mapmk.MK8DXmap.keys() :
+    mapPool = statsOption(option, False)
+    for mapmk8 in mapPool:
         if mapmk8 != 'week' :
             MapStats(guildName, guildID, message, option, mapmk8, playersStats, shroom)
     await drawStats(guildName, guildID, message,option, playersStats, shroom, page)
@@ -88,9 +90,10 @@ def createShroomPath(pathList):
     else :
         path += shroomPath
     return path
+
 # Find a map in MKD8DX map.
 def findMap(mapmk):
-    for key,map in MK8DXmap.items():
+    for key,map in MK8DXTotalMap.items():
         if map == mapmk :
             return key
 
@@ -106,9 +109,20 @@ async def ModifyEmbed(reaction):
     pathList = re.findall("Shroomless|200cc",s)
     if ( s.startswith("Stats")): # Change STats embed.
         if(s.find("Total Time") == -1):
-            await editStats(reaction.message.guild, reaction.message.guild.id, reaction.message, "", createShroomPath(pathList),page)
+            if ( s.find("Booster", 15) != -1 ):
+                await editStats(reaction.message.guild, reaction.message.guild.id, reaction.message, "b", createShroomPath(pathList),page)
+            elif ( s.find("All Maps", 15) != -1 ):
+                await editStats(reaction.message.guild, reaction.message.guild.id, reaction.message, "total", createShroomPath(pathList),page)
+            else :
+                await editStats(reaction.message.guild, reaction.message.guild.id, reaction.message, "", createShroomPath(pathList),page)
         else :
-            await editStats(reaction.message.guild, reaction.message.guild.id, reaction.message, "time", createShroomPath(pathList),page)
+            # Time stats edit
+            if ( s.find("Booster", 15) != -1 ):
+                await editStats(reaction.message.guild, reaction.message.guild.id, reaction.message, "timeb", createShroomPath(pathList),page)
+            elif ( s.find("All Maps", 15) != -1 ):
+                await editStats(reaction.message.guild, reaction.message.guild.id, reaction.message, "totalTime", createShroomPath(pathList),page)
+            else : 
+                await editStats(reaction.message.guild, reaction.message.guild.id, reaction.message, "time", createShroomPath(pathList),page)
     else :
         # Change mapMK
         if (not pathList): # is empty

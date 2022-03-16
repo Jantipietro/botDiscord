@@ -1,7 +1,6 @@
 import ttplayer
 import json
 import discord
-from text import MK8DXmap
 
 class mapmk:
 
