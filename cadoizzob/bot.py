@@ -15,7 +15,7 @@ from ttEdit import ModifyEmbed
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
 #Put your Token bot here 
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.XwMAIg.1wGKc3ta6mcFD0e1rzv73GPlUwA"
+TOKEN = ""
 bot = discord.Client()
 # You can change the prefix here 
 bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None, case_insensitive=True)
