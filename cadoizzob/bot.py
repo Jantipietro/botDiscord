@@ -132,6 +132,7 @@ async def tt(ctx, *args):
         if args[0] == 'help':
             await ctx.send ( ttTexts.get(get_language(ctx)).get("help").format(get_prefix(ctx)))
             await ctx.send ( ttTexts.get(get_language(ctx)).get("help2").format(get_prefix(ctx)))
+            await ctx.send ( ttTexts.get(get_language(ctx)).get("help3").format(get_prefix(ctx)))
         elif args[0] == 'deleteall':
             await deleteGuildFile(ctx)
         elif args[0] == '200':

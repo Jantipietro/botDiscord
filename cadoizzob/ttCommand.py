@@ -46,11 +46,13 @@ async def createCommand(ctx):
 async def findCommand(ctx , args , shroom):
     if verifGuild(ctx):
         if len(args) == 1 :
-            await find(ctx, ctx.author.id, shroom)
+            await find(ctx, ctx.author.id, shroom, "")
         elif len(args) == 2 :
             #Check if this looks like an ID ( can be better)
             if idsample.match(args[1]):
-                await find(ctx, args[1], shroom)
+                await find(ctx, args[1], shroom, "")
+            elif args[1] == "b" or args[1] == "booster":
+                await find(ctx, ctx.author.id, shroom , "b")
             else :
                 await ctx.send(ttTexts.get(get_language(ctx)).get("wrongID").format(args[1]))
         else :
@@ -171,10 +173,13 @@ async def statsCommand(ctx , args , shroom) :
         elif args[1] == "time":
             if len(args) == 2 :
                 await Stats(ctx, "time" ,shroom)
-            elif args[2] == "booster" or args[2] == "b":
-                await Stats(ctx, "timeb", shroom)
-            elif args[2] == "total" :
-                await Stats(ctx, "totalTime", shroom)
+            elif len(args) == 3 :
+                if args[2] == "booster" or args[2] == "b":
+                    await Stats(ctx, "timeb", shroom)
+                elif args[2] == "total" :
+                    await Stats(ctx, "totalTime", shroom)
+                else :
+                    await ctx.send(ttTexts.get(get_language(ctx)).get("unknowCmd").format(get_prefix(ctx)))
             else :
                 await ctx.send(ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
         elif args[1] == "booster" or args[1] == "b":
@@ -225,6 +230,7 @@ async def ttCommandGestion(ctx,args, speedPath):
     # Draw png with all maps nickname that it use
     elif args[0] == 'maps' :
         await ctx.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
+        await ctx.send("https://media.discordapp.net/attachments/790777052013527102/954113086497914970/ebd823dc56644bbcf834a8149e4c2194.png")
     # Stats section with all player in the section
     elif args[0] == 'stats':
         await statsCommand(ctx,args, speedPath+shroomPath)

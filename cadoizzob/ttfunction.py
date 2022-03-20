@@ -7,7 +7,7 @@ from settings import get_language
 from datetime import datetime
 from text import speedPath, urlImgCadoizzob, nofile
 
-nbPlayerDisplayedStats = 50
+nbPlayerDisplayedStats = 40
 nbPlayerDisplayedMap =  20
 
 # Bad fonction to get author nickname or name
@@ -34,6 +34,8 @@ async def setEmoji(message,page , length, option = ""):        #add row left or 
         if ( nbPlayerDisplayedMap*page < length):        
             await message.add_reaction("➡️") # row right
 
+# False to get the map pool
+# True to get the number of race
 def statsOption(option, nbmapPoolorNot) :
     mapPoolLength = 0
     mapPool = None
@@ -89,10 +91,11 @@ async def drawFind(ctx , maps, playerName, shroom):
         embedMap.set_thumbnail(url = urlImgCadoizzob)
         await ctx.send(embed = embedMap)
 
-async def find(ctx, idPlayer, shroom):
+async def find(ctx, idPlayer, shroom, option):
     maps = list()
     playerName = ""
-    for mapmk8 in MK8DXTotalMap.keys() :
+    mapPool = statsOption(option, False)
+    for mapmk8 in mapPool :
         if mapmk8 != 'week' :
             playerName = findInMap(ctx,idPlayer,playerName,mapmk8, maps, shroom)
     if playerName == "" :
