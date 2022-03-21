@@ -127,7 +127,9 @@ ttTextsFr = {
                     +"{0}tt <map> objective delete --> Supprime le temps objective\n\n"
                     +"{0}tt <map> bonus delete --> Supprime le temps objectiveBonus\n\n"
                     +"Les commandes ci-dessous nécissitent le droit Administrateur sur le serveur\n\n"
-                    +"WARNING -> {0}tt deleteAll --> Supprime le dossier du serveur et ce qu'il y'a dedans \n```",
+                    +"WARNING -> {0}tt deleteAll --> Supprime le dossier du serveur et ce qu'il y'a dedans \n\n```"
+                    +"Si vous voulez aidez à la durée de ce bot, vous pouvez aider à payer Arcégis qui héberge le bot.\n"
+                    +"Vous pouvez l'aider en donnant même des petites sommes sur le paypal : https://paypal.me/arcegis",
     "perm"      : "Tu n'as pas les perms pour cette commande",
     "noArg"       : "Pas d'arguments à la commande tt ! pour plus d'infos **{0}tt help** ",
     "create"    : "Votre Serveur a maintenant un fichier pour vos TT.Vous pouvez les remplirs",
@@ -210,7 +212,8 @@ ttTextsEn = {
                     +"{0}tt <map> objective delete --> Removes objective time\n\n"
                     +"{0}tt <map> bonus delete --> Removes bonus objective time\n\n"
                     +"The commands below require the right Administrator on the server\n\n"
-                    +"WARNING -> {0}tt delete --> Delete the server folder and what's in it, there is no verification\n```",
+                    +"WARNING -> {0}tt delete --> Delete the server folder and what's in it, there is no verification\n```"
+                    +"If you want to help to maintain this bot alive you can help Arcégis by giving even small donation to his paypal : https://paypal.me/arcegis",
     "perm"      : "You don't have the perms for this order",
     "noArg"       : "No arguments to the tt command! for more info ** {0}tt help **",
     "create"    : "Your Server now has a file for your TTs, you can fill them in",
