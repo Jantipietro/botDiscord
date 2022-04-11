@@ -230,7 +230,7 @@ async def ttCommandGestion(ctx,args, speedPath):
     # Draw png with all maps nickname that it use
     elif args[0] == 'maps' :
         await ctx.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
-        await ctx.send("https://media.discordapp.net/attachments/790777052013527102/954113086497914970/ebd823dc56644bbcf834a8149e4c2194.png")
+        await ctx.send("https://cdn.discordapp.com/attachments/608269384976302153/961913999274938378/maps-dlc-bot.png")
     # Stats section with all player in the section
     elif args[0] == 'stats':
         await statsCommand(ctx,args, speedPath+shroomPath)
