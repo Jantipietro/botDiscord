@@ -37,10 +37,12 @@ MK8DXmap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "Sweet 
 nbMK8DXmap = 48
 
 MK8DXbooster = { "bpp" : "Tour Paris Promenade" , "btc" : "3DS Toad Circuit" , "bcm64" : "N64 Choco Mountain" , "bcmw" : "Wii Coconut Mall" ,# nouvelle première coupe
-                "btb" : "Tour Tokyo Blur" , "bsr" : "DS Shroom Ridge", "bsg" : "GBA Sky Garden" , "bnh" : "Tour Ninja Hydeaway" # seconde coupe
+                "btb" : "Tour Tokyo Blur" , "bsr" : "DS Shroom Ridge", "bsg" : "GBA Sky Garden" , "bnh" : "Tour Ninja Hydeaway", # seconde coupe
+                "bnym" : "MKT New York" , "bmc3" : "SNES Mario Circuit 3" , "bkd" : "N64 Kalimari Desert" , "bwp" : "DS Flipper Waluigi", #troisième coupe
+                "bss" : "MKT Sydney", "bsl" : "GBA Snow Land" , "bmg" : "WII Mushroom Gorge" , "bshs" :"Sky High Sundae" #4ème coupe
 }
 
-nbMK8DXbooster = 8
+nbMK8DXbooster = 16
 
 helpTextFr = {
     "help" : "```Il y'a trois commandes pour l'instant :\n"
@@ -318,5 +320,7 @@ MK8DXTotalMap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "S
                 'dnbc' :"Neo Bowser City", 'drir' : "Ribbon Road", 'dsbs' :"Super Bell Subway", 'dbb' : "Big Blue", #Coupe Cloche
                 "bpp" : "Tour Paris Promenade" , "btc" : "3DS Toad Circuit" , "bcm64" : "N64 Choco Mountain" , "bcmw" : "Wii Coconut Mall" ,# nouvelle première coupe
                 "btb" : "Tour Tokyo Blur" , "bsr" : "DS Shroom Ridge", "bsg" : "GBA Sky Garden" , "bnh" : "Tour Ninja Hydeaway", # seconde coupe
+                "bnym" : "MKT New York" , "bmc3" : "SNES Mario Circuit 3" , "bkd" : "N64 Kalimari Desert" , "bwp" : "DS Flipper Waluigi", #troisième coupe
+                "bss" : "MKT Sydney", "bsl" : "GBA Snow Land" , "bmg" : "WII Mushroom Gorge" , "bshs" :"Sky High Sundae", #4ème coupe
                 'week' :"Map of the Week" 
 }
