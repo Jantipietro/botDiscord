@@ -14,6 +14,7 @@ from ttCommand import ttCommandGestion, deleteGuildFile
 from ttEdit import ModifyEmbed
 from settings import createguildsets, guildvarchange, get_prefix_cmd, get_language,get_prefix
 from settingsCommand import *
+
 #Put your Token bot here 
 TOKEN = ""
 bot = discord.Client()
