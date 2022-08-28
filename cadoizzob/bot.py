@@ -17,9 +17,10 @@ from settingsCommand import *
 
 #Put your Token bot here 
 TOKEN = ""
-bot = discord.Client()
+intents = discord.Intents.default()
+intents.message_content = True
 # You can change the prefix here 
-bot= commands.Bot(command_prefix = get_prefix_cmd, help_command=None, case_insensitive=True)
+bot= commands.Bot(command_prefix = get_prefix_cmd, intents=intents, help_command=None, case_insensitive=True)
 
 bot.cptWar = 0
 bot.cptTt = 0
