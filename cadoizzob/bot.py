@@ -18,7 +18,7 @@ from ttEdit import ModifyEmbed
 from settings import createguildsets, guildvarchange, get_language, opensettings
 
 #Put your Token bot here 
-TOKEN = "NzI5NjQ4NTE2Nzk1OTkwMTQ2.Gs-FCs.l_QGAwkcP8XBlZgFmSCTkaajnM__dp-Gu2yQk0"
+TOKEN = ""
 
 class MyClient(discord.Client):
     def __init__(self, *, intents: discord.Intents):
