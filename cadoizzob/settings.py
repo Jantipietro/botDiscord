@@ -23,24 +23,20 @@ def createguildsets(guild):
     basicsettings(settings, guild)
     writesettings(settings)
 
-# For the prefix of the bot 
-def get_prefix_cmd(client,message):
-    settings = opensettings()
-    # To create settings for server where the bot already in 
-    if settings.get(str(message.guild.id)) == None:
-        createguildsets(str(message.guild.id))
-        settings = opensettings() # get new settings 
-    prefix = settings.get(str(message.guild.id)).get("prefix")
-    return (prefix, str.upper(prefix))
+# # For the prefix of the bot 
+# def get_prefix_cmd(client,message):
+#     settings = opensettings()
+#     # To create settings for server where the bot already in 
+#     if settings.get(str(message.guild.id)) == None:
+#         createguildsets(str(message.guild.id))
+#         settings = opensettings() # get new settings 
+#     prefix = settings.get(str(message.guild.k,,,,,,,,,,xwŝmpsdqqqqqqqqqqqqqqqqqid)).get("prefix")
+#     return (prefix, str.upper(prefix))
 
-#for text.py
-def get_prefix(ctx):
-    settings = opensettings()
-    return settings.get(str(ctx.guild.id)).get("prefix")
+def get_language(guildID, settings):
+    return settings.get(str(guildID)).get("language")
 
-def get_language(ctx):
-    settings = opensettings()
-    return settings.get(str(ctx.guild.id)).get("language")
+###########################################""
 
 def get_teams(guild):
     settings = opensettings()

@@ -2,152 +2,151 @@ import os
 import shutil
 from text import *
 from ttfunction import *
-from settings import get_language, get_prefix
+from settings import get_language
 
 # check if the guild file exist
-def verifGuild(ctx):
-    # now guild file are by guild.id
-    if not os.path.exists(path+str(ctx.guild.id)) :
-        try :
-            # Before that was by name so the change here
-            os.rename(path+str(ctx.guild),path+str(ctx.guild.id))
-        except :
+def verifGuild(guild_id):
+    if not os.path.exists(path+str(guild_id)) :
             return False
     return True
 
 #Delete guild file 
-async def deleteGuildFile(ctx):
+# Require Manage_message
+async def deleteGuildFile(guild_id , channel,settings, hasPermission):
     #Delete all the file and the server name's file too
-    if not ctx.message.author.guild_permissions.administrator:
-        await ctx.send( ttTexts.get(get_language(ctx)).get("perm"))
+    if not hasPermission:
+        await channel.send( ttTexts.get(get_language(guild_id, settings)).get("perm"))
     else:
         try :
-            shutil.rmtree(path+str(ctx.guild.id))
-            await ctx.send( ttTexts.get(get_language(ctx)).get("delete"))
+            shutil.rmtree(path+str(guild_id))
+            await channel.send( ttTexts.get(get_language(guild_id, settings)).get("delete"))
         except :
             # normally never happens, don't think rmtree can fail but in case
-            await ctx.send(ttTexts.get(get_language(ctx)).get("shutilFail"))
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("shutilFail"))
 
 # Create the guild file
-async def createCommand(ctx):
-    if not ctx.message.author.guild_permissions.manage_messages :
-        await ctx.send( ttTexts.get(get_language(ctx)).get("perm"))
+#Require Manage_message 
+async def createCommand(guild_id , channel,settings, hasPermission):
+    if not hasPermission:
+        await channel.send( ttTexts.get(get_language(guild_id, settings)).get("perm"))
     else :
         try :
-            os.makedirs(path+str(ctx.guild.id)+"/"+shroomPath) #150cc
-            os.makedirs(path+str(ctx.guild.id)+"/"+noShroomPath)
-            os.makedirs(path+str(ctx.guild.id)+"/"+speedPath+shroomPath) # 200cc 
-            os.makedirs(path+str(ctx.guild.id)+"/"+speedPath+noShroomPath) 
-            await ctx.send(ttTexts.get(get_language(ctx)).get("create"))
+            os.makedirs(path+guild_id+"/"+shroomPath) #150cc
+            os.makedirs(path+guild_id+"/"+noShroomPath)
+            os.makedirs(path+guild_id+"/"+speedPath+shroomPath) # 200cc 
+            os.makedirs(path+guild_id+"/"+speedPath+noShroomPath) 
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("create"))
         except :
-            await ctx.send(ttTexts.get(get_language(ctx)).get("pathExist").format(get_prefix(ctx)))
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("pathExist"))
 
 #Find a player or himself
-async def findCommand(ctx , args , shroom):
-    if verifGuild(ctx):
+async def findCommand(guild_id, channel , settings ,author_id, args , shroom):
+    if verifGuild(guild_id):
         if len(args) == 1 :
-            await find(ctx, ctx.author.id, shroom, "")
+            await find(guild_id, channel, author_id, shroom, "")
         elif len(args) == 2 :
             #Check if this looks like an ID ( can be better)
             if idsample.match(args[1]):
-                await find(ctx, args[1], shroom, "")
+                await find(guild_id, channel, args[1], shroom, "")
             elif args[1] == "b" or args[1] == "booster":
-                await find(ctx, ctx.author.id, shroom , "b")
+                await find(guild_id, channel , author_id, shroom , "b")
             else :
-                await ctx.send(ttTexts.get(get_language(ctx)).get("wrongID").format(args[1]))
+                await channel.send(ttTexts.get(get_language(guild_id, settings)).get("wrongID").format(args[1]))
         else :
-            await ctx.send(ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("tooMuchArg"))
     else :
-        await ctx.send(ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
+        await channel.send(ttTexts.get(get_language(guild_id, settings)).get("noFile"))
 
 #Delete command only usable by manage_messages perimissions
-async def deleteCommand(ctx , args , shroom ):
-    if verifGuild(ctx):
-        if not ctx.message.author.guild_permissions.manage_messages:
-            await ctx.send( ttTexts.get(get_language(ctx)).get("perm"))
+#Manage message Perm
+async def deleteCommand(guild_id, channel, settings , args , shroom , hasPermission):
+    if verifGuild(guild_id):
+        if not hasPermission:
+            await channel.send( ttTexts.get(get_language(guild_id, settings)).get("perm"))
         # Delete an id from all the file 
         elif len(args) == 2 :
             if idsample.match(args[1]):
-                await deleteTtplayerfromAll(ctx, args[1], shroom)
+                await deleteTtplayerfromAll(guild_id , channel, settings, args[1], shroom)
             # Delete a map file
             elif MK8DXTotalMap.get(args[0]) != None :
-                await deleteFile(ctx , path+str(ctx.guild.id)+"/"+shroom +args[1] , args[1])
+                await deleteFile(channel , path+str(guild_id)+"/"+shroom +args[1] , args[1])
             else :
-                await ctx.send(ttTexts.get(get_language(ctx)).get("wrongID").format(args[1]))
+                await channel.send(ttTexts.get(get_language(guild_id, settings)).get("wrongID").format(args[1]))
         else :
-            await ctx.send(ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("tooMuchArg"))
     else :
-        await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
+        await channel.send( ttTexts.get(get_language(guild_id, settings)).get("noFile"))
 
-async def mapmkCommand( ctx , args , shroom):
-    if verifGuild(ctx):
+#HasPermission -> check perm : manage_message 
+async def mapmkCommand( guild_id, channel , settings , args , shroom, hasPermission, author_id):
+    if verifGuild(guild_id):
         # draw a file mapMK
         if len(args)== 1 :
-            await drawMapmk(ctx, args[0], shroom, 1)
+            await drawMapmk(guild_id, channel , settings , args[0], shroom, 1)
         # Add objectif 
         elif args[1] == 'objective' or args[1] == 'bonus' :
-            if not ctx.message.author.guild_permissions.manage_messages:
-                await ctx.send( ttTexts.get(get_language(ctx)).get("perm"))
+            if not hasPermission:
+                await channel.send( ttTexts.get(get_language(guild_id, settings)).get("perm"))
             elif len(args) == 3 :
                 if timesample.match(args[2]):
                     if args[1] == 'objective' :
-                        await setMapmkObjective(ctx, args[0], args[2], '', shroom)
-                        await ctx.send(ttTexts.get(get_language(ctx)).get("objAdd"))
+                        await setMapmkObjective(guild_id, args[0], args[2], '', shroom)
+                        await channel.send(ttTexts.get(get_language(guild_id, settings)).get("objAdd"))
                     else :
-                        await setMapmkObjective(ctx, args[0], args[2], 'bonus', shroom)
-                        await ctx.send(ttTexts.get(get_language(ctx)).get("objBAdd"))
+                        await setMapmkObjective(guild_id, args[0], args[2], 'bonus', shroom)
+                        await channel.send(ttTexts.get(get_language(guild_id, settings)).get("objBAdd"))
                 # put objectif at null
                 elif args[2] == 'delete':
                     if args[1] == 'objective' :
-                        await setMapmkObjective(ctx, args[0], '', '', shroom)
-                        await ctx.send(ttTexts.get(get_language(ctx)).get("objSup"))
+                        await setMapmkObjective(guild_id, args[0], '', '', shroom)
+                        await channel.send(ttTexts.get(get_language(guild_id, settings)).get("objSup"))
                     else :
-                        await setMapmkObjective(ctx, args[0], '', 'bonus', shroom)
-                        await ctx.send(ttTexts.get(get_language(ctx)).get("objBSup"))
+                        await setMapmkObjective(guild_id, args[0], '', 'bonus', shroom)
+                        await channel.send(ttTexts.get(get_language(guild_id, settings)).get("objBSup"))
                 else :
-                    await ctx.send(ttTexts.get(get_language(ctx)).get("badFormat"))
+                    await channel.send(ttTexts.get(get_language(guild_id, settings)).get("badFormat"))
             else:
-                await ctx.send (ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
+                await channel.send (ttTexts.get(get_language(guild_id, settings)).get("tooMuchArg"))
         # Delete time into the file
         elif args[1]== 'delete':
             if len(args)== 2 :
-                await deleteTtplayerfromMap(ctx,args[0], ctx.message.author.id, shroom)
-                await ctx.send(ttTexts.get(get_language(ctx)).get("timeSup"))
+                await deleteTtplayerfromMap(guild_id, channel, settings, args[0], author_id, shroom)
+                await channel.send(ttTexts.get(get_language(guild_id, settings)).get("timeSup"))
             # To delete one player from a file
             elif len(args)==3:
-                if not ctx.message.author.guild_permissions.manage_messages:
-                    await ctx.send( ttTexts.get(get_language(ctx)).get("perm"))
+                if not hasPermission:
+                    await channel.send( ttTexts.get(get_language(guild_id, settings)).get("perm"))
                 elif idsample.match(args[2]):
-                    await deleteTtplayerfromMap(ctx,args[0], args[2], shroom)
-                    await ctx.send(ttTexts.get(get_language(ctx)).get("hisTimeSup").format(args[2]))
+                    await deleteTtplayerfromMap(guild_id, channel, settings, args[0], args (2), shroom)
+                    await channel.send(ttTexts.get(get_language(guild_id, settings)).get("hisTimeSup").format(args[2]))
                 else :
-                    await ctx.send(ttTexts.get(get_language(ctx)).get("wrongID").format(args[1]))
+                    await channel.send(ttTexts.get(get_language(guild_id, settings)).get("wrongID").format(args[1]))
         # add a player in file with a link or not.
         elif timesample.match(args[1]) :
             if ( len(args) == 2): # url empty
-                await addTimeInFile(ctx, args[0], args[1],"", shroom)
+                await addTimeInFile(guild_id, channel, args[0], args[1],"", shroom)
             elif (len(args) == 3) :
                 if ( urlsample.match(args[2])):
-                    await addTimeInFile(ctx, args[0], args[1],args[2], shroom)
+                    await addTimeInFile(guild_id, channel, args[0], args[1],args[2], shroom)
                 else :
-                    await ctx.send (ttTexts.get(get_language(ctx)).get("badUrl").format(get_prefix(ctx)))
+                    await channel.send (ttTexts.get(get_language(guild_id, settings)).get("badUrl"))
             else :
-                await ctx.send (ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
+                await channel.send (ttTexts.get(get_language(guild_id, settings)).get("tooMuchArg"))
         else : 
             # Bad timing format
-            await ctx.send( ttTexts.get(get_language(ctx)).get("badFormat"))
+            await channel.send( ttTexts.get(get_language(guild_id, settings)).get("badFormat"))
     else :
         #No server file 
-        await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
+        await channel.send( ttTexts.get(get_language(guild_id, settings)).get("noFile"))
 
 #Command to add many maps and only 
-async def addListCommand(ctx, args, shroom):
-    if verifGuild(ctx):
+async def addListCommand(guild_id , channel, settings, args, shroom,  hasPermission, author_id):
+    if verifGuild(guild_id):
         # Help command inside 
         if ( args == 'help'):
-            await ctx.send(ttTexts.get(get_language(ctx)).get("allMap").format(get_prefix(ctx)))
-            await ctx.send(ttTexts.get(get_language(ctx)).get("boosterMap").format(get_prefix(ctx)))
-            await ctx.send(ttTexts.get(get_language(ctx)).get("helpAllMap").format(get_prefix(ctx)))
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("allMap"))
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("boosterMap"))
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("helpAllMap"))
         else :
             #Get away with space and \n in the string
             SeparateCouple = args.replace(" ","").replace("\n","").split(";")
@@ -158,121 +157,95 @@ async def addListCommand(ctx, args, shroom):
             # add every couple with the map command 
             for args in Allcouple :
                 if MK8DXTotalMap.get(args[0]) != None:
-                    await mapmkCommand(ctx, args, shroom )
+                    await mapmkCommand( guild_id, channel , settings , args , shroom, hasPermission, author_id)
                 else :
-                    await ctx.send(ttTexts.get(get_language(ctx)).get("wrongName").format(get_prefix(ctx)))
+                    await channel.send(ttTexts.get(get_language(guild_id, settings)).get("wrongName"))
     else :
-        await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
+        await channel.send( ttTexts.get(get_language(guild_id, settings)).get("noFile"))
 
 # get the Stats of a guild 
-async def statsCommand(ctx , args , shroom) :
-    if verifGuild(ctx):
+async def statsCommand(guild_id, channel , guild_name, args , shroom) :
+    if verifGuild(guild_id):
         if len(args) == 1:
-            await Stats(ctx, "" ,shroom)
+            await Stats(guild_id, channel , guild_name , "" ,shroom)
         # Total time stats
         elif args[1] == "time":
             if len(args) == 2 :
-                await Stats(ctx, "time" ,shroom)
+                await Stats(guild_id, channel , guild_name , "time" ,shroom)
             elif len(args) == 3 :
                 if args[2] == "booster" or args[2] == "b":
-                    await Stats(ctx, "timeb", shroom)
+                    await Stats(guild_id, channel , guild_name , "timeb", shroom)
                 elif args[2] == "total" :
-                    await Stats(ctx, "totalTime", shroom)
+                    await Stats(guild_id, channel , guild_name , "totalTime", shroom)
                 else :
-                    await ctx.send(ttTexts.get(get_language(ctx)).get("unknowCmd").format(get_prefix(ctx)))
+                    await channel.send(ttTexts.get(get_language(guild_id, settings)).get("unknowCmd"))
             else :
-                await ctx.send(ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
+                await channel.send(ttTexts.get(get_language(guild_id, settings)).get("tooMuchArg"))
         elif args[1] == "booster" or args[1] == "b":
-            await Stats(ctx, "b" , shroom)
+            await Stats(guild_id, channel , guild_name , "b" , shroom)
         elif args[1] == "total" :
-            await Stats(ctx, "total" , shroom)
+            await Stats(guild_id, channel , guild_name , "total" , shroom)
         else :
-            await ctx.send(ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx)))
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("tooMuchArg"))
     else :
-        await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
+        await channel.send( ttTexts.get(get_language(guild_id, settings)).get("noFile"))
 
 #Copy the context id from a serv into the context guild.
-async def copyCommand(ctx, fromServ,shroom):
-    if verifGuild(ctx):
+async def copyCommand(guild_id , author_id, fromServ,shroom):
+    if verifGuild(guild_id):
         if not os.path.exists(path+fromServ):
-            await ctx.send(ttTexts.get(get_language(ctx)).get("wrongServ").format(get_prefix(ctx)))
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("wrongServ"))
         else :
-            await copy(ctx, fromServ,shroom)
-            await ctx.send(ttTexts.get(get_language(ctx)).get("copy"))
+            await copy(author_id, fromServ,shroom)
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("copy"))
     else :
-        await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
+        await channel.send( ttTexts.get(get_language(guild_id, settings)).get("noFile"))
 
 # Command with player ID 
-async def playerCommand(ctx, args, shroom):
-    if verifGuild(ctx):
+async def playerCommand(guild_id, channel, args, shroom):
+    if verifGuild(guild_id):
         if len(args) == 2 :
             if MK8DXTotalMap.get(args[0])!= None:
-                ListOfPlayer = findInMapBis(ctx, args[0], args[1], shroom)
+                ListOfPlayer = findInMapBis(guild_id, args[0], args[1], shroom)
                 if ListOfPlayer.get("player") != None :
-                    await drawPlayerCommand(ctx, ListOfPlayer, args[1], shroom)
+                    await drawPlayerCommand(guild_id, channel, ListOfPlayer, args[1], shroom)
                 else :
-                    await ctx.send(ttTexts.get(get_language(ctx)).get("notFind"))
+                    await channel.send(ttTexts.get(get_language(guild_id, settings)).get("notFind"))
             else :
-                await ctx.send(ttTexts.get(get_language(ctx)).get("noFileMap"))#wrong map
+                await channel.send(ttTexts.get(get_language(guild_id, settings)).get("noFileMap"))#wrong map
         else :
-            await ctx.send(ttTexts.get(get_language(ctx)).get("tooMuchArg").format(get_prefix(ctx))) #too much arg
+            await channel.send(ttTexts.get(get_language(guild_id, settings)).get("tooMuchArg")) #too much arg
     else :
-        await ctx.send( ttTexts.get(get_language(ctx)).get("noFile").format(get_prefix(ctx)))
+        await channel.send( ttTexts.get(get_language(guild_id, settings)).get("noFile"))
 
-async def ttCommandGestion(ctx,args, speedPath):
+async def ttCommandGestion(interaction, settings, categorie, args, speedPath):
+    # get the good path's File
+    if categorie == 'ni' : 
+        strPath = speedPath + noShroomPath
+    else :
+        strPath = speedPath + shroomPath
     # Shroom section 
     # Copy your time from the serv args[1]
     if args[0] == 'copy':
-        await copyCommand(ctx, args[1], speedPath+shroomPath)
+        await copyCommand(interaction.guild_id, interaction.user.id, args[1], strPath)
     # Add a list of maps 
     elif args[0] == 'addlist':
-        await addListCommand(ctx, args[1], speedPath+shroomPath)
-    # Draw png with all maps nickname that it use
-    elif args[0] == 'maps' :
-        await ctx.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
-        await ctx.send("https://cdn.discordapp.com/attachments/731946962911494206/1005543793891754074/maps-dlc-bot.png")
+        await addListCommand(interaction.guild_id, interaction.channel, settings, args[1], strPath,interaction.user.guild_permissions.manage_messages, interaction.user.id )
     # Stats section with all player in the section
     elif args[0] == 'stats':
-        await statsCommand(ctx,args, speedPath+shroomPath)
+        await statsCommand(interaction.guild_id, interaction.channel, interaction.guild.name,args, strPath)
     # Find command -> 
     elif args[0] == 'find' :
-        await findCommand(ctx, args , speedPath+shroomPath)
-    #Create files with the server name
-    elif args[0] == 'create':
-        await createCommand(ctx)
+        await findCommand(interaction.guild_id, interaction.channel, settings, interaction.user.id, args , strPath)
     # Delete all file from the server that call this.
     elif args[0] == 'delete':
-        await deleteCommand(ctx, args , speedPath+shroomPath)
+        await deleteCommand(interaction.guild_id , interaction.channel,settings, args , strPath,interaction.user.guild_permissions.manage_messages)
     # Check if the first arg is a map name
     elif MK8DXTotalMap.get(args[0])!= None:
-        await mapmkCommand(ctx, args , speedPath+shroomPath)
+        await mapmkCommand( interaction.guild_id, interaction.channel , settings , args , strPath, interaction.user.guild_permissions.manage_messages, interaction.user.id)
     elif idsample.match(args[0]) :
-        await playerCommand(ctx, args , speedPath+shroomPath)
-    # Noshroom way ^^
-    elif args[0] == 'ni' :
-        del args[0] # to call the other function , delete the arg "ni"
-        if args[0] == 'stats':
-            await statsCommand(ctx,args, speedPath+noShroomPath)
-        # Copy your time from the serv args[1]
-        elif args[0] == 'copy':
-            await copyCommand(ctx, args[1], speedPath+noShroomPath)
-        # Add many maps
-        elif args[0] == 'addlist':
-            await addListCommand(ctx, args[1], speedPath+noShroomPath)
-        #Seek player
-        elif args[0] == 'find' :
-            await findCommand(ctx, args , speedPath+noShroomPath)
-        # Delete all file from the server that call this.
-        elif args[0] == 'delete':
-            await deleteCommand(ctx, args , speedPath+noShroomPath)
-        # Check if the first arg is a map name
-        elif MK8DXTotalMap.get(args[0])!= None:
-            await mapmkCommand(ctx, args , speedPath+noShroomPath)
-        elif idsample.match(args[0]) :
-            await playerCommand(ctx, args , speedPath+noShroomPath)
-        else :
-            await ctx.send(ttTexts.get(get_language(ctx)).get("unknowCmd").format(get_prefix(ctx)))
+        await playerCommand(interaction.guild_id, interaction.channel, args , strPath)
     else :
-        await ctx.send(ttTexts.get(get_language(ctx)).get("noArg").format(get_prefix(ctx)))
+        await interaction.channel.send(ttTexts.get(get_language(guild_id, settings)).get("noArg"))
 
     

@@ -180,7 +180,7 @@ ttTextsFr = {
     "copy"      : "Transfert terminé !",
     "notFind"   : "Le joueur n'a pas été trouvé.",
     "badUrl"    : "Les urls acceptés doivent venir de www.youtube.com/ ou de twitter.com/ ou gyazo.com/ avec le format https:// et avec un maximum de 45 charactères après le nom de domaine."
-                    + " Merci de le garder le plus court possible"
+                    + " Merci de le garder le plus court possible",
 }
 
 ttTextsEn = {
@@ -265,7 +265,7 @@ ttTextsEn = {
     "copy"      : "Copy done!",
     "notFind"   : "The player was not find in the map",
     "badUrl"    : "Accepted urls must come from www.youtube.com/ or from twitter.com/ ou gyazo.com/ with the format https:// and with a maximum of 45 characters after the domain name."
-                + " Thanks for getting the url as short as possible"
+                + " Thanks for getting the url as short as possible",
 }
 
 ttTexts = {
