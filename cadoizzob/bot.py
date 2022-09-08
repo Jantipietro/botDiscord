@@ -136,28 +136,31 @@ async def tt(interaction : discord.Interaction, option : Literal['help', '200', 
     args = []
     args = createARGS(args,third, four, five)
     args= lowerArg(args)
-    if option == 'help':
-        TextChannel = interaction.channel
-        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help"))
-        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help2"))
-        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help3"))
-    elif option == 'deleteall':
-        #only permission manage_message allow to delete tt's file
-        await deleteGuildFile(interaction.guild_id, interaction.channel, bot.settings , interaction.user.guild_permissions.manage_messages)
-    elif option == '200':
-        await ttCommandGestion(interaction, bot.settings , categorie,args , speedPath) # speedPath = 200cc
-    elif option == '150':
-        await ttCommandGestion(interaction, bot.settings ,categorie,args , '') # 150 cc
-            # Draw png with all maps nickname that it use
-    elif option == 'maps' :
-        await interaction.channel.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
-        await interaction.channel.send("https://cdn.discordapp.com/attachments/731946962911494206/1005543793891754074/maps-dlc-bot.png")
-        #Create files with the server name
-    elif option == 'create':
-        await createCommand(interaction.guild_id , interaction.channel,bot.settings, interaction.user.guild_permissions.manage_messages)
-    else : 
-        await interaction.response.send_message("Error")
-    await interaction.response.send_message("Done" , ephemeral = True)
+    if (len(args) == 0):
+        if option == 'help':
+            TextChannel = interaction.channel
+            await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help"))
+            await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help2"))
+            await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help3"))
+        elif option == 'deleteall':
+            #only permission manage_message allow to delete tt's file
+            await deleteGuildFile(interaction.guild_id, interaction.channel, bot.settings , interaction.user.guild_permissions.manage_messages)
+        elif option == '200':
+            await ttCommandGestion(interaction, bot.settings , categorie,args , speedPath) # speedPath = 200cc
+        elif option == '150':
+            await ttCommandGestion(interaction, bot.settings ,categorie,args , '') # 150 cc
+                # Draw png with all maps nickname that it use
+        elif option == 'maps' :
+            await interaction.channel.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
+            await interaction.channel.send("https://cdn.discordapp.com/attachments/731946962911494206/1005543793891754074/maps-dlc-bot.png")
+            #Create files with the server name
+        elif option == 'create':
+            await createCommand(interaction.guild_id , interaction.channel,bot.settings, interaction.user.guild_permissions.manage_messages)
+        else : 
+            await interaction.response.send_message("Error")
+        await interaction.response.send_message("Done" , ephemeral = True)
+    else :
+        await interaction.response.send_message("No arg" , ephemeral = True)
     
 
 
@@ -176,9 +179,9 @@ async def on_reaction_remove(reaction, user):
     if (reaction.message.author.id == 729648516795990146 and reaction.count == 1):
         await reaction.message.add_reaction(reaction)
 
-# @bot.tree.error
-# async def on_command_error( interaction : discord.Interaction, error: AppCommandError) -> None:
-#     await interaction.response.send_message("Error : probably false argument ( no gestion of error for now)", ephemeral=True)
+@bot.tree.error
+async def on_command_error( interaction : discord.Interaction, error: AppCommandError) -> None:
+    await interaction.response.send_message("Error : probably false argument ( no gestion of error for now)", ephemeral=True)
 
 # @bot.event
 # async def on_command_error(ctx,error):
