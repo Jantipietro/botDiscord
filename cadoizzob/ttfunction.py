@@ -7,15 +7,15 @@ from settings import get_language
 from datetime import datetime
 from text import speedPath, urlImgCadoizzob, nofile
 
-nbPlayerDisplayedStats = 1
-nbPlayerDisplayedMap =  1
+nbPlayerDisplayedStats = 50
+nbPlayerDisplayedMap =  20
 
 # Bad fonction to get author nickname or name
-def checkname(ctx):
-    if ctx.message.author.nick == None :
-        return ctx.message.author.name
+def checkname(nick , name):
+    if nick == None :
+        return name
     else :
-        return ctx.message.author.nick
+        return nick
 
 #Update : Make it cleaner
 def titleType(shroom):
@@ -212,7 +212,7 @@ async def setMapmkObjective(guild_id, mapmk8, time, bonus, shroom) :
         mk.setBonusObjective(time)
     mk.writeFile(path+str(guild_id)+"/"+shroom+mapmk8)
 
-async def deleteFile(channel, file, mapmk8):
+async def deleteFile(guild_id, settings, channel, file, mapmk8):
     try :
         os.remove(file)
         await channel.send (ttTexts.get(get_language(guild_id, settings)).get("mapFileSup").format(mapmk8))
@@ -230,21 +230,21 @@ async def deleteTtplayerfromMap(guild_id , channel, settings,mapmk8, id, shroom)
             mk.writeFile(path+str(guild_id)+"/"+shroom+mapmk8)
         else :
             await channel.send(ttTexts.get(get_language(guild_id, settings)).get("noMorePlayer").format(mapmk8))
-            await deleteFile(channel, path+str(guild_id)+"/"+shroom+mapmk8, mapmk8)
+            await deleteFile(guild_id, settings, channel, path+str(guild_id)+"/"+shroom+mapmk8, mapmk8)
 
 #Delete if from all maps
 async def deleteTtplayerfromAll(guild_id , channel, settings, id, shroom):
     for mapmk8 in MK8DXTotalMap.keys() :
         await deleteTtplayerfromMap(guild_id, channel, settings, mapmk8, id, shroom)
-    await channel.send(ttTexts.get(get_language(guild_id, channel)).get("supPlayer").format(id))
+    await channel.send(ttTexts.get(get_language(guild_id, settings)).get("supPlayer").format(id))
 
 #Add ctx.author time in mapmk8
-async def addTimeInFile(guild_id, channel, mapmk8, time ,url,shroom):
+async def addTimeInFile(guild_id, channel, settings, author_id, nick , name, mapmk8, time ,url,shroom):
     mk = mapmk.mapmk(mapmk8, '' , '') #create a object mapmk with the name of the map
     data = mk.getFileR(path+str(guild_id)+"/"+shroom+mapmk8) # get the data from file
     mk.dataToMapmk(data)
-    name = checkname(ctx)  # check if the person who does the command has a nick name
-    newplayer = ttplayer.TtPlayer( ctx.message.author.id, #create new ttplayer
+    name = checkname(nick, name)  # check if the person who does the command has a nick name
+    newplayer = ttplayer.TtPlayer( author_id, #create new ttplayer
                 name,
                 time,
                 url)
@@ -305,13 +305,14 @@ def getCopyInMap(author_id , fromServ, mapmk8, maps, shroom):
     return maps
 
 #Copy ctx.author.id's time from fromServ
-async def copy(author_id,fromServ, shroom):
+async def copy(author_id,fromServ, shroom, guild_id, channel , settings , nick , name):
     maps = list()
     for mapmk8 in MK8DXTotalMap.keys() :
         if mapmk8 != 'week' :
             getCopyInMap(author_id, fromServ, mapmk8, maps, shroom)
     for (mapeuh, time, url) in maps :
-        await addTimeInFile(guild_id, channel, mapeuh, time ,url ,shroom)
+        await addTimeInFile(guild_id, channel, settings, author_id, nick , name, mapeuh, time ,url ,shroom)
+#Change
 
 
 ######## THE FOLLOW IS DISGUSTING #######

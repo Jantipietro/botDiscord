@@ -18,10 +18,10 @@ def basicsettings(settings, guild):
     settings.update(Dict)
 
 # on guild join / and after for the older one
-def createguildsets(guild):
-    settings = opensettings()
+def createguildsets(guild, settings):
     basicsettings(settings, guild)
     writesettings(settings)
+    return settings
 
 # # For the prefix of the bot 
 # def get_prefix_cmd(client,message):
@@ -68,11 +68,11 @@ def del_team(guild, teamToDel):
         except:
             return 0 # no
 
-def guildvarchange(var, guild, value):
-    settings = opensettings()
+def guildvarchange(settings,var, guild, value):
     if settings.get(guild) != None :
         settings[guild][var]= value
         writesettings(settings)
+        return settings
 
 
 

@@ -29,7 +29,7 @@ async def editDrawMapmk(guildID ,message, mapmk8, shroom, page):
     await setEmoji(message,page , len(mk._ttplayers))
 
 
-# 3 function to get the Stats of the ctx . 
+# 3 function to get the Stats. 
 # get stats of one maps
 def MapStats(guildName, guildID, message, option, mapmk8, playersStats, shroom):
     mk = mapmk.mapmk(mapmk8, '' ,'')

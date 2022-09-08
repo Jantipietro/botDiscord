@@ -13,7 +13,7 @@ import shutil
 import mapmk
 import ttplayer
 from text import *
-from ttCommand import ttCommandGestion, deleteGuildFile
+from ttCommand import ttCommandGestion, deleteGuildFile, createCommand
 from ttEdit import ModifyEmbed
 from settings import createguildsets, guildvarchange, get_language, opensettings
 
@@ -62,7 +62,8 @@ async def on_ready():
 
 @bot.event
 async def on_guild_join(guild):
-    createguildsets(guild.id)
+    # keep track of setting 
+    bot.settings = createguildsets(guild.id)
     for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
             await channel.send('Hey there! this is the message i send when i join a server\nMy prefix is c! so write c!help for more info')
@@ -72,6 +73,7 @@ async def on_guild_join(guild):
 async def help(interaction : discord.Interaction):
     bot.cptHelp += 1
     await interaction.response.send_message(helpTexts.get(get_language(interaction.guild_id, bot.settings)).get("help"))
+    await interaction.response.send_message("Done" , ephemeral = True)
 
 #Settings Command 
 @bot.tree.command()
@@ -86,27 +88,29 @@ async def settings(interaction : discord.Interaction, option : Literal['help', '
     # Change language
     elif option == "language":
         if (language == "fr" or language == "en") :
-            guildvarchange(option, str(interaction.guild_id) , language)
+            bot.settings = guildvarchange(bot.settings,option, str(interaction.guild_id) , language)
             await interaction.response.send_message(settingsTexts.get(get_language(interaction.guild_id, bot.settings)).get("language"))
         else :
             await interaction.response.send_message((settingsTexts.get(get_language(interaction.guild_id, bot.settings)).get("tooManyArg"))
             + settingsTexts.get(get_language(interaction.guild_id, bot.settings)).get("wrongLanguage"))
     else:
         await interaction.response.send_message(settingsTexts.get(get_language(interaction.guild_id, bot.settings)).get("noCmd"))
+    await interaction.response.send_message("Done" , ephemeral = True)
 
 # c!war Command 
 @bot.tree.command()
-async def war(interaction : discord.Interaction, first: app_commands.Range[int,0,24] , second : app_commands.Range[int,0,24]):
+async def war(interaction : discord.Interaction, first: app_commands.Range[int,0,24] , second : app_commands.Range[int,0,48]):
     bot.cptWar +=1
     textChannel = interaction.channel
     for i in range(first,second+1):
         if (get_language(interaction.guild_id, bot.settings)== "en"):
-            message = await textChannel.send('war '+str(i))
+            message = await textChannel.send('war '+str(i%13))
         else:
-            message = await textChannel.send('war '+str(i)+'h')
+            message = await textChannel.send('war '+str(i%24)+'h')
         await message.add_reaction("✅")
         await message.add_reaction("❌")
         await message.add_reaction("❔")
+    await interaction.response.send_message("Done" , ephemeral=True)
 
 def createARGS(args ,third ,four, five):
     if ( third != None ):
@@ -150,9 +154,10 @@ async def tt(interaction : discord.Interaction, option : Literal['help', '200', 
         await interaction.channel.send("https://cdn.discordapp.com/attachments/731946962911494206/1005543793891754074/maps-dlc-bot.png")
         #Create files with the server name
     elif option == 'create':
-        await createCommand(interaction.guild_id , interaction.channel,settings, interaction.user.guild_permissions.manage_messages)
+        await createCommand(interaction.guild_id , interaction.channel,bot.settings, interaction.user.guild_permissions.manage_messages)
     else : 
         await interaction.response.send_message("Error")
+    await interaction.response.send_message("Done" , ephemeral = True)
     
 
 
@@ -171,9 +176,9 @@ async def on_reaction_remove(reaction, user):
     if (reaction.message.author.id == 729648516795990146 and reaction.count == 1):
         await reaction.message.add_reaction(reaction)
 
-@bot.tree.error
-async def on_command_error( interaction : discord.Interaction, error: AppCommandError) -> None:
-    await interaction.response.send_message("Error : probably false argument ( no gestion of error for now)", ephemeral=True)
+# @bot.tree.error
+# async def on_command_error( interaction : discord.Interaction, error: AppCommandError) -> None:
+#     await interaction.response.send_message("Error : probably false argument ( no gestion of error for now)", ephemeral=True)
 
 # @bot.event
 # async def on_command_error(ctx,error):
