@@ -136,7 +136,7 @@ async def tt(interaction : discord.Interaction, option : Literal['help', '200', 
     args = []
     args = createARGS(args,third, four, five)
     args= lowerArg(args)
-    if (len(args) == 0):
+    if (len(args) != 0):
         if option == 'help':
             TextChannel = interaction.channel
             await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help"))
