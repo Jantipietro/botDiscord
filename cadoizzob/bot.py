@@ -15,7 +15,7 @@ import ttplayer
 from text import *
 from ttCommand import ttCommandGestion, deleteGuildFile, createCommand
 from ttEdit import ModifyEmbed
-from settings import createguildsets, guildvarchange, get_language, opensettings
+from settings import createguildsets, guildvarchange, get_language, opensettings,writesettings
 
 #Put your Token bot here 
 TOKEN = ""
@@ -186,9 +186,9 @@ async def on_reaction_remove(reaction, user):
     if (reaction.message.author.id == 729648516795990146 and reaction.count == 1):
         await reaction.message.add_reaction(reaction)
 
-@bot.tree.error
-async def on_command_error( interaction : discord.Interaction, error: AppCommandError) -> None:
-    await interaction.response.send_message("Error : probably false argument ( no gestion of error for now)", ephemeral=True)
+# @bot.tree.error
+# async def on_command_error( interaction : discord.Interaction, error: AppCommandError) -> None:
+#     await interaction.response.send_message("Error : probably false argument ( no gestion of error for now)", ephemeral=True)
 
 # @bot.event
 # async def on_command_error(ctx,error):
@@ -198,22 +198,30 @@ async def on_command_error( interaction : discord.Interaction, error: AppCommand
 @bot.tree.command()
 async def stats(interaction):
     if ( interaction.guild_id == 302544642585526293 or interaction.guild_id == 518942329181175808):
-        listFile = None
         nbfile = 0
-        if ( os.path.exists(path)):
-            listFile = os.listdir(path)
-            nbfile =len( listFile)
         cptFileUseToday = 0
         now = datetime.today()
-        for f in listFile :
-            modifyDate = datetime.fromtimestamp(os.path.getmtime(path+f))
-            duration = now - modifyDate
-            if ( duration.total_seconds()/(86400) < 1):
+        nb_second_per_day = 60*60*24
+        for f in bot.settings :
+            duration = now - datetime.strptime(bot.settings[f]["last_use"], '%Y-%m-%d %H:%M:%S.%f') 
+            # "2022-09-20 21:28:58.863288"
+            duration_in_s = duration.total_seconds()
+            if ( duration_in_s < nb_second_per_day):
                 cptFileUseToday +=1
+            nbfile +=1
         message = "```Nombre de serveur qui ont modifié le bot aujourd'hui : {} sur {} serveurs\nNombre de commande utilisé :\nWar : {} \nTt : {} \nSettings : {}\nHelp : {}\nCmd Raté: {}```".format(cptFileUseToday, nbfile, bot.cptWar,bot.cptTt,bot.cptSettings,bot.cptHelp, bot.cptWrongCommand)
         await interaction.response.send_message(message)
     else :
         await interaction.response.send_message("you can't do this command")
+
+@bot.tree.command()
+async def update(interaction):
+    await interaction.response.send_message("Done")
+    if (interaction.guild_id == 302544642585526293 or interaction.guild_id == 518942329181175808) and interaction.user.id == 302536904824586241:
+        for guild_id in bot.settings :
+            bot.settings[guild_id].pop("prefix", None)
+            bot.settings[guild_id]["last_use"] = datetime.now()
+        writesettings(bot.settings)
 
 
 # @bot.command()

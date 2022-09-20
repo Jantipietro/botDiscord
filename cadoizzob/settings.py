@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 def opensettings():
     with open("cadoizzob/settings.json", "r") as f :
@@ -8,12 +9,12 @@ def opensettings():
 
 def writesettings(settings):
     with open("cadoizzob/settings.json", "w") as f :
-        json.dump(settings,f)
+        json.dump(settings,f, default = str)
         f.close()
 
 def basicsettings(settings, guild):
     Dict = {
-        str(guild) : { "language" : "en" , "prefix" : "c!", "teams" : []}
+        str(guild) : { "language" : "en", "teams" : [], "last_use" : datetime.now()}
     }
     settings.update(Dict)
 
