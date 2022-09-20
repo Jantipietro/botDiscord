@@ -103,6 +103,7 @@ async def settings(interaction : discord.Interaction, option : Literal['help', '
     second = "The last time you want to draw"
 )
 async def war(interaction : discord.Interaction, first: app_commands.Range[int,0,24] , second : app_commands.Range[int,0,48]):
+    bot.settings = guildvarchange(bot.settings,"last_use", str(interaction.guild_id) , str(datetime.now()))
     await interaction.response.send_message("Done" , ephemeral=True)
     bot.cptWar +=1
     textChannel = interaction.channel
@@ -136,6 +137,7 @@ def createARGS(args ,third ,four, five):
 
 )
 async def tt(interaction : discord.Interaction, option : Literal['help', '200', '150', 'deleteall', 'maps', 'create'], categorie : Optional[Literal['shroom', 'ni']] , third : str = None , four : str = None, five : str = None):
+    bot.settings = guildvarchange(bot.settings,"last_use", str(interaction.guild_id) , str(datetime.now()))
     bot.cptTt +=1
     args = []
     args = createARGS(args,third, four, five)
@@ -186,9 +188,9 @@ async def on_reaction_remove(reaction, user):
     if (reaction.message.author.id == 729648516795990146 and reaction.count == 1):
         await reaction.message.add_reaction(reaction)
 
-# @bot.tree.error
-# async def on_command_error( interaction : discord.Interaction, error: AppCommandError) -> None:
-#     await interaction.response.send_message("Error : probably false argument ( no gestion of error for now)", ephemeral=True)
+@bot.tree.error
+async def on_command_error( interaction : discord.Interaction, error: AppCommandError) -> None:
+    await interaction.response.send_message("Error : probably false argument ( no gestion of error for now)", ephemeral=True)
 
 # @bot.event
 # async def on_command_error(ctx,error):
