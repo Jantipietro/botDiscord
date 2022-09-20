@@ -239,7 +239,7 @@ async def deleteTtplayerfromAll(guild_id , channel, settings, id, shroom):
     await channel.send(ttTexts.get(get_language(guild_id, settings)).get("supPlayer").format(id))
 
 #Add ctx.author time in mapmk8
-async def addTimeInFile(guild_id, channel, settings, author_id, nick , name, mapmk8, time ,url,shroom):
+async def addTimeInFile(guild_id, channel, settings, author_id, nick , name, mapmk8, time ,url,shroom, fromCopy):
     mk = mapmk.mapmk(mapmk8, '' , '') #create a object mapmk with the name of the map
     data = mk.getFileR(path+str(guild_id)+"/"+shroom+mapmk8) # get the data from file
     mk.dataToMapmk(data)
@@ -250,7 +250,11 @@ async def addTimeInFile(guild_id, channel, settings, author_id, nick , name, map
                 url)
     mk.addplayer(newplayer)
     mk.writeFile(path+str(guild_id)+"/"+shroom+mapmk8)
-    await channel.send( ttTexts.get(get_language(guild_id, settings)).get("addTimeMap").format(mapmk8))
+    if (not fromCopy):
+        message = ttTexts.get(get_language(guild_id, settings)).get("addTimeMap").format(name, time , mapmk8)
+        if ( url != "") :
+            message += " : " + url
+        await channel.send( message)
 
 def checkDrawMapmk(nbDraw, newPlayer, oldPlayer):
     if( oldPlayer == None): # first turn on this so no draw possible
@@ -311,7 +315,7 @@ async def copy(author_id,fromServ, shroom, guild_id, channel , settings , nick ,
         if mapmk8 != 'week' :
             getCopyInMap(author_id, fromServ, mapmk8, maps, shroom)
     for (mapeuh, time, url) in maps :
-        await addTimeInFile(guild_id, channel, settings, author_id, nick , name, mapeuh, time ,url ,shroom)
+        await addTimeInFile(guild_id, channel, settings, author_id, nick , name, mapeuh, time ,url ,shroom, True)
 #Change
 
 

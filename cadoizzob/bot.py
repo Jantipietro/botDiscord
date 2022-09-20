@@ -4,7 +4,7 @@ from discord.ext import commands
 from discord import app_commands
 from discord.ext.commands import Bot
 from discord.app_commands import AppCommandError
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Literal, Optional
 import json
 import asyncio
@@ -63,10 +63,10 @@ async def on_ready():
 @bot.event
 async def on_guild_join(guild):
     # keep track of setting 
-    bot.settings = createguildsets(guild.id)
+    bot.settings = createguildsets(guild.id, bot.settings)
     for channel in guild.text_channels:
         if channel.permissions_for(guild.me).send_messages:
-            await channel.send('Hey there! this is the message i send when i join a server\nMy prefix is c! so write c!help for more info')
+            await channel.send('Hey there! this is the message i send when i join a server\n Every command use "/" now, every command has is help command. Contact #Cadoizz#5176 if any problem')
         break
 
 @bot.tree.command()
@@ -79,9 +79,9 @@ async def help(interaction : discord.Interaction):
 @bot.tree.command()
 @app_commands.describe(
     option="What command do you want",
-    language = "The language you want 'fr' or 'en'(only use if the first command is language)"
+    language = "The language you want 'fr' or 'en'( contact us if you want to help to add another language )"
 )
-async def settings(interaction : discord.Interaction, option : Literal['help', 'language'], language : str = None):
+async def settings(interaction : discord.Interaction, option : Literal['help', 'language'], language : Optional[Literal['fr', 'en']]):
     bot.cptSettings +=1 
     if option == "help" :
         await interaction.response.send_message(settingsTexts.get(get_language(interaction.guild_id, bot.settings)).get("help"))
@@ -89,17 +89,21 @@ async def settings(interaction : discord.Interaction, option : Literal['help', '
     elif option == "language":
         if (language == "fr" or language == "en") :
             bot.settings = guildvarchange(bot.settings,option, str(interaction.guild_id) , language)
-            await interaction.response.send_message(settingsTexts.get(get_language(interaction.guild_id, bot.settings)).get("language"))
+            await interaction.response.send_message(settingsTexts.get(get_language(interaction.guild_id, bot.settings)).get("language").format(language))
         else :
             await interaction.response.send_message((settingsTexts.get(get_language(interaction.guild_id, bot.settings)).get("tooManyArg"))
             + settingsTexts.get(get_language(interaction.guild_id, bot.settings)).get("wrongLanguage"))
     else:
         await interaction.response.send_message(settingsTexts.get(get_language(interaction.guild_id, bot.settings)).get("noCmd"))
-    await interaction.response.send_message("Done" , ephemeral = True)
 
 # c!war Command 
 @bot.tree.command()
+@app_commands.describe(
+    first = "The first time you want to draw",
+    second = "The last time you want to draw"
+)
 async def war(interaction : discord.Interaction, first: app_commands.Range[int,0,24] , second : app_commands.Range[int,0,48]):
+    await interaction.response.send_message("Done" , ephemeral=True)
     bot.cptWar +=1
     textChannel = interaction.channel
     for i in range(first,second+1):
@@ -110,7 +114,7 @@ async def war(interaction : discord.Interaction, first: app_commands.Range[int,0
         await message.add_reaction("✅")
         await message.add_reaction("❌")
         await message.add_reaction("❔")
-    await interaction.response.send_message("Done" , ephemeral=True)
+
 
 def createARGS(args ,third ,four, five):
     if ( third != None ):
@@ -125,10 +129,10 @@ def createARGS(args ,third ,four, five):
 @bot.tree.command()
 @app_commands.describe(
     option = "Categorie you want, Care DeleteAll! ",
-    categorie = "ni / shroom",
-    third = "maps, user's id, stats , find , delete, copy, addlist ",
-    four = "time , objective, bonus, delete, user's id , b / booster / total, server's id",
-    five = " b / booster , total, user's id , delete , url"
+    categorie = "This one is mandatory if you want to make anything if option is 150 or 200",
+    third = "Choose one between only if you use option 150 or 200 : <maps> / user's id/ stats / find / delete/ copy/ addlist ",
+    four = "Add one between only if you use option 150 or 200 : time / objective/ bonus/ delete/ user's id / b / booster / total/ server's id",
+    five = "Add one between only if you use option 150 or 200 : b / booster / total/ user's id / delete / url"
 
 )
 async def tt(interaction : discord.Interaction, option : Literal['help', '200', '150', 'deleteall', 'maps', 'create'], categorie : Optional[Literal['shroom', 'ni']] , third : str = None , four : str = None, five : str = None):
@@ -136,31 +140,34 @@ async def tt(interaction : discord.Interaction, option : Literal['help', '200', 
     args = []
     args = createARGS(args,third, four, five)
     args= lowerArg(args)
-    if (len(args) != 0):
-        if option == 'help':
-            TextChannel = interaction.channel
-            await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help"))
-            await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help2"))
-            await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help3"))
-        elif option == 'deleteall':
-            #only permission manage_message allow to delete tt's file
-            await deleteGuildFile(interaction.guild_id, interaction.channel, bot.settings , interaction.user.guild_permissions.manage_messages)
-        elif option == '200':
+    lengArg = len(args)
+    if option == 'help' and lengArg == 0:
+        TextChannel = interaction.channel
+        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help"))
+        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help2"))
+        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id, bot.settings)).get("help3"))
+    elif option == 'deleteall' and categorie == None and lengArg == 0:
+    #only permission manage_message allow to delete tt's file
+        await deleteGuildFile(interaction.guild_id, interaction.channel, bot.settings , interaction.user.guild_permissions.manage_messages)
+    # Draw png with all maps nickname that it use
+    elif option == 'maps' and lengArg == 0:
+        await interaction.channel.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
+        await interaction.channel.send("https://cdn.discordapp.com/attachments/731946962911494206/1005543793891754074/maps-dlc-bot.png")
+        #Create files with the server name
+    elif option == 'create' and lengArg == 0:
+        await createCommand(interaction.guild_id , interaction.channel,bot.settings, interaction.user.guild_permissions.manage_messages)
+    elif ( lengArg != 0) :
+        if option == '200':
             await ttCommandGestion(interaction, bot.settings , categorie,args , speedPath) # speedPath = 200cc
         elif option == '150':
             await ttCommandGestion(interaction, bot.settings ,categorie,args , '') # 150 cc
-                # Draw png with all maps nickname that it use
-        elif option == 'maps' :
-            await interaction.channel.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
-            await interaction.channel.send("https://cdn.discordapp.com/attachments/731946962911494206/1005543793891754074/maps-dlc-bot.png")
-            #Create files with the server name
-        elif option == 'create':
-            await createCommand(interaction.guild_id , interaction.channel,bot.settings, interaction.user.guild_permissions.manage_messages)
-        else : 
-            await interaction.response.send_message("Error")
-        await interaction.response.send_message("Done" , ephemeral = True)
+        else :
+            await interaction.channel.send("Gone Wrong")
     else :
-        await interaction.response.send_message("No arg" , ephemeral = True)
+        await interaction.channel.send("Gone Wrong")
+    
+    await interaction.response.send_message("Done" , ephemeral = True)
+
     
 
 
@@ -188,22 +195,25 @@ async def on_command_error( interaction : discord.Interaction, error: AppCommand
 #     bot.cptWrongCommand +=1
 #     await ctx.send(helpTexts.get(get_language(inter)).get("help"))
 
-# @bot.command()
-# async def stats(ctx, *args):
-#     listFile = None
-#     nbfile = 0
-#     if ( os.path.exists(path)):
-#         listFile = os.listdir(path)
-#         nbfile =len( listFile)
-#     cptFileUseToday = 0
-#     now = datetime.today()
-#     for f in listFile :
-#         modifyDate = datetime.fromtimestamp(os.path.getmtime(path+f))
-#         duration = now - modifyDate
-#         if ( duration.total_seconds()/(86400) < 1):
-#             cptFileUseToday +=1
-#     message = "```Nombre de serveur qui ont modifié le bot aujourd'hui : {} sur {} serveurs\nNombre de commande utilisé :\nWar : {} \nTt : {} \nSettings : {}\nHelp : {}\nCmd Raté: {}```".format(cptFileUseToday, nbfile, bot.cptWar,bot.cptTt,bot.cptSettings,bot.cptHelp, bot.cptWrongCommand)
-#     await ctx.send(message)
+@bot.tree.command()
+async def stats(interaction):
+    if ( interaction.guild_id == 302544642585526293 or interaction.guild_id == 518942329181175808):
+        listFile = None
+        nbfile = 0
+        if ( os.path.exists(path)):
+            listFile = os.listdir(path)
+            nbfile =len( listFile)
+        cptFileUseToday = 0
+        now = datetime.today()
+        for f in listFile :
+            modifyDate = datetime.fromtimestamp(os.path.getmtime(path+f))
+            duration = now - modifyDate
+            if ( duration.total_seconds()/(86400) < 1):
+                cptFileUseToday +=1
+        message = "```Nombre de serveur qui ont modifié le bot aujourd'hui : {} sur {} serveurs\nNombre de commande utilisé :\nWar : {} \nTt : {} \nSettings : {}\nHelp : {}\nCmd Raté: {}```".format(cptFileUseToday, nbfile, bot.cptWar,bot.cptTt,bot.cptSettings,bot.cptHelp, bot.cptWrongCommand)
+        await interaction.response.send_message(message)
+    else :
+        await interaction.response.send_message("you can't do this command")
 
 
 # @bot.command()

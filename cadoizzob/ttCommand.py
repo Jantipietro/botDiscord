@@ -126,10 +126,10 @@ async def mapmkCommand( guild_id, channel , settings , args , shroom, hasPermiss
         # add a player in file with a link or not.
         elif timesample.match(args[1]) :
             if ( len(args) == 2): # url empty
-                await addTimeInFile(guild_id, channel, settings, author_id, nick, name ,args[0], args[1],"", shroom)
+                await addTimeInFile(guild_id, channel, settings, author_id, nick, name ,args[0], args[1],"", shroom, False)
             elif (len(args) == 3) :
                 if ( urlsample.match(args[2])):
-                    await addTimeInFile(guild_id, channel, settings, author_id, nick , name, args[0], args[1],args[2], shroom)
+                    await addTimeInFile(guild_id, channel, settings, author_id, nick , name, args[0], args[1],args[2], shroom, False)
                 else :
                     await channel.send (ttTexts.get(get_language(guild_id, settings)).get("badUrl"))
             else :
@@ -193,12 +193,12 @@ async def statsCommand(guild_id, channel , guild_name, args , shroom) :
         await channel.send( ttTexts.get(get_language(guild_id, settings)).get("noFile"))
 
 #Copy the context id from a serv into the context guild.
-async def copyCommand(guild_id , author_id, fromServ,shroom, channel, settigns , nick , name):
+async def copyCommand(guild_id , author_id, fromServ,shroom, channel, settings , nick , name):
     if verifGuild(guild_id):
         if not os.path.exists(path+fromServ):
             await channel.send(ttTexts.get(get_language(guild_id, settings)).get("wrongServ"))
         else :
-            await copy(author_id, fromServ,shroom, guild_id, channel, settigns , nick , name)
+            await copy(author_id, fromServ,shroom, guild_id, channel, settings , nick , name)
             await channel.send(ttTexts.get(get_language(guild_id, settings)).get("copy"))
     else :
         await channel.send( ttTexts.get(get_language(guild_id, settings)).get("noFile"))
@@ -221,33 +221,36 @@ async def playerCommand(guild_id, channel,settings, args, shroom):
         await channel.send( ttTexts.get(get_language(guild_id, settings)).get("noFile"))
 
 async def ttCommandGestion(interaction, settings, categorie, args, speedPath):
+    if ( categorie != None):
     # get the good path's File
-    if categorie == 'ni' : 
-        strPath = speedPath + noShroomPath
+        if categorie == 'ni' : 
+            strPath = speedPath + noShroomPath
+        else :
+            strPath = speedPath + shroomPath
+        # Shroom section 
+        # Copy your time from the serv args[1]
+        if args[0] == 'copy':
+            await copyCommand(interaction.guild_id, interaction.user.id, args[1], strPath, interaction.channel, settings, interaction.user.nick, interaction.user.name)
+        # Add a list of maps 
+        elif args[0] == 'addlist':
+            await addListCommand(interaction.guild_id, interaction.channel, settings, args[1], strPath,interaction.user.guild_permissions.manage_messages, interaction.user.id ,  interaction.user.nick, interaction.user.name)
+        # Stats section with all player in the section
+        elif args[0] == 'stats':
+            await statsCommand(interaction.guild_id, interaction.channel, interaction.guild.name,args, strPath)
+        # Find command -> 
+        elif args[0] == 'find' :
+            await findCommand(interaction.guild_id, interaction.channel, settings, interaction.user.id, args , strPath)
+        # Delete all file from the server that call this.
+        elif args[0] == 'delete':
+            await deleteCommand(interaction.guild_id , interaction.channel,settings, args , strPath,interaction.user.guild_permissions.manage_messages)
+        # Check if the first arg is a map name
+        elif MK8DXTotalMap.get(args[0])!= None:
+            await mapmkCommand( interaction.guild_id, interaction.channel , settings , args , strPath, interaction.user.guild_permissions.manage_messages, interaction.user.id, interaction.user.nick, interaction.user.name)
+        elif idsample.match(args[0]) :
+            await playerCommand(interaction.guild_id, interaction.channel, settings, args , strPath)
+        else :
+            await interaction.channel.send(ttTexts.get(get_language(interaction.guild_id, settings)).get("noArg"))
     else :
-        strPath = speedPath + shroomPath
-    # Shroom section 
-    # Copy your time from the serv args[1]
-    if args[0] == 'copy':
-        await copyCommand(interaction.guild_id, interaction.user.id, args[1], strPath, interaction.channel, settings, interaction.user.nick, interaction.user.name)
-    # Add a list of maps 
-    elif args[0] == 'addlist':
-        await addListCommand(interaction.guild_id, interaction.channel, settings, args[1], strPath,interaction.user.guild_permissions.manage_messages, interaction.user.id ,  interaction.user.nick, interaction.user.name)
-    # Stats section with all player in the section
-    elif args[0] == 'stats':
-        await statsCommand(interaction.guild_id, interaction.channel, interaction.guild.name,args, strPath)
-    # Find command -> 
-    elif args[0] == 'find' :
-        await findCommand(interaction.guild_id, interaction.channel, settings, interaction.user.id, args , strPath)
-    # Delete all file from the server that call this.
-    elif args[0] == 'delete':
-        await deleteCommand(interaction.guild_id , interaction.channel,settings, args , strPath,interaction.user.guild_permissions.manage_messages)
-    # Check if the first arg is a map name
-    elif MK8DXTotalMap.get(args[0])!= None:
-        await mapmkCommand( interaction.guild_id, interaction.channel , settings , args , strPath, interaction.user.guild_permissions.manage_messages, interaction.user.id, interaction.user.nick, interaction.user.name)
-    elif idsample.match(args[0]) :
-        await playerCommand(interaction.guild_id, interaction.channel, settings, args , strPath)
-    else :
-        await interaction.channel.send(ttTexts.get(get_language(interaction.guild_id, settings)).get("noArg"))
+        await interaction.channel.send("Missing 'categorie' in the command line")
 
     

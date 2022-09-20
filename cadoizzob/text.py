@@ -173,7 +173,7 @@ ttTextsFr = {
     "mapFileSup": " La fichier de la map {0} a été supprimé",
     "noMorePlayer": "Plus de joueur dans la map {0}",
     "supPlayer" :"Le joueur avec l'id {0} a été supprimé de tous les fichiers",
-    "addTimeMap": "Votre temps a bien été enregistré sur {0}",
+    "addTimeMap": "Bien joué *{0}*, pour ton **{1}** sur *{2}*",
     "copy"      : "Transfert terminé !",
     "notFind"   : "Le joueur n'a pas été trouvé.",
     "badUrl"    : "Les urls acceptés doivent venir de www.youtube.com/ ou de twitter.com/ ou gyazo.com/ avec le format https:// et avec un maximum de 45 charactères après le nom de domaine."
@@ -259,7 +259,7 @@ ttTextsEn = {
     "mapFileSup": " Map file {0} has been deleted",
     "noMorePlayer": "No more player in map {0}",
     "supPlayer" :"Player with id {0} has been deleted from all files",
-    "addTimeMap": "Your time is registred in {0}",
+    "addTimeMap": "Well done *{0}* for your **{1}** on *{2}*",
     "copy"      : "Copy done!",
     "notFind"   : "The player was not find in the map",
     "badUrl"    : "Accepted urls must come from www.youtube.com/ or from twitter.com/ ou gyazo.com/ with the format https:// and with a maximum of 45 characters after the domain name."
