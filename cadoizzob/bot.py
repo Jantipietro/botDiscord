@@ -144,9 +144,9 @@ async def tt(interaction : discord.Interaction, option : Literal['help', '200', 
     lengArg = len(args)
     if option == 'help' and lengArg == 0:
         TextChannel = interaction.channel
-        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id,  )).get("help"))
-        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id,  )).get("help2"))
-        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id,  )).get("help3"))
+        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id)).get("help"))
+        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id)).get("help2"))
+        await TextChannel.send ( ttTexts.get(get_language(interaction.guild_id)).get("help3"))
     elif option == 'deleteall' and categorie == None and lengArg == 0:
     #only permission manage_message allow to delete tt's file
         await deleteGuildFile(interaction.guild_id, interaction.channel, interaction.user.guild_permissions.manage_messages)
