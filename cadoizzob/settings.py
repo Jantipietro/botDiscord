@@ -17,12 +17,12 @@ def basicsettings(settings, guild):
         str(guild) : { "language" : "en", "teams" : [], "last_use" : datetime.now()}
     }
     settings.update(Dict)
+    writesettings(settings)
 
 # on guild join / and after for the older one
-def createguildsets(guild, settings):
+def createguildsets(guild):
+    settings = opensettings()
     basicsettings(settings, guild)
-    writesettings(settings)
-    return settings
 
 # # For the prefix of the bot 
 # def get_prefix_cmd(client,message):
@@ -34,7 +34,8 @@ def createguildsets(guild, settings):
 #     prefix = settings.get(str(message.guild.k,,,,,,,,,,xwŝmpsdqqqqqqqqqqqqqqqqqid)).get("prefix")
 #     return (prefix, str.upper(prefix))
 
-def get_language(guildID, settings):
+def get_language(guildID):
+    settings = opensettings()
     return settings.get(str(guildID)).get("language")
 
 ###########################################""
@@ -69,11 +70,11 @@ def del_team(guild, teamToDel):
         except:
             return 0 # no
 
-def guildvarchange(settings,var, guild, value):
+def guildvarchange(var, guild, value):
+    settings = opensettings()
     if settings.get(guild) != None :
         settings[guild][var]= value
         writesettings(settings)
-        return settings
 
 
 
