@@ -267,17 +267,17 @@ async def stats(interaction):
 
 @bot.tree.command()
 async def update(interaction : discord.Interaction):
-    nbfile = 0
-    if (os.path.exists(path)):
-        listfile = os.listdir(path)
+    if ( interaction.guild_id == 302544642585526293 or interaction.guild_id == 518942329181175808):
+        nbfile = 0
+        if (os.path.exists(path)):
+            listfile = os.listdir(path)
 
-        for f in listfile :
-            for speed in os.listdir(path+f):
-                print( path+f+speed+"/bap")
-                if ( os.path.exists(path+f+"/"+speed+"/bap")):
-                    os.rename(path+f+"/"+speed+"/bap", path+f+"/"+speed+"/brrm")
-            nbfile +=1
-    await interaction.response.send_message("nbfile = " + str(nbfile))
+            for f in listfile :
+                for speed in os.listdir(path+f):
+                    if ( os.path.exists(path+f+"/"+speed+"/bap")):
+                        os.rename(path+f+"/"+speed+"/bap", path+f+"/"+speed+"/brrm")
+                nbfile +=1
+        await interaction.response.send_message("nbfile = " + str(nbfile))
         
 
 bot.run(TOKEN)
