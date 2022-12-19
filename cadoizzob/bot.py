@@ -135,7 +135,7 @@ def createARGS(args ,third ,four, five):
     five = "Thirds parameters ( orders show in help ) "
 
 )
-async def tt(interaction : discord.Interaction, option : Literal['help', '200', '150', 'deleteall', 'maps', 'create'], categorie : Optional[Literal['shroom', 'ni']] , third : str = None , four : str = None, five : str = None):
+async def tt(interaction : discord.Interaction, option : Literal['help', '200cc', '150cc', 'deleteall', 'maps', 'create'], categorie : Optional[Literal['shroom', 'ni']] , third : str = None , four : str = None, five : str = None):
     guildvarchange("last_use", str(interaction.guild_id) , str(datetime.now()))
     bot.cptTt +=1
     args = []
@@ -153,14 +153,14 @@ async def tt(interaction : discord.Interaction, option : Literal['help', '200', 
     # Draw png with all maps nickname that it use
     elif option == 'maps' and lengArg == 0:
         await interaction.channel.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
-        await interaction.channel.send("https://cdn.discordapp.com/attachments/731946962911494206/1005543793891754074/maps-dlc-bot.png")
+        await interaction.channel.send("https://cdn.discordapp.com/attachments/608269384976302153/1052947025903222866/maps-dlc-bot_3e_vague.png")
         #Create files with the server name
     elif option == 'create' and lengArg == 0:
         await createCommand(interaction.guild_id , interaction.channel,interaction.user.guild_permissions.manage_messages)
     elif ( lengArg != 0) :
-        if option == '200':
+        if option == '200cc':
             await ttCommandGestion(interaction,categorie,args , speedPath) # speedPath = 200cc
-        elif option == '150':
+        elif option == '150cc':
             await ttCommandGestion(interaction,categorie,args , '') # 150 cc
         else :
             await interaction.channel.send("Gone Wrong")
@@ -265,5 +265,19 @@ async def stats(interaction):
 #         message = "```Nombre de commande utilisé en moyenne depuis le 28 mai 2021 :\nWar : {:.2f} \nTt : {:.2f} \nSettings : {:.2f}\nHelp : {:.2f}\nCmd Raté: {:.2f}```".format(nbWar/days,nbTt/days,nbSettings/days,nbHelp/days,nbWrong/days)
 #         await ctx.send(message)
 
+@bot.tree.command()
+async def update(interaction : discord.Interaction):
+    nbfile = 0
+    if (os.path.exists(path)):
+        listfile = os.listdir(path)
+
+        for f in listfile :
+            for speed in os.listdir(path+f):
+                print( path+f+speed+"/bap")
+                if ( os.path.exists(path+f+"/"+speed+"/bap")):
+                    os.rename(path+f+"/"+speed+"/bap", path+f+"/"+speed+"/brrm")
+            nbfile +=1
+    await interaction.response.send_message("nbfile = " + str(nbfile))
+        
 
 bot.run(TOKEN)
