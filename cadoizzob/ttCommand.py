@@ -128,6 +128,7 @@ async def mapmkCommand( guild_id, channel ,  args , shroom, hasPermission, autho
             if ( len(args) == 2): # url empty
                 await addTimeInFile(guild_id, channel,  author_id, nick, name ,args[0], args[1],"", shroom, False)
             elif (len(args) == 3) :
+                args[2] = args[2].split("?",1)[0]
                 if ( urlsample.match(args[2])):
                     await addTimeInFile(guild_id, channel,  author_id, nick , name, args[0], args[1],args[2], shroom, False)
                 else :
