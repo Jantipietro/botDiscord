@@ -41,8 +41,10 @@ MK8DXbooster = { "bpp" : "Tour Paris Promenade" , "btc" : "3DS Toad Circuit" , "
                 "bnym" : "MKT New York" , "bmc3" : "SNES Mario Circuit 3" , "bkd" : "N64 Kalimari Desert" , "bwp" : "DS Flipper Waluigi", #troisième coupe
                 "bss" : "MKT Sydney", "bsl" : "GBA Snow Land" , "bmg" : "WII Mushroom Gorge" , "bshs" :"Sky High Sundae", #4ème coupe
                 "bll" : "London Loop", "bbl" : "Boo Lake" ,"brrm" : "Rock Rock Mountain", "bmt" : "Maple Treeway" ,  # 5ème coupe
-                "bbb" : "Berlin Byways", "bpg" : "Peach Gardens", "bmm" : "Merry Mountain", "brr7" : "Rainbow Road" #6eme coupe 
-}
+                "bbb" : "Berlin Byways", "bpg" : "Peach Gardens", "bmm" : "Merry Mountain", "brr7" : "Rainbow Road", #6eme coupe 
+                "bad" : "Amsterdam Drift" ,"brp" : "Riverside Park" , "bdks" : "DK Summit" , "byi" : "Yoshi's Island", # 7eme coupe
+                "bbr" : "Bangkok Rush" , "bmc" : "DS Mario Circuit" , "bws" : "Waluigid Stadium" , "bsis" : "Singapore Speedway" # 8eme coupe
+ }
 
 nbMK8DXbooster = 24
 
@@ -324,5 +326,7 @@ MK8DXTotalMap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "S
                 "bss" : "MKT Sydney", "bsl" : "GBA Snow Land" , "bmg" : "WII Mushroom Gorge" , "bshs" :"Sky High Sundae", #4ème coupe
                 "bll" : "London Loop", "bbl" : "Boo Lake" ,"brrm" : "Rock Rock Mountain", "bmt" : "Maple Treeway" ,  # 5ème coupe
                 "bbb" : "Berlin Byways", "bpg" : "Peach Gardens", "bmm" : "Merry Mountain", "brr7" : "Rainbow Road", #6eme coupe 
+                "bad" : "Amsterdam Drift" ,"brp" : "Riverside Park" , "bdks" : "DK Summit" , "byi" : "Yoshi's Island", # 7eme coupe
+                "bbr" : "Bangkok Rush" , "bmc" : "DS Mario Circuit" , "bws" : "Waluigid Stadium" , "bsis" : "Singapore Speedway", # 8eme coupe
                 'week' :"Map of the Week" 
 }

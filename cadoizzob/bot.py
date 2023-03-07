@@ -263,21 +263,6 @@ async def stats(interaction):
 #         DateDiff = date.today() - date(2021,5,28)# nb days since the start of stats
 #         days = DateDiff.days
 #         message = "```Nombre de commande utilisé en moyenne depuis le 28 mai 2021 :\nWar : {:.2f} \nTt : {:.2f} \nSettings : {:.2f}\nHelp : {:.2f}\nCmd Raté: {:.2f}```".format(nbWar/days,nbTt/days,nbSettings/days,nbHelp/days,nbWrong/days)
-#         await ctx.send(message)
-
-# @bot.tree.command()
-# async def update(interaction : discord.Interaction):
-#     if ( interaction.guild_id == 302544642585526293 or interaction.guild_id == 518942329181175808):
-#         nbfile = 0
-#         if (os.path.exists(path)):
-#             listfile = os.listdir(path)
-
-#             for f in listfile :
-#                 for speed in os.listdir(path+f):
-#                     if ( os.path.exists(path+f+"/"+speed+"/bap")):
-#                         os.rename(path+f+"/"+speed+"/bap", path+f+"/"+speed+"/brrm")
-#                 nbfile +=1
-#         await interaction.response.send_message("nbfile = " + str(nbfile))
-        
+#         await ctx.send(message)        
 
 bot.run(TOKEN)
