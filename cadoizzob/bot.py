@@ -263,6 +263,8 @@ async def stats(interaction):
 #         DateDiff = date.today() - date(2021,5,28)# nb days since the start of stats
 #         days = DateDiff.days
 #         message = "```Nombre de commande utilisé en moyenne depuis le 28 mai 2021 :\nWar : {:.2f} \nTt : {:.2f} \nSettings : {:.2f}\nHelp : {:.2f}\nCmd Raté: {:.2f}```".format(nbWar/days,nbTt/days,nbSettings/days,nbHelp/days,nbWrong/days)
-#         await ctx.send(message)        
+#         await ctx.send(message)
+
+        
 
 bot.run(TOKEN)
