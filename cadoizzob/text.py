@@ -46,7 +46,7 @@ MK8DXbooster = { "bpp" : "Tour Paris Promenade" , "btc" : "3DS Toad Circuit" , "
                 "bbr" : "Bangkok Rush" , "bmc" : "DS Mario Circuit" , "bws" : "Waluigi Stadium" , "bsis" : "Singapore Speedway" # 8eme coupe
  }
 
-nbMK8DXbooster = 36
+nbMK8DXbooster = 32
 
 helpTextFr = {
     "help" : "```Il y'a trois commandes pour l'instant :\n"
