@@ -44,7 +44,7 @@ MK8DXbooster = { "bpp" : "Tour Paris Promenade" , "btc" : "3DS Toad Circuit" , "
                 "bbb" : "Berlin Byways", "bpg" : "Peach Gardens", "bmm" : "Merry Mountain", "brr7" : "Rainbow Road", #6eme coupe 
                 "bad" : "Amsterdam Drift" ,"brp" : "Riverside Park" , "bdks" : "DK Summit" , "byi" : "Yoshi's Island", # 7eme coupe
                 "bbr" : "Bangkok Rush" , "bmc" : "DS Mario Circuit" , "bws" : "Waluigi Stadium" , "bsis" : "Singapore Speedway", # 8eme coupe
-                "badt" : "Athens Dash" , "bdc" : "Daisy Cruiser" , " bmh" : "Moonview Highway" , "bscs" : "Squeaky Clean Sprint", # 9eme coupe
+                "batd" : "Athens Dash" , "bdc" : "Daisy Cruiser" , " bmh" : "Moonview Highway" , "bscs" : "Squeaky Clean Sprint", # 9eme coupe
                 "blal" : "Los Angeles Laps" , "bsw" : "Sunset Wilds" , "bkc" : "Koopa Cape" , "bvv" : "Vancouver Velocity" # 10 eme coupe
  }
 
@@ -335,7 +335,7 @@ MK8DXTotalMap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "S
                 "bbb" : "Berlin Byways", "bpg" : "Peach Gardens", "bmm" : "Merry Mountain", "brr7" : "Rainbow Road", #6eme coupe 
                 "bad" : "Amsterdam Drift" ,"brp" : "Riverside Park" , "bdks" : "DK Summit" , "byi" : "Yoshi's Island", # 7eme coupe
                 "bbr" : "Bangkok Rush" , "bmc" : "DS Mario Circuit" , "bws" : "Waluigi Stadium" , "bsis" : "Singapore Speedway", # 8eme coupe
-                "badt" : "Athens Dash" , "bdc" : "Daisy Cruiser" , " bmh" : "Moonview Highway" , "bscs" : "Squeaky Clean Sprint", # 9eme coupe
+                "batd" : "Athens Dash" , "bdc" : "Daisy Cruiser" , " bmh" : "Moonview Highway" , "bscs" : "Squeaky Clean Sprint", # 9eme coupe
                 "blal" : "Los Angeles Laps" , "bsw" : "Sunset Wilds" , "bkc" : "Koopa Cape" , "bvv" : "Vancouver Velocity", # 10 eme coupe
                 'week' :"Map of the Week" 
 }
