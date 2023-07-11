@@ -43,10 +43,12 @@ MK8DXbooster = { "bpp" : "Tour Paris Promenade" , "btc" : "3DS Toad Circuit" , "
                 "bll" : "London Loop", "bbl" : "Boo Lake" ,"brrm" : "Rock Rock Mountain", "bmt" : "Maple Treeway" ,  # 5ème coupe
                 "bbb" : "Berlin Byways", "bpg" : "Peach Gardens", "bmm" : "Merry Mountain", "brr7" : "Rainbow Road", #6eme coupe 
                 "bad" : "Amsterdam Drift" ,"brp" : "Riverside Park" , "bdks" : "DK Summit" , "byi" : "Yoshi's Island", # 7eme coupe
-                "bbr" : "Bangkok Rush" , "bmc" : "DS Mario Circuit" , "bws" : "Waluigi Stadium" , "bsis" : "Singapore Speedway" # 8eme coupe
+                "bbr" : "Bangkok Rush" , "bmc" : "DS Mario Circuit" , "bws" : "Waluigi Stadium" , "bsis" : "Singapore Speedway", # 8eme coupe
+                "badt" : "Athens Dash" , "bdc" : "Daisy Cruiser" , " bmh" : "Moonview Highway" , "bscs" : "Squeaky Clean Sprint", # 9eme coupe
+                "blal" : "Los Angeles Laps" , "bsw" : "Sunset Wilds" , "bkc" : "Koopa Cape" , "bvv" : "Vancouver Velocity" # 10 eme coupe
  }
 
-nbMK8DXbooster = 32
+nbMK8DXbooster = 40
 
 helpTextFr = {
     "help" : "```Il y'a trois commandes pour l'instant :\n"
@@ -99,7 +101,12 @@ warTexts = {
 
 # Dict of string for tt command
 ttTextsFr = {
-    "help"      :  "```<map> correspond aux raccourcis anglais des maps de mk8dx et à 'week' si vous voulez vous faire un tt de la semaine, de plus la commande /tt maps , renvoie une image avec les raccourcis utilisés.\n"
+    "help"      :  "```Pour utiliser ce bot : le paramètre 'option' est obligatoire.\n Si vous choissisez 150cc ou 200cc alors il faut **absolument** définir l'option "
+                    +" 'categorie' avec shroom ou ni ( pour sans item) \n Puis vous choissisez les options 'third', 'four' , 'five' selon le nombre de paramètre de la commande.\n"
+                    +"Mais attention toujours dans 'l'ordre'\n"
+                    +"Un exemple pour ajouter un temps : /tt option:150cc categorie:ni third:rws four:3:12.345\n"
+                    +"Exemple pour afficher les raccourcis des maps : /tt options:maps"
+                    +"<map> correspond aux raccourcis anglais des maps de mk8dx et à 'week' si vous voulez vous faire un tt de la semaine, de plus la commande /tt maps , renvoie une image avec les raccourcis utilisés.\n"
                     +"<time> doit suivre le modèle suivant : x:xx.xxx ; où les x sont des chiffres\n"
                     +"<id> correspond à l'identifiant discord de quelqu'un sinon celà ne marche pas, le tag marche aussi maintenant\n"
                     +"Tous les arguments peuvent être passé en miniscule ou majuscule, le bot les lira en minuscules.\n``` ",
@@ -328,5 +335,7 @@ MK8DXTotalMap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "S
                 "bbb" : "Berlin Byways", "bpg" : "Peach Gardens", "bmm" : "Merry Mountain", "brr7" : "Rainbow Road", #6eme coupe 
                 "bad" : "Amsterdam Drift" ,"brp" : "Riverside Park" , "bdks" : "DK Summit" , "byi" : "Yoshi's Island", # 7eme coupe
                 "bbr" : "Bangkok Rush" , "bmc" : "DS Mario Circuit" , "bws" : "Waluigi Stadium" , "bsis" : "Singapore Speedway", # 8eme coupe
+                "badt" : "Athens Dash" , "bdc" : "Daisy Cruiser" , " bmh" : "Moonview Highway" , "bscs" : "Squeaky Clean Sprint", # 9eme coupe
+                "blal" : "Los Angeles Laps" , "bsw" : "Sunset Wilds" , "bkc" : "Koopa Cape" , "bvv" : "Vancouver Velocity", # 10 eme coupe
                 'week' :"Map of the Week" 
 }

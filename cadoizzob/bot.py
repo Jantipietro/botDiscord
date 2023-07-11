@@ -154,6 +154,7 @@ async def tt(interaction : discord.Interaction, option : Literal['help', '200cc'
     elif option == 'maps' and lengArg == 0:
         await interaction.channel.send("https://media.discordapp.net/attachments/579573532263055381/583008091541471234/abveration.png?width=1202&height=510")
         await interaction.channel.send("https://cdn.discordapp.com/attachments/608269384976302153/1052947025903222866/maps-dlc-bot_3e_vague.png")
+        await interaction.channel.send("https://cdn.discordapp.com/attachments/608269384976302153/1128232248777392138/screen_new_coupe.png")
         #Create files with the server name
     elif option == 'create' and lengArg == 0:
         await createCommand(interaction.guild_id , interaction.channel,interaction.user.guild_permissions.manage_messages)
