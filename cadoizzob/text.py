@@ -45,10 +45,12 @@ MK8DXbooster = { "bpp" : "Tour Paris Promenade" , "btc" : "3DS Toad Circuit" , "
                 "bad" : "Amsterdam Drift" ,"brp" : "Riverside Park" , "bdks" : "DK Summit" , "byi" : "Yoshi's Island", # 7eme coupe
                 "bbr" : "Bangkok Rush" , "bmc" : "DS Mario Circuit" , "bws" : "Waluigi Stadium" , "bsis" : "Singapore Speedway", # 8eme coupe
                 "batd" : "Athens Dash" , "bdc" : "Daisy Cruiser" , "bmh" : "Moonview Highway" , "bscs" : "Squeaky Clean Sprint", # 9eme coupe
-                "blal" : "Los Angeles Laps" , "bsw" : "Sunset Wilds" , "bkc" : "Koopa Cape" , "bvv" : "Vancouver Velocity" # 10 eme coupe
+                "blal" : "Los Angeles Laps" , "bsw" : "Sunset Wilds" , "bkc" : "Koopa Cape" , "bvv" : "Vancouver Velocity", # 10 eme coupe
+                "bra" : "Tour Rome Avanti" , "bdkm" : "GNC DK Mountain", "bdct" : "Wii Daidy Circuit", "bppc" : "Piranha Plant Cove", # 11eme coupe
+                "bmd" : "Tour Madrid Drive", "briw" : "3DS Rosalina's Ice World", "bbc3" : "SNES Bowser's Castle 3", "brrd" : "Wii Rainbow Road" #12eme coupe 
  }
 
-nbMK8DXbooster = 40
+nbMK8DXbooster = 48
 
 helpTextFr = {
     "help" : "```Il y'a trois commandes pour l'instant :\n"
@@ -337,5 +339,7 @@ MK8DXTotalMap = { "mks" : "Mario Kart Stadium" , 'wp' :"Water Park" , 'ssc' : "S
                 "bbr" : "Bangkok Rush" , "bmc" : "DS Mario Circuit" , "bws" : "Waluigi Stadium" , "bsis" : "Singapore Speedway", # 8eme coupe
                 "batd" : "Athens Dash" , "bdc" : "Daisy Cruiser" , "bmh" : "Moonview Highway" , "bscs" : "Squeaky Clean Sprint", # 9eme coupe
                 "blal" : "Los Angeles Laps" , "bsw" : "Sunset Wilds" , "bkc" : "Koopa Cape" , "bvv" : "Vancouver Velocity", # 10 eme coupe
+                "bra" : "Tour Rome Avanti" , "bdkm" : "GNC DK Mountain", "bdct" : "Wii Daidy Circuit", "bppc" : "Piranha Plant Cove", # 11eme coupe
+                "bmd" : "Tour Madrid Drive", "briw" : "3DS Rosalina's Ice World", "bbc3" : "SNES Bowser's Castle 3", "brrd" : "Wii Rainbow Road", #12eme coupe 
                 'week' :"Map of the Week" 
 }
